@@ -1,0 +1,326 @@
+@import "tailwindcss";
+
+/*
+  IMPORTANT: do NOT put theme tokens on bare :root alone for the default,
+  or they fight [data-design="…"] at equal specificity.
+  Default = html without a design attr OR data-design="current".
+*/
+
+html {
+  --rex-black: #121212;
+  --rex-charcoal: #1a1a1a;
+  --rex-ink: #0f0f0f;
+  --rex-gold: #c5a46e;
+  --rex-gold-bright: #d4af37;
+  --rex-gold-soft: #e8d5a8;
+  --rex-cream: #fafaf8;
+  --rex-stone: #6b6b66;
+  --rex-line: #e6e4de;
+  --rex-badge: #f3eee3;
+  --rex-surface: #ffffff;
+  --rex-hero-from: rgba(0, 0, 0, 0.88);
+  --rex-hero-via: rgba(0, 0, 0, 0.58);
+  --rex-accent-2: #c5a46e;
+  --background: #fafaf8;
+  --foreground: #0f0f0f;
+  --radius-ui: 0px;
+  scroll-behavior: smooth;
+}
+
+/* Current — warm gold cream (as built) */
+html[data-design="current"] {
+  --rex-black: #121212;
+  --rex-charcoal: #1a1a1a;
+  --rex-ink: #0f0f0f;
+  --rex-gold: #c5a46e;
+  --rex-gold-bright: #d4af37;
+  --rex-gold-soft: #e8d5a8;
+  --rex-cream: #fafaf8;
+  --rex-stone: #6b6b66;
+  --rex-line: #e6e4de;
+  --rex-badge: #f3eee3;
+  --rex-surface: #ffffff;
+  --rex-hero-from: rgba(0, 0, 0, 0.88);
+  --rex-hero-via: rgba(0, 0, 0, 0.58);
+  --rex-accent-2: #c5a46e;
+  --background: #fafaf8;
+  --foreground: #0f0f0f;
+  --radius-ui: 0px;
+}
+
+/* Design 1 — British Editorial: bright white, sharp black, antique brass */
+html[data-design="design-1"] {
+  --rex-black: #0a0a0a;
+  --rex-charcoal: #161616;
+  --rex-ink: #0a0a0a;
+  --rex-gold: #9a7b4f;
+  --rex-gold-bright: #b8956a;
+  --rex-gold-soft: #d4c4a8;
+  --rex-cream: #ffffff;
+  --rex-stone: #4a4a4a;
+  --rex-line: #d6d6d0;
+  --rex-badge: #ece7df;
+  --rex-surface: #ffffff;
+  --rex-hero-from: rgba(10, 10, 10, 0.9);
+  --rex-hero-via: rgba(10, 10, 10, 0.62);
+  --rex-accent-2: #9a7b4f;
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --radius-ui: 0px;
+}
+
+/* Design 2 — Mayfair Noir: full dark luxury */
+html[data-design="design-2"] {
+  --rex-black: #050505;
+  --rex-charcoal: #101010;
+  --rex-ink: #f5f0e6;
+  --rex-gold: #e0b84e;
+  --rex-gold-bright: #f0cc66;
+  --rex-gold-soft: #ffe9a0;
+  --rex-cream: #101010;
+  --rex-stone: #b7b0a4;
+  --rex-line: #2e2e2e;
+  --rex-badge: #3a3018;
+  --rex-surface: #1a1a1a;
+  --rex-hero-from: rgba(0, 0, 0, 0.82);
+  --rex-hero-via: rgba(0, 0, 0, 0.5);
+  --rex-accent-2: #e0b84e;
+  --background: #0c0c0c;
+  --foreground: #f5f0e6;
+  --radius-ui: 0px;
+}
+
+/* Design 3 — Harbour Cool: navy + teal (clearly NOT gold-first) */
+html[data-design="design-3"] {
+  --rex-black: #071820;
+  --rex-charcoal: #0f2430;
+  --rex-ink: #071820;
+  --rex-gold: #1f7a6c;
+  --rex-gold-bright: #2a9a88;
+  --rex-gold-soft: #a8ddd3;
+  --rex-cream: #eef3f6;
+  --rex-stone: #4d6570;
+  --rex-line: #c9d6dd;
+  --rex-badge: #d7ebf0;
+  --rex-surface: #ffffff;
+  --rex-hero-from: rgba(7, 24, 32, 0.92);
+  --rex-hero-via: rgba(7, 24, 32, 0.65);
+  --rex-accent-2: #c4a35a;
+  --background: #eef3f6;
+  --foreground: #071820;
+  --radius-ui: 2px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-rex-black: var(--rex-black);
+  --color-rex-charcoal: var(--rex-charcoal);
+  --color-rex-ink: var(--rex-ink);
+  --color-rex-gold: var(--rex-gold);
+  --color-rex-gold-bright: var(--rex-gold-bright);
+  --color-rex-gold-soft: var(--rex-gold-soft);
+  --color-rex-cream: var(--rex-cream);
+  --color-rex-stone: var(--rex-stone);
+  --color-rex-line: var(--rex-line);
+  --color-rex-badge: var(--rex-badge);
+  --color-rex-surface: var(--rex-surface);
+  --font-display: var(--font-syne);
+  --font-sans: var(--font-dm-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-syne), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--rex-gold) 35%, white);
+  color: var(--rex-ink);
+}
+
+.rex-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+.text-shadow-hero {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.55), 0 8px 28px rgb(0 0 0 / 0.35);
+}
+
+.rex-input {
+  width: 100%;
+  border-radius: var(--radius-ui);
+  border: 1px solid var(--rex-line);
+  background: var(--rex-surface);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--rex-ink);
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.rex-input:focus {
+  border-color: var(--rex-gold);
+}
+
+.rex-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rex-stone);
+}
+
+.rex-btn-primary,
+.rex-btn-dark,
+.rex-btn-outline,
+.rex-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-radius: var(--radius-ui);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.rex-btn-primary {
+  background: var(--rex-gold);
+  color: #fff;
+}
+
+html[data-design="current"] .rex-btn-primary,
+html[data-design="design-1"] .rex-btn-primary {
+  color: #111111;
+}
+
+.rex-btn-primary:hover {
+  background: var(--rex-gold-bright);
+}
+
+.rex-btn-dark {
+  background: var(--rex-black);
+  color: #fff;
+}
+
+.rex-btn-dark:hover {
+  background: var(--rex-charcoal);
+}
+
+.rex-btn-outline {
+  border: 1px solid var(--rex-ink);
+  background: transparent;
+  color: var(--rex-ink);
+}
+
+.rex-btn-outline:hover {
+  background: var(--rex-ink);
+  color: var(--background);
+}
+
+.rex-btn-ghost {
+  border: 1px solid rgb(255 255 255 / 0.35);
+  background: transparent;
+  color: #fff;
+}
+
+.rex-btn-ghost:hover {
+  border-color: var(--rex-gold-soft);
+  color: var(--rex-gold-soft);
+}
+
+/* ——— Design-specific forced contrast so themes are obvious ——— */
+
+html[data-design="design-1"] .bg-rex-cream {
+  background-color: #ffffff !important;
+}
+
+html[data-design="design-1"] body {
+  letter-spacing: 0.01em;
+}
+
+/* Noir: flatten light panels into dark */
+html[data-design="design-2"] .bg-white,
+html[data-design="design-2"] .bg-rex-cream {
+  background-color: var(--rex-surface) !important;
+}
+
+html[data-design="design-2"] .border-rex-ink\/80 {
+  border-color: rgba(245, 240, 230, 0.25);
+}
+
+html[data-design="design-2"] .text-rex-ink {
+  color: var(--rex-ink) !important;
+}
+
+html[data-design="design-2"] .shadow-\[0_20px_60px_-40px_rgba\(15\,15\,15\,0\.45\)\] {
+  box-shadow: 0 20px 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+/* Harbour: cool wash on cream sections */
+html[data-design="design-3"] .bg-rex-cream {
+  background-color: #e8f0f4 !important;
+}
+
+html[data-design="design-3"] .bg-white {
+  background-color: #ffffff !important;
+}
+
+html[data-design="design-3"] .rex-btn-primary {
+  background: #1f7a6c;
+  color: #fff;
+}
+
+html[data-design="design-3"] .rex-btn-primary:hover {
+  background: #2a9a88;
+}
+
+html[data-design="design-3"] .text-rex-gold {
+  color: #1f7a6c !important;
+}
+
+/* Active design ribbon — always visible so switch is obvious */
+.design-ribbon {
+  position: sticky;
+  top: 0;
+  z-index: 65;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.45rem 1rem;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--rex-black);
+  border-bottom: 2px solid var(--rex-gold);
+}
+
+.design-ribbon span.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--rex-gold);
+}
