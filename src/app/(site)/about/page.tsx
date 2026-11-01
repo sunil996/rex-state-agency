@@ -77,6 +77,57 @@ export default function AboutPage() {
           ))}
         </div>
 
+        <div className="mt-16 border-t border-rex-line pt-12 md:mt-20 md:pt-16">
+          <SectionHeading
+            number="02"
+            title="Working with us"
+            subtitle="You’ll deal with a small lettings team — clear contact points, no call-centre runaround."
+          />
+          <div className="grid gap-10 border-t border-rex-line pt-8 md:grid-cols-3">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.22em] text-rex-gold">
+                Coverage
+              </p>
+              <p className="mt-3 font-display text-xl uppercase tracking-[0.06em]">
+                London &amp; Southampton
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-rex-stone">
+                Lettings and property management only — focused on the areas we
+                know well.
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.22em] text-rex-gold">
+                Speak to us
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-rex-ink">
+                <a href="tel:+442012345678" className="hover:text-rex-gold">
+                  020 1234 5678
+                </a>
+                <br />
+                <a
+                  href="mailto:enquiries@rexestateagents.co.uk"
+                  className="hover:text-rex-gold"
+                >
+                  enquiries@rexestateagents.co.uk
+                </a>
+              </p>
+              <p className="mt-2 text-sm text-rex-stone">
+                Mon–Fri 9:00–18:00 · Sat by appointment
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.22em] text-rex-gold">
+                Next step
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-rex-stone">
+                Landlords can book a rental valuation; tenants can browse
+                available homes and request a viewing online.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="mt-12 flex flex-wrap gap-3">
           <Link href="/valuation" className="rex-btn-dark">
             Book a valuation

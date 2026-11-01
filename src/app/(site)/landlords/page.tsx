@@ -9,6 +9,7 @@ import {
   UserSearch,
 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { landlordPackages } from "@/lib/mock/site-content";
 
 export const metadata: Metadata = {
   title: "Landlord Services",
@@ -77,6 +78,58 @@ export default function LandlordsPage() {
               </article>
             );
           })}
+        </div>
+
+        <div className="mt-20 md:mt-24">
+          <SectionHeading
+            number="02"
+            title="Management options"
+            subtitle="Choose the level of support that fits your property — from finding a tenant through to full day-to-day management."
+          />
+
+          <div className="grid gap-px bg-rex-line md:grid-cols-3">
+            {landlordPackages.map((pkg) => (
+              <article
+                key={pkg.name}
+                className={`bg-white p-8 md:p-9 ${
+                  pkg.featured ? "md:relative md:z-[1] md:shadow-[0_24px_60px_-36px_rgba(15,15,15,0.45)]" : ""
+                }`}
+              >
+                {pkg.featured ? (
+                  <p className="mb-4 text-[10px] uppercase tracking-[0.24em] text-rex-gold">
+                    Most chosen
+                  </p>
+                ) : (
+                  <div className="mb-4 h-[15px]" aria-hidden />
+                )}
+                <h3 className="font-display text-2xl uppercase tracking-[0.08em]">
+                  {pkg.name}
+                </h3>
+                <p className="mt-2 text-sm text-rex-stone">{pkg.tagline}</p>
+                <ul className="mt-8 space-y-3 border-t border-rex-line pt-6">
+                  {pkg.points.map((point) => (
+                    <li
+                      key={point}
+                      className="flex gap-3 text-sm leading-relaxed text-rex-ink"
+                    >
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-rex-gold" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/valuation"
+                  className={`mt-8 inline-flex text-xs uppercase tracking-[0.18em] transition ${
+                    pkg.featured
+                      ? "text-rex-gold hover:text-rex-gold-bright"
+                      : "text-rex-ink hover:text-rex-gold"
+                  }`}
+                >
+                  Request valuation →
+                </Link>
+              </article>
+            ))}
+          </div>
         </div>
 
         <div className="mt-14 flex flex-col gap-4 border border-rex-line bg-rex-ink p-8 text-white md:flex-row md:items-center md:justify-between md:p-10">

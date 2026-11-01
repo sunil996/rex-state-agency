@@ -17,6 +17,11 @@ import { HeroSlideshow } from "@/components/site/HeroSlideshow";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import {
+  coverageAreas,
+  howItWorksSteps,
+  testimonials,
+} from "@/lib/mock/site-content";
 import { useStore } from "@/lib/store";
 
 const trustItems = [
@@ -252,15 +257,58 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* How it works */}
+      <section className="border-t border-rex-line bg-white px-4 py-20 md:px-6 md:py-28">
+        <div className="mx-auto max-w-7xl">
+          <Reveal>
+            <SectionHeading
+              number="03"
+              title="How it works"
+              subtitle="A clear path whether you’re letting a property or looking for your next home."
+            />
+          </Reveal>
+
+          <div className="grid gap-14 lg:grid-cols-2 lg:gap-16">
+            {howItWorksSteps.map((group) => (
+              <Reveal key={group.who}>
+                <p className="text-[10px] uppercase tracking-[0.24em] text-rex-gold">
+                  For {group.who.toLowerCase()}
+                </p>
+                <ol className="mt-6 space-y-0 border-t border-rex-line">
+                  {group.steps.map((step, index) => (
+                    <li
+                      key={step.title}
+                      className="grid grid-cols-[3rem_1fr] gap-4 border-b border-rex-line py-5 md:grid-cols-[4rem_1fr] md:gap-6"
+                    >
+                      <span className="font-display text-2xl text-rex-gold/80 md:text-3xl">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h3 className="font-display text-lg uppercase tracking-[0.08em]">
+                          {step.title}
+                        </h3>
+                        <p className="mt-2 max-w-md text-sm leading-relaxed text-rex-stone">
+                          {step.body}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured */}
-      <section className="relative overflow-hidden border-t border-rex-line bg-white px-4 py-20 md:px-6 md:py-28">
+      <section className="relative overflow-hidden border-t border-rex-line bg-rex-cream px-4 py-20 md:px-6 md:py-28">
         <div className="pointer-events-none absolute -right-20 top-20 font-display text-[8rem] leading-none text-rex-line/40 md:text-[12rem]">
-          02
+          04
         </div>
         <div className="relative mx-auto max-w-7xl">
           <Reveal>
             <SectionHeading
-              number="03"
+              number="04"
               title="Featured Properties"
               subtitle="Homes currently available to rent across London and Southampton."
             />
@@ -281,12 +329,45 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Areas */}
+      <section className="border-t border-rex-line bg-white px-4 py-20 md:px-6 md:py-28">
+        <div className="mx-auto max-w-7xl">
+          <Reveal>
+            <SectionHeading
+              number="05"
+              title="Areas we cover"
+              subtitle="Independent lettings across key London and Southampton neighbourhoods."
+            />
+          </Reveal>
+          <RevealGroup className="grid gap-x-10 gap-y-0 border-t border-rex-line sm:grid-cols-2 lg:grid-cols-4">
+            {coverageAreas.map((area) => (
+              <RevealItem key={area.name}>
+                <Link
+                  href={`/properties?q=${encodeURIComponent(area.name)}`}
+                  className="group flex items-baseline justify-between gap-3 border-b border-rex-line py-5 transition"
+                >
+                  <span>
+                    <span className="block font-display text-base uppercase tracking-[0.06em] text-rex-ink transition group-hover:text-rex-gold">
+                      {area.name}
+                    </span>
+                    <span className="mt-1 block text-[11px] uppercase tracking-[0.18em] text-rex-stone">
+                      {area.city}
+                    </span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 shrink-0 text-rex-gold opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100" />
+                </Link>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
+      </section>
+
       {/* Services rhythm strip */}
       <section className="bg-rex-cream px-4 py-16 md:px-6 md:py-20">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <p className="text-xs uppercase tracking-[0.2em] text-rex-gold">
-              04 · What we handle
+              06 · What we handle
             </p>
           </Reveal>
           <RevealGroup className="mt-8 grid gap-6 border-t border-rex-line pt-8 md:grid-cols-4">
@@ -304,6 +385,36 @@ export default function HomePage() {
                   {body}
                 </p>
                 <div className="mt-5 h-px w-10 bg-rex-gold" />
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="border-t border-rex-line bg-white px-4 py-20 md:px-6 md:py-28">
+        <div className="mx-auto max-w-7xl">
+          <Reveal>
+            <SectionHeading
+              number="07"
+              title="What clients say"
+              subtitle="Sample feedback for presentation — illustrating the service tone landlords and tenants can expect."
+            />
+          </Reveal>
+          <RevealGroup className="grid gap-10 md:grid-cols-3 md:gap-12">
+            {testimonials.map((item) => (
+              <RevealItem key={item.name}>
+                <blockquote className="border-l-2 border-rex-gold pl-5">
+                  <p className="text-base leading-relaxed text-rex-ink md:text-[1.05rem]">
+                    “{item.quote}”
+                  </p>
+                  <footer className="mt-5">
+                    <p className="text-sm font-medium text-rex-ink">{item.name}</p>
+                    <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-rex-stone">
+                      {item.role}
+                    </p>
+                  </footer>
+                </blockquote>
               </RevealItem>
             ))}
           </RevealGroup>
@@ -331,7 +442,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-7xl">
           <Reveal>
             <SectionHeading
-              number="05"
+              number="08"
               title="Why Rex"
               light
               subtitle="Making the rental experience better for landlords and tenants alike."
