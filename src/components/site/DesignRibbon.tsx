@@ -8,8 +8,10 @@ export function DesignRibbon() {
 
   return (
     <div className="design-ribbon" aria-live="polite">
-      <span className="swatch" />
-      Viewing: {meta.label} — {meta.name}
+      <span className="swatch shrink-0" />
+      <span className="min-w-0 truncate">
+        Viewing: {meta.label} — {meta.name}
+      </span>
     </div>
   );
 }

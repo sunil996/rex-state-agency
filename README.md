@@ -7,7 +7,27 @@ Independent lettings & property management website UI for client review (London 
 - Next.js (App Router) + TypeScript
 - Tailwind CSS v4
 - Framer Motion + Lucide icons
-- Mock data + `localStorage` demo store (no backend yet)
+- MongoDB Atlas + Next.js Route Handlers (live mode)
+- Falls back to mock data if `MONGODB_URI` is not set
+
+## Live backend setup
+
+1. Copy env file:
+   ```bash
+   cp .env.example .env.local
+   ```
+2. Fill in `MONGODB_URI`, `AUTH_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`.
+3. Seed demo properties + create admin user:
+   ```bash
+   npm run seed
+   ```
+4. Start the app:
+   ```bash
+   npm run dev
+   ```
+
+Admin login: use the email/password from `.env.local`.  
+Without MongoDB the site still runs in **demo mode**.
 
 ## Run locally
 

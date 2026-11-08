@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import {
+  SITE_EMAIL,
+  SITE_EMAIL_HREF,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_HREF,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -11,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="bg-rex-cream pt-28 md:pt-32">
+    <div className="bg-rex-cream pt-32 md:pt-36">
       <div className="mx-auto max-w-7xl px-4 pb-20 md:px-6 md:pb-28">
         <SectionHeading
           number="01"
@@ -25,6 +31,7 @@ export default function AboutPage() {
               src="/images/properties/bedroom-2.jpg"
               alt="Professionally presented rental home"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
           </div>
@@ -101,15 +108,12 @@ export default function AboutPage() {
                 Speak to us
               </p>
               <p className="mt-3 text-sm leading-relaxed text-rex-ink">
-                <a href="tel:+442012345678" className="hover:text-rex-gold">
-                  020 1234 5678
+                <a href={SITE_PHONE_HREF} className="hover:text-rex-gold">
+                  {SITE_PHONE_DISPLAY}
                 </a>
                 <br />
-                <a
-                  href="mailto:enquiries@rexestateagents.co.uk"
-                  className="hover:text-rex-gold"
-                >
-                  enquiries@rexestateagents.co.uk
+                <a href={SITE_EMAIL_HREF} className="hover:text-rex-gold">
+                  {SITE_EMAIL}
                 </a>
               </p>
               <p className="mt-2 text-sm text-rex-stone">

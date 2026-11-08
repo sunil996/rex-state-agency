@@ -34,25 +34,30 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
     router.push(`/properties?${params.toString()}`);
   }
 
-  const shell =
-    variant === "hero"
-      ? "border border-white/15 bg-black/50 p-4 backdrop-blur-md md:p-5"
-      : "border border-rex-line bg-white p-4 md:p-5";
+  const isHero = variant === "hero";
 
-  const control =
-    variant === "hero"
-      ? "w-full border border-white/15 bg-white/5 px-3 py-3 text-sm text-white outline-none placeholder:text-white/40 focus:border-rex-gold"
-      : "rex-input";
+  const shell = isHero
+    ? "border border-white/15 bg-black/50 p-3 backdrop-blur-md sm:p-4 md:p-5"
+    : "border border-rex-line bg-white p-3 sm:p-4 md:p-5";
 
-  const label =
-    variant === "hero"
-      ? "mb-2 block text-[10px] uppercase tracking-[0.18em] text-white/55"
-      : "rex-label";
+  // MakeMyTrip-style bordered cells on mobile; flat controls from lg up
+  const cell = isHero
+    ? "min-w-0 border border-white/15 bg-white/[0.04] p-3 lg:border-0 lg:bg-transparent lg:p-0"
+    : "min-w-0 border border-rex-line bg-rex-cream/40 p-3 lg:border-0 lg:bg-transparent lg:p-0";
+
+  const label = isHero
+    ? "mb-1.5 block text-[10px] uppercase tracking-[0.18em] text-white/55"
+    : "mb-1.5 block text-[10px] font-medium uppercase tracking-[0.16em] text-rex-stone";
+
+  const control = isHero
+    ? "w-full min-w-0 bg-transparent text-sm text-white outline-none placeholder:text-white/40 lg:border lg:border-white/15 lg:bg-white/5 lg:px-3 lg:py-3"
+    : "w-full min-w-0 bg-transparent text-sm text-rex-ink outline-none placeholder:text-rex-stone lg:border lg:border-rex-line lg:bg-rex-surface lg:px-4 lg:py-3 lg:focus:border-rex-gold";
 
   return (
     <form onSubmit={onSubmit} className={shell}>
-      <div className="grid gap-3 md:grid-cols-6 md:items-end">
-        <div className="md:col-span-2">
+      <div className="grid grid-cols-2 gap-2 lg:grid-cols-6 lg:items-end lg:gap-3">
+        {/* Full-width location — like MMT primary field */}
+        <div className={`${cell} col-span-2 lg:col-span-2`}>
           <label className={label}>Location / Postcode</label>
           <input
             className={control}
@@ -61,7 +66,9 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
             placeholder="e.g. Clapham or SO14"
           />
         </div>
-        <div>
+
+        {/* Paired row: Area | Beds */}
+        <div className={cell}>
           <label className={label}>Area</label>
           <select
             className={control}
@@ -73,7 +80,8 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
             <option value="Southampton">Southampton</option>
           </select>
         </div>
-        <div>
+
+        <div className={cell}>
           <label className={label}>Beds</label>
           <select
             className={control}
@@ -88,7 +96,9 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
             ))}
           </select>
         </div>
-        <div>
+
+        {/* Paired row: Max rent | Type */}
+        <div className={cell}>
           <label className={label}>Max rent</label>
           <select
             className={control}
@@ -103,7 +113,8 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
             ))}
           </select>
         </div>
-        <div>
+
+        <div className={cell}>
           <label className={label}>Type</label>
           <select
             className={control}
@@ -119,13 +130,19 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
           </select>
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+      <div className="mt-3 flex flex-col gap-3 sm:mt-4 sm:flex-row sm:items-center sm:justify-between">
         <p
-          className={`text-xs ${variant === "hero" ? "text-white/50" : "text-rex-stone"}`}
+          className={`hidden text-xs sm:block ${
+            isHero ? "text-white/50" : "text-rex-stone"
+          }`}
         >
           Lettings only — search homes to rent across London & Southampton.
         </p>
-        <button type="submit" className="rex-btn-primary">
+        <button
+          type="submit"
+          className="rex-btn-primary w-full justify-center sm:w-auto"
+        >
           <Search className="h-4 w-4" />
           Search rentals
         </button>

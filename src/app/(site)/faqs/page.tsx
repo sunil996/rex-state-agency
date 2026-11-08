@@ -11,7 +11,7 @@ export default function FaqsPage() {
   const items = tab === "landlords" ? landlordFaqs : tenantFaqs;
 
   return (
-    <div className="bg-rex-cream pt-28 md:pt-32">
+    <div className="bg-rex-cream pt-32 md:pt-36">
       <div className="mx-auto max-w-3xl px-4 pb-20 md:px-6 md:pb-28">
         <SectionHeading
           number="01"
@@ -33,7 +33,7 @@ export default function FaqsPage() {
                 setTab(key);
                 setOpen(0);
               }}
-              className={`px-4 py-2 text-xs uppercase tracking-[0.16em] ${
+              className={`min-h-11 px-5 py-3 text-xs uppercase tracking-[0.16em] ${
                 tab === key
                   ? "bg-rex-ink text-white"
                   : "border border-rex-line text-rex-stone"

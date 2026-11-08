@@ -4,35 +4,47 @@ import { FormEvent, useState } from "react";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Toast } from "@/components/ui/Toast";
-import { useStore } from "@/lib/store";
+import { FORMSPREE, submitFormspree } from "@/lib/formspree";
+import {
+  SITE_EMAIL,
+  SITE_EMAIL_HREF,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_HREF,
+} from "@/lib/site";
 
 export default function ContactPage() {
-  const { addEnquiry } = useStore();
   const [toast, setToast] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    setError(null);
+    setLoading(true);
+    const form = e.currentTarget;
+    const data = new FormData(form);
     const subject = String(data.get("subject") || "General enquiry");
-    addEnquiry({
-      type:
-        subject === "Landlord enquiry"
-          ? "landlord"
-          : subject === "Tenant enquiry"
-            ? "tenant"
-            : "contact",
-      name: String(data.get("name") || ""),
-      email: String(data.get("email") || ""),
-      phone: String(data.get("phone") || ""),
-      subject,
-      message: String(data.get("message") || ""),
-    });
-    e.currentTarget.reset();
-    setToast("Enquiry sent. It will appear in the agency admin inbox.");
+
+    try {
+      await submitFormspree(FORMSPREE.contact, {
+        name: String(data.get("name") || ""),
+        email: String(data.get("email") || ""),
+        phone: String(data.get("phone") || ""),
+        subject,
+        message: String(data.get("message") || ""),
+        _subject: `Rex Contact — ${subject}`,
+      });
+      form.reset();
+      setToast("Enquiry sent. We’ll get back to you shortly.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send enquiry.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <div className="bg-rex-cream pt-28 md:pt-32">
+    <div className="bg-rex-cream pt-32 md:pt-36">
       <div className="mx-auto max-w-7xl px-4 pb-20 md:px-6 md:pb-28">
         <SectionHeading
           number="01"
@@ -63,28 +75,25 @@ export default function ContactPage() {
             <div className="space-y-3 text-sm text-rex-stone">
               <p className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-rex-gold" />
-                <a href="tel:+442000000000" className="hover:text-rex-ink">
-                  020 0000 0000
+                <a href={SITE_PHONE_HREF} className="hover:text-rex-ink">
+                  {SITE_PHONE_DISPLAY}
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-rex-gold" />
-                <a
-                  href="mailto:enquiries@rexestateagents.co.uk"
-                  className="hover:text-rex-ink"
-                >
-                  enquiries@rexestateagents.co.uk
+                <a href={SITE_EMAIL_HREF} className="hover:text-rex-ink">
+                  {SITE_EMAIL}
                 </a>
               </p>
             </div>
             <div className="flex gap-3">
-              <a href="#" className="border border-rex-line p-2 hover:border-rex-gold" aria-label="Instagram">
+              <a href="#" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-rex-line p-3 hover:border-rex-gold" aria-label="Instagram">
                 <Instagram className="h-4 w-4" />
               </a>
-              <a href="#" className="border border-rex-line p-2 hover:border-rex-gold" aria-label="Facebook">
+              <a href="#" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-rex-line p-3 hover:border-rex-gold" aria-label="Facebook">
                 <Facebook className="h-4 w-4" />
               </a>
-              <a href="#" className="border border-rex-line p-2 hover:border-rex-gold" aria-label="LinkedIn">
+              <a href="#" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-rex-line p-3 hover:border-rex-gold" aria-label="LinkedIn">
                 <Linkedin className="h-4 w-4" />
               </a>
             </div>
@@ -143,8 +152,17 @@ export default function ContactPage() {
                 className="rex-input"
               />
             </div>
-            <button type="submit" className="rex-btn-dark w-full">
-              Send enquiry
+            {error ? (
+              <p className="text-sm text-red-700" role="alert">
+                {error}
+              </p>
+            ) : null}
+            <button
+              type="submit"
+              className="rex-btn-dark w-full"
+              disabled={loading}
+            >
+              {loading ? "Sending…" : "Send enquiry"}
             </button>
           </form>
         </div>

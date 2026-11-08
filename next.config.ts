@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Hide Next.js "N" badge — it overlaps the footer on small screens in DevTools
+  devIndicators: false,
   turbopack: {
     rules: {
       "*.css": {

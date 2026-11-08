@@ -28,10 +28,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
           {statusLabel(property.status)}
         </span>
       </div>
-      <h3 className="font-display text-base font-semibold uppercase tracking-[0.06em] text-rex-ink md:text-lg">
+      <h3 className="line-clamp-2 break-words font-display text-base font-semibold uppercase tracking-[0.06em] text-rex-ink md:text-lg">
         {property.address}
       </h3>
-      <p className="mt-1 text-sm uppercase tracking-[0.12em] text-rex-stone">
+      <p className="mt-1 break-words text-sm uppercase tracking-[0.12em] text-rex-stone">
         {property.area}
       </p>
       <p className="mt-3 text-xl font-semibold text-rex-ink md:text-2xl">

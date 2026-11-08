@@ -3,34 +3,48 @@
 import { FormEvent, useState } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Toast } from "@/components/ui/Toast";
-import { useStore } from "@/lib/store";
+import { FORMSPREE, submitFormspree } from "@/lib/formspree";
 
 export default function ValuationPage() {
-  const { addValuation } = useStore();
   const [success, setSuccess] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    addValuation({
-      name: String(data.get("name") || ""),
-      email: String(data.get("email") || ""),
-      phone: String(data.get("phone") || ""),
-      address: String(data.get("address") || ""),
-      postcode: String(data.get("postcode") || ""),
-      propertyType: String(data.get("propertyType") || ""),
-      beds: Number(data.get("beds") || 0),
-      preferredDate: String(data.get("preferredDate") || ""),
-      notes: String(data.get("notes") || ""),
-    });
-    setSuccess(true);
-    setToast("Valuation request received. We'll be in touch to confirm.");
-    e.currentTarget.reset();
+    setError(null);
+    setLoading(true);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const address = String(data.get("address") || "");
+    const postcode = String(data.get("postcode") || "");
+
+    try {
+      await submitFormspree(FORMSPREE.valuation, {
+        name: String(data.get("name") || ""),
+        email: String(data.get("email") || ""),
+        phone: String(data.get("phone") || ""),
+        address,
+        postcode,
+        propertyType: String(data.get("propertyType") || ""),
+        beds: String(data.get("beds") || ""),
+        preferredDate: String(data.get("preferredDate") || ""),
+        notes: String(data.get("notes") || ""),
+        _subject: `Rex Valuation — ${address}, ${postcode}`,
+      });
+      setSuccess(true);
+      setToast("Valuation request received. We'll be in touch to confirm.");
+      form.reset();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send request.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <div className="bg-rex-cream pt-28 md:pt-32">
+    <div className="bg-rex-cream pt-32 md:pt-36">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 pb-20 md:grid-cols-[0.9fr_1.1fr] md:px-6 md:pb-28">
         <div>
           <SectionHeading
@@ -52,8 +66,8 @@ export default function ValuationPage() {
                 Request sent
               </p>
               <p className="mt-3 text-rex-stone">
-                Thank you. Your valuation request is now in our admin inbox for
-                follow-up.
+                Thank you. We’ve received your valuation request and will follow
+                up by email.
               </p>
               <button
                 type="button"
@@ -102,7 +116,7 @@ export default function ValuationPage() {
                   className="rex-input"
                 />
               </div>
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid gap-4 md:grid-cols-3">
                 <div>
                   <label className="rex-label" htmlFor="postcode">
                     Postcode
@@ -170,8 +184,17 @@ export default function ValuationPage() {
                   placeholder="Current tenancy status, management interest, etc."
                 />
               </div>
-              <button type="submit" className="rex-btn-dark w-full">
-                Request valuation
+              {error ? (
+                <p className="text-sm text-red-700" role="alert">
+                  {error}
+                </p>
+              ) : null}
+              <button
+                type="submit"
+                className="rex-btn-dark w-full"
+                disabled={loading}
+              >
+                {loading ? "Sending…" : "Request valuation"}
               </button>
             </form>
           )}

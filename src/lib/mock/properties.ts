@@ -1,8 +1,54 @@
 import type { Property } from "@/lib/types";
 
+const studioLondonGallery = [
+  "/images/properties/studio-london/02-bedroom-wide.jpg",
+  "/images/properties/studio-london/01-exterior.jpg",
+  "/images/properties/studio-london/03-bedroom-bed.jpg",
+  "/images/properties/studio-london/04-bedroom-detail.jpg",
+  "/images/properties/studio-london/05-bedroom-seating.jpg",
+  "/images/properties/studio-london/06-bedroom-corner.jpg",
+  "/images/properties/studio-london/08-kitchen-full.jpg",
+  "/images/properties/studio-london/07-kitchen-main.jpg",
+  "/images/properties/studio-london/09-kitchenette.jpg",
+  "/images/properties/studio-london/10-bathroom-vanity.jpg",
+  "/images/properties/studio-london/11-bathroom-shower.jpg",
+  "/images/properties/studio-london/12-detail-bedside.jpg",
+  "/images/properties/studio-london/13-detail-nightstand.jpg",
+];
+
 export const initialProperties: Property[] = [
   {
     id: "1",
+    slug: "modern-furnished-studio-london",
+    ref: "REX2001",
+    address: "Modern Furnished Studio, London",
+    area: "Greater London",
+    city: "London",
+    postcode: "Available on enquiry",
+    rent: 1650,
+    beds: 1,
+    baths: 1,
+    receptions: 1,
+    type: "studio",
+    status: "available",
+    furnished: "furnished",
+    epc: "C",
+    description:
+      "A bright, fully furnished studio apartment finished to a high standard — ideal for a professional seeking a move-in-ready London rental. The property features a styled double sleeping area, modern kitchen with integrated appliances, a contemporary bathroom with rainfall shower, and thoughtful boutique finishes throughout. Available to rent through Rex Estate Agents.",
+    features: [
+      "Fully furnished & staged",
+      "Modern fitted kitchen",
+      "Rainfall shower bathroom",
+      "Boutique interiors",
+      "Ready to move in",
+      "Lettings managed by Rex",
+    ],
+    images: studioLondonGallery,
+    featured: true,
+    createdAt: "2026-11-03",
+  },
+  {
+    id: "2",
     slug: "park-lane-ub4",
     ref: "REX1001",
     address: "Park Lane, UB4",
@@ -37,7 +83,7 @@ export const initialProperties: Property[] = [
     createdAt: "2026-10-12",
   },
   {
-    id: "2",
+    id: "3",
     slug: "ocean-view-southampton-so14",
     ref: "REX1002",
     address: "Ocean Village, SO14",
@@ -72,7 +118,7 @@ export const initialProperties: Property[] = [
     createdAt: "2026-10-18",
   },
   {
-    id: "3",
+    id: "4",
     slug: "canary-wharf-e14",
     ref: "REX1003",
     address: "Marsh Wall, E14",
@@ -107,7 +153,7 @@ export const initialProperties: Property[] = [
     createdAt: "2026-10-22",
   },
   {
-    id: "4",
+    id: "5",
     slug: "bitterne-park-so18",
     ref: "REX1004",
     address: "Bitterne Park, SO18",
@@ -140,7 +186,7 @@ export const initialProperties: Property[] = [
     createdAt: "2026-09-28",
   },
   {
-    id: "5",
+    id: "6",
     slug: "clapham-common-sw4",
     ref: "REX1005",
     address: "Clapham Common North Side, SW4",
@@ -175,7 +221,7 @@ export const initialProperties: Property[] = [
     createdAt: "2026-10-25",
   },
   {
-    id: "6",
+    id: "7",
     slug: "portswood-so17",
     ref: "REX1006",
     address: "Portswood Road, SO17",
@@ -208,7 +254,7 @@ export const initialProperties: Property[] = [
     createdAt: "2026-10-30",
   },
   {
-    id: "7",
+    id: "8",
     slug: "islington-n1",
     ref: "REX1007",
     address: "Upper Street, N1",
@@ -241,7 +287,7 @@ export const initialProperties: Property[] = [
     createdAt: "2026-10-08",
   },
   {
-    id: "8",
+    id: "9",
     slug: "shirley-so15",
     ref: "REX1008",
     address: "Shirley High Street, SO15",

@@ -75,7 +75,12 @@ export const testimonials = [
   },
 ] as const;
 
-export const landlordPackages = [
+export const landlordPackages: {
+  name: string;
+  tagline: string;
+  featured?: boolean;
+  points: string[];
+}[] = [
   {
     name: "Let only",
     tagline: "Find the right tenant",
@@ -107,4 +112,4 @@ export const landlordPackages = [
       "Periodic property checks",
     ],
   },
-] as const;
+];

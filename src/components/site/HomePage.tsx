@@ -12,7 +12,6 @@ import { useRef } from "react";
 import { ArrowRight, KeyRound, MapPin, Search } from "lucide-react";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { SearchBar } from "@/components/property/SearchBar";
-import { BrandLogo } from "@/components/site/BrandLogo";
 import { HeroSlideshow } from "@/components/site/HeroSlideshow";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
@@ -35,7 +34,11 @@ const trustItems = [
 
 export default function HomePage() {
   const { properties } = useStore();
-  const featured = properties.filter((p) => p.featured).slice(0, 3);
+  const featured = (
+    properties.filter((p) => p.featured).length
+      ? properties.filter((p) => p.featured)
+      : properties.filter((p) => p.status === "available")
+  ).slice(0, 3);
   const reduceMotion = useReducedMotion();
 
   const heroRef = useRef<HTMLElement>(null);
@@ -45,13 +48,8 @@ export default function HomePage() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const heroY = useTransform(heroProgress, [0, 1], ["0%", reduceMotion ? "0%" : "28%"]);
+  const heroY = useTransform(heroProgress, [0, 1], ["0%", reduceMotion ? "0%" : "14%"]);
   const heroOpacity = useTransform(heroProgress, [0, 0.75], [1, 0]);
-  const heroScale = useTransform(
-    heroProgress,
-    [0, 1],
-    [1, reduceMotion ? 1 : 1.08],
-  );
 
   const { scrollYProgress: whyProgress } = useScroll({
     target: whyRef,
@@ -67,18 +65,18 @@ export default function HomePage() {
     <>
       <ScrollProgress />
 
-      {/* Hero */}
+      {/* Hero — shorter on phone/tablet so landscape photos crop less aggressively */}
       <section
         ref={heroRef}
-        className="relative min-h-[100svh] overflow-hidden text-white"
+        className="relative min-h-[85svh] overflow-hidden text-white md:min-h-[92svh] lg:min-h-[100svh]"
       >
-        <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
+        <motion.div style={{ y: heroY }} className="absolute inset-0 will-change-transform">
           <HeroSlideshow />
         </motion.div>
 
         <motion.div
           style={{ opacity: heroOpacity }}
-          className="relative mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end px-4 pb-16 pt-28 md:justify-center md:px-6 md:pb-28 md:pt-24"
+          className="relative mx-auto flex min-h-[85svh] max-w-7xl flex-col justify-end px-4 pb-16 pt-28 md:min-h-[92svh] md:px-6 md:pb-24 md:pt-32 lg:min-h-[100svh] lg:pb-28"
         >
           <motion.div
             initial={{ opacity: 0, y: 28 }}
@@ -86,10 +84,6 @@ export default function HomePage() {
             transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-3xl"
           >
-            <div className="mb-8 md:mb-10">
-              <BrandLogo variant="hero" href={null} priority />
-            </div>
-
             <h1 className="font-display text-[2.1rem] font-semibold leading-[1.08] tracking-wide text-shadow-hero md:text-5xl lg:text-[3.4rem]">
               Lettings, made
               <span className="block text-rex-gold-soft">straightforward.</span>
@@ -100,12 +94,12 @@ export default function HomePage() {
               approach.
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link href="/properties" className="rex-btn-primary">
+            <div className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+              <Link href="/properties" className="rex-btn-primary w-full justify-center sm:w-auto">
                 Search rentals
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/valuation" className="rex-btn-ghost">
+              <Link href="/valuation" className="rex-btn-ghost w-full justify-center sm:w-auto">
                 Landlord valuation
               </Link>
             </div>
@@ -115,7 +109,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.8 }}
-            className="mt-14 hidden md:block"
+            className="mt-10 hidden md:block"
           >
             <motion.div
               animate={reduceMotion ? undefined : { y: [0, 8, 0] }}
@@ -201,9 +195,10 @@ export default function HomePage() {
                   src="/images/hero/hero-bedroom.png"
                   alt=""
                   fill
-                  className="object-cover opacity-55 transition duration-700 group-hover:scale-105 group-hover:opacity-70"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover opacity-75 transition duration-700 group-hover:scale-105 group-hover:opacity-90"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 bg-rex-gold transition duration-500 group-hover:scale-y-100" />
                 <div className="relative flex h-full min-h-[280px] flex-col justify-end p-7 md:min-h-[380px] md:p-10">
                   <p className="text-[10px] uppercase tracking-[0.24em] text-rex-gold">
@@ -232,9 +227,10 @@ export default function HomePage() {
                   src="/images/hero/hero-kitchen.png"
                   alt=""
                   fill
-                  className="object-cover opacity-50 transition duration-700 group-hover:scale-105 group-hover:opacity-65"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-85"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
                 <div className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 bg-rex-gold transition duration-500 group-hover:scale-y-100" />
                 <div className="relative flex h-full min-h-[280px] flex-col justify-end p-7 md:min-h-[380px] md:p-10">
                   <p className="text-[10px] uppercase tracking-[0.24em] text-rex-gold">
@@ -313,7 +309,7 @@ export default function HomePage() {
               subtitle="Homes currently available to rent across London and Southampton."
             />
           </Reveal>
-          <RevealGroup className="grid gap-10 md:grid-cols-3">
+          <RevealGroup className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((property) => (
               <RevealItem key={property.id}>
                 <PropertyCard property={property} />
@@ -370,7 +366,7 @@ export default function HomePage() {
               06 · What we handle
             </p>
           </Reveal>
-          <RevealGroup className="mt-8 grid gap-6 border-t border-rex-line pt-8 md:grid-cols-4">
+          <RevealGroup className="mt-8 grid gap-6 border-t border-rex-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
               ["Marketing", "Portals, photos & listing presentation"],
               ["Tenants", "Sourcing, viewings & referencing"],
@@ -421,22 +417,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Why Rex */}
+      {/* Why Rex — light band so it doesn't read as a second footer */}
       <section
         ref={whyRef}
-        className="rex-grain relative overflow-hidden bg-rex-black px-4 py-24 text-white md:px-6 md:py-32"
+        className="relative overflow-hidden border-t border-rex-line bg-rex-cream px-4 py-20 md:px-6 md:py-28"
       >
         <motion.div
           style={{ y: whyImageY }}
-          className="absolute inset-y-[-10%] right-0 hidden w-[46%] md:block"
+          className="absolute inset-y-[-10%] right-0 hidden w-[42%] md:block"
         >
           <Image
             src="/images/hero/hero-view.png"
             alt=""
             fill
-            className="object-cover opacity-45"
+            sizes="42vw"
+            className="object-cover opacity-35"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-rex-black/40 to-rex-black" />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-rex-cream/50 to-rex-cream" />
         </motion.div>
 
         <div className="relative mx-auto max-w-7xl">
@@ -444,12 +441,11 @@ export default function HomePage() {
             <SectionHeading
               number="08"
               title="Why Rex"
-              light
               subtitle="Making the rental experience better for landlords and tenants alike."
             />
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="max-w-xl text-base leading-relaxed text-white/70 md:text-lg">
+            <p className="max-w-xl text-base leading-relaxed text-rex-stone md:text-lg">
               Clear communication. Reliable management. A personal approach
               across London and Southampton — lettings only, done properly.
             </p>
@@ -458,10 +454,10 @@ export default function HomePage() {
             <Link href="/valuation" className="rex-btn-primary">
               Book a rental valuation
             </Link>
-            <Link href="/about" className="rex-btn-ghost">
+            <Link href="/about" className="rex-btn-outline">
               Our story
             </Link>
-            <Link href="/contact" className="rex-btn-ghost">
+            <Link href="/contact" className="rex-btn-outline">
               Contact
             </Link>
           </Reveal>

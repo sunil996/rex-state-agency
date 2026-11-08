@@ -140,7 +140,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             <button
               type="button"
               onClick={() => openAt(mainAbs)}
-              className="absolute bottom-3 right-3 z-10 bg-white/95 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-rex-ink shadow-sm transition hover:bg-rex-gold md:bottom-4 md:right-4"
+              className="absolute bottom-3 right-3 z-10 bg-white/95 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rex-ink shadow-sm transition hover:bg-rex-gold md:bottom-4 md:right-4"
             >
               View all {total} photos
             </button>
@@ -149,10 +149,10 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
       </div>
 
       {lightbox !== null ? (
-        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/92 p-4">
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/92 px-12 py-16 pt-[max(4rem,env(safe-area-inset-top))] pb-[max(4rem,env(safe-area-inset-bottom))] sm:px-16">
           <button
             type="button"
-            className="absolute right-4 top-4 text-white"
+            className="absolute right-3 top-3 inline-flex min-h-11 min-w-11 items-center justify-center p-3 text-white sm:right-4 sm:top-4"
             onClick={() => setLightbox(null)}
             aria-label="Close gallery"
           >
@@ -160,7 +160,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
           </button>
           <button
             type="button"
-            className="absolute left-3 text-white drop-shadow md:left-8"
+            className="absolute left-1 inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-white drop-shadow sm:left-4 md:left-8"
             onClick={() => shiftLightbox(-1)}
             aria-label="Previous"
           >
@@ -171,12 +171,13 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
               src={images[lightbox]}
               alt={`${title} — gallery ${lightbox + 1}`}
               fill
+              sizes="100vw"
               className="object-contain"
             />
           </div>
           <button
             type="button"
-            className="absolute right-3 text-white drop-shadow md:right-8"
+            className="absolute right-1 inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-white drop-shadow sm:right-4 md:right-8"
             onClick={() => shiftLightbox(1)}
             aria-label="Next"
           >

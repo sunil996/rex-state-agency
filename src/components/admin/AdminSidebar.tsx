@@ -12,6 +12,7 @@ import {
   Plus,
 } from "lucide-react";
 import { BrandLogo } from "@/components/site/BrandLogo";
+import { apiLogout } from "@/lib/client-api";
 import { useStore } from "@/lib/store";
 
 const links = [
@@ -68,7 +69,12 @@ export function AdminSidebar() {
         </Link>
         <button
           type="button"
-          onClick={() => {
+          onClick={async () => {
+            try {
+              await apiLogout();
+            } catch {
+              // Demo mode may not have a live session
+            }
             setAdminAuthed(false);
             router.push("/admin");
           }}

@@ -9,12 +9,12 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen max-w-[100%] flex-col overflow-x-hidden">
       <div className="fixed inset-x-0 top-0 z-[65]">
         <DesignRibbon />
       </div>
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="min-w-0 flex-1 overflow-x-hidden">{children}</main>
       <Footer />
       <DesignSwitcher />
     </div>

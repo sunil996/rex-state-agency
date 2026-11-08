@@ -6,6 +6,7 @@ import { ArrowLeft, Phone, Share2 } from "lucide-react";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { ViewingForm } from "@/components/property/ViewingForm";
 import { formatRent, statusLabel } from "@/lib/format";
+import { SITE_PHONE_DISPLAY, SITE_PHONE_HREF } from "@/lib/site";
 import { useStore } from "@/lib/store";
 
 export default function PropertyDetailPage() {
@@ -15,7 +16,7 @@ export default function PropertyDetailPage() {
 
   if (!property) {
     return (
-      <div className="bg-rex-cream px-4 pb-20 pt-32 md:px-6">
+      <div className="bg-rex-cream px-4 pb-20 pt-32 md:px-6 md:pt-36">
         <div className="mx-auto max-w-3xl border border-rex-line bg-white p-10 text-center">
           <h1 className="font-display text-2xl uppercase tracking-[0.08em]">
             Property not found
@@ -29,7 +30,7 @@ export default function PropertyDetailPage() {
   }
 
   return (
-    <div className="bg-rex-cream pt-24 md:pt-28">
+    <div className="bg-rex-cream pt-32 md:pt-36">
       <div className="mx-auto max-w-7xl px-4 pb-20 md:px-6 md:pb-28">
         <Link
           href="/properties"
@@ -61,17 +62,22 @@ export default function PropertyDetailPage() {
               </span>
             </div>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <a href="#enquire" className="rex-btn-outline">
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+            <a href="#enquire" className="rex-btn-outline w-full justify-center sm:w-auto">
               Enquire
             </a>
-            <a href="tel:+442000000000" className="rex-btn-dark">
+            <a
+              href={SITE_PHONE_HREF}
+              className="rex-btn-dark w-full justify-center sm:w-auto"
+              aria-label={`Call ${SITE_PHONE_DISPLAY}`}
+            >
               <Phone className="h-4 w-4" />
-              020 0000 0000
+              <span className="sm:hidden">Call</span>
+              <span className="hidden sm:inline">{SITE_PHONE_DISPLAY}</span>
             </a>
             <button
               type="button"
-              className="inline-flex items-center gap-2 border border-rex-line px-4 py-3 text-xs uppercase tracking-[0.14em] text-rex-stone"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 border border-rex-line px-4 py-3 text-xs uppercase tracking-[0.14em] text-rex-stone sm:w-auto"
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({

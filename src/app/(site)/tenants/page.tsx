@@ -34,7 +34,7 @@ const steps = [
 
 export default function TenantsPage() {
   return (
-    <div className="bg-rex-cream pt-28 md:pt-32">
+    <div className="bg-rex-cream pt-32 md:pt-36">
       <div className="mx-auto max-w-7xl px-4 pb-20 md:px-6 md:pb-28">
         <SectionHeading
           number="01"

@@ -1,0 +1,2657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Knowledge-Layer + AI Agent — Portable Architecture Blueprint</title>
+  <style>
+    :root {
+      --ink: #1a2332;
+      --muted: #5a6577;
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --line: #d8dee8;
+      --header: #1e3a5f;
+      --blue: #2b6cb0;
+      --blue-soft: #e8f1fb;
+      --red-soft: #fde8e8;
+      --red: #c53030;
+      --green-soft: #e6f6ed;
+      --green: #276749;
+      --orange: #c05621;
+      --orange-soft: #feebc8;
+      --purple: #6b46c1;
+      --purple-soft: #ede9fe;
+      --teal: #0d9488;
+      --teal-soft: #ccfbf1;
+      --layer1: #3b82f6;
+      --layer2: #8b5cf6;
+      --layer3: #22c55e;
+      --layer4: #d97706;
+      --layer5: #64748b;
+      --layer6: #e11d48;
+      --layer7: #475569;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, #152a45 0%, #1e3a5f 55%, #234e7a 100%);
+      color: #fff;
+      padding: 2.25rem 1.25rem 2rem;
+    }
+    .hero-inner { max-width: 980px; margin: 0 auto; }
+    .hero h1 {
+      margin: 0 0 0.65rem;
+      font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .hero .sub {
+      margin: 0 0 1rem;
+      color: #c8d6e8;
+      max-width: 52rem;
+      font-size: 0.98rem;
+    }
+    .hero .meta {
+      margin: 0;
+      font-size: 0.82rem;
+      color: #a8bdd4;
+      font-family: var(--mono);
+      line-height: 1.5;
+    }
+
+    .wrap { max-width: 980px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+    section.block {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1.35rem 1.4rem 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 1px 2px rgba(26, 35, 50, 0.04);
+    }
+    section.block h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em;
+    }
+    section.block h3 {
+      margin: 1.15rem 0 0.55rem;
+      font-size: 1rem;
+    }
+    p { margin: 0 0 0.75rem; }
+    .muted { color: var(--muted); }
+
+    /* Status tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.85rem 0 1rem; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+    .tag span.desc { font-weight: 500; text-transform: none; letter-spacing: 0; opacity: 0.9; }
+    .tag-required { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    .tag-recommended { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .tag-optional { background: #ede9fe; color: #5b21b6; border-color: #ddd6fe; }
+    .tag-generated { background: #ccfbf1; color: #115e59; border-color: #99f6e4; }
+    .tag-human { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
+
+    .callout {
+      background: var(--blue-soft);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1rem;
+      margin: 1rem 0;
+    }
+    .callout strong.label { display: block; margin-bottom: 0.35rem; color: var(--blue); font-size: 0.85rem; }
+    .callout p { margin: 0; }
+
+    .read-guide {
+      background: #f8fafc;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      font-size: 0.92rem;
+    }
+    .read-guide ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+    .read-guide li { margin: 0.2rem 0; }
+
+    /* Compare boxes */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-top: 0.75rem;
+    }
+    @media (max-width: 720px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+    .box {
+      border-radius: 10px;
+      padding: 0.95rem 1rem;
+      border: 1px solid transparent;
+    }
+    .box h4 { margin: 0 0 0.55rem; font-size: 0.92rem; line-height: 1.35; }
+    .box ul { margin: 0; padding-left: 1.15rem; }
+    .box li { margin: 0.3rem 0; font-size: 0.9rem; }
+    .box-bad { background: var(--red-soft); border-color: #fecaca; }
+    .box-bad h4 { color: var(--red); }
+    .box-good { background: var(--green-soft); border-color: #a7f3d0; }
+    .box-good h4 { color: var(--green); }
+
+    /* Product cards */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+      margin-top: 0.75rem;
+    }
+    @media (max-width: 800px) {
+      .products { grid-template-columns: 1fr; }
+    }
+    .product {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1rem;
+      background: #fafbfc;
+    }
+    .product .icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: grid; place-items: center;
+      font-size: 1.1rem;
+      margin-bottom: 0.55rem;
+      background: var(--blue-soft);
+    }
+    .product h4 { margin: 0 0 0.4rem; font-size: 0.98rem; }
+    .product p { margin: 0 0 0.65rem; font-size: 0.88rem; color: var(--muted); }
+    .product .tag { margin-top: 0.25rem; }
+
+    /* Principles */
+    .principles { margin: 0.5rem 0 0; padding-left: 0; list-style: none; counter-reset: p; }
+    .principles li {
+      counter-increment: p;
+      position: relative;
+      padding: 0.65rem 0 0.65rem 2.4rem;
+      border-bottom: 1px solid #eef1f5;
+    }
+    .principles li:last-child { border-bottom: 0; }
+    .principles li::before {
+      content: counter(p);
+      position: absolute;
+      left: 0; top: 0.7rem;
+      width: 1.7rem; height: 1.7rem;
+      border-radius: 50%;
+      background: var(--header);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: grid; place-items: center;
+    }
+    .principles strong { display: inline; }
+
+    /* Architecture layers */
+    .arch-note { color: var(--muted); margin-bottom: 1rem; font-size: 0.93rem; }
+    .layer {
+      border-radius: 10px;
+      border: 1.5px solid;
+      padding: 0.85rem;
+      margin-bottom: 0.35rem;
+      background: #fff;
+    }
+    .layer-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 0 0 0.65rem;
+    }
+    .layer-grid {
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    .cell {
+      border: 1px solid;
+      border-radius: 8px;
+      padding: 0.65rem 0.7rem;
+      background: #fff;
+      font-size: 0.84rem;
+    }
+    .cell strong { display: block; margin-bottom: 0.2rem; font-size: 0.88rem; }
+    .cell .hint { color: var(--muted); font-size: 0.78rem; font-style: italic; line-height: 1.35; }
+
+    .l1 { border-color: #93c5fd; background: #eff6ff; }
+    .l1 .layer-title, .l1 .cell { border-color: #93c5fd; color: #1e40af; }
+    .l1 .cell strong { color: #1e3a8a; }
+    .l1 .cell .hint { color: #3b82f6; font-style: normal; }
+
+    .l2 { border-color: #c4b5fd; background: #f5f3ff; }
+    .l2 .layer-title, .l2 .cell { border-color: #c4b5fd; color: #5b21b6; }
+    .l2 .cell strong { color: #4c1d95; }
+    .l2 .cell .hint { color: #7c3aed; font-style: normal; }
+
+    .l3 { border-color: #86efac; background: #f0fdf4; }
+    .l3 .layer-title, .l3 .cell { border-color: #86efac; color: #166534; }
+    .l3 .cell strong { color: #14532d; }
+    .l3 .cell .hint { color: #16a34a; font-style: normal; }
+
+    .l4 { border-color: #fdba74; background: #fff7ed; }
+    .l4 .layer-title, .l4 .cell { border-color: #fdba74; color: #9a3412; }
+    .l4 .cell strong { color: #7c2d12; }
+    .l4 .cell .hint { color: #c2410c; font-style: normal; }
+
+    .l5 { border-color: #cbd5e1; background: #f8fafc; }
+    .l5 .layer-title, .l5 .cell { border-color: #cbd5e1; color: #334155; }
+    .l5 .cell strong { color: #0f172a; }
+    .l5 .cell .hint { color: #64748b; font-style: normal; }
+
+    .l6 { border-color: #fda4af; background: #fff1f2; }
+    .l6 .layer-title { color: #9f1239; }
+    .l6 .cell { border-color: #fda4af; }
+    .l6 .cell strong { color: #881337; }
+    .l6 .cell .hint { color: #e11d48; font-style: normal; }
+
+    .l7 { border-color: #94a3b8; background: #f1f5f9; }
+    .l7 .layer-title, .l7 .cell { border-color: #94a3b8; color: #334155; }
+    .l7 .cell strong { color: #0f172a; }
+    .l7 .cell .hint { color: #475569; font-style: normal; }
+
+    .flow {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 0.35rem 0 0.55rem;
+    }
+    .flow::before { content: "▼ "; }
+
+    /* Consumer flow */
+    .runtime-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.65rem;
+    }
+    .runtime-flow .step {
+      border: 1px solid #fda4af;
+      background: #fff;
+      border-radius: 8px;
+      padding: 0.55rem 0.65rem;
+      font-size: 0.82rem;
+      min-width: 0;
+      flex: 1 1 110px;
+      text-align: center;
+    }
+    .runtime-flow .step strong { display: block; color: #881337; }
+    .runtime-flow .step span { color: #e11d48; font-size: 0.75rem; }
+    .runtime-flow .arrow {
+      color: #be123c;
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+    .runtime-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.35rem;
+    }
+    .runtime-meta .pill {
+      font-size: 0.78rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px dashed #fda4af;
+      color: #9f1239;
+    }
+
+    /* Precedence */
+    .precedence { display: flex; flex-direction: column; gap: 0; margin: 0.85rem 0; }
+    .prec-item {
+      border: 1.5px solid #93c5fd;
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      background: linear-gradient(180deg, #eff6ff, #fff);
+    }
+    .prec-item.low {
+      border-color: #cbd5e1;
+      background: linear-gradient(180deg, #f8fafc, #fff);
+    }
+    .prec-item strong { display: block; margin-bottom: 0.15rem; }
+    .prec-item .role { color: var(--muted); font-size: 0.88rem; }
+    .beats {
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--blue);
+      padding: 0.35rem 0;
+      letter-spacing: 0.04em;
+    }
+
+    .example {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.92rem;
+    }
+    .example .label {
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 0.35rem;
+      font-size: 0.85rem;
+    }
+
+    code, .code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      background: #eef2f7;
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.55;
+      margin: 0.75rem 0 0;
+    }
+    pre .c { color: #94a3b8; }
+
+    .toc {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+    .toc h2 { margin: 0 0 0.5rem; font-size: 0.95rem; }
+    .toc ol { margin: 0; padding-left: 1.25rem; }
+    .toc a { color: var(--blue); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    footer.note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      padding: 1rem 0 2rem;
+    }
+
+    /* Colour key + tree colouring */
+    .colour-key {
+      display: flex; flex-wrap: wrap; gap: 0.65rem 1rem;
+      font-size: 0.85rem; margin: 0.5rem 0 0.85rem;
+      color: var(--muted);
+    }
+    .colour-key .swatch {
+      display: inline-block; width: 0.7rem; height: 0.7rem;
+      border-radius: 2px; margin-right: 0.3rem; vertical-align: -1px;
+    }
+    .sw-req { background: #dc2626; }
+    .sw-rec { background: #d97706; }
+    .sw-opt { background: #16a34a; }
+    .sw-gen { background: #7c3aed; }
+    .t-req { color: #f87171; }
+    .t-rec { color: #fbbf24; }
+    .t-opt { color: #4ade80; }
+    .t-gen { color: #c4b5fd; }
+
+    .cite-note {
+      margin: 0.75rem 0 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+    }
+
+    /* File purpose tables */
+    .file-table-wrap { overflow-x: auto; margin: 0.75rem 0 0.25rem; }
+    table.file-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      min-width: 640px;
+    }
+    table.file-table th {
+      text-align: left;
+      background: #f1f5f9;
+      border-bottom: 2px solid var(--line);
+      padding: 0.55rem 0.65rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    table.file-table td {
+      border-bottom: 1px solid #eef1f5;
+      padding: 0.7rem 0.65rem;
+      vertical-align: top;
+    }
+    table.file-table tr:last-child td { border-bottom: 0; }
+    table.file-table td.file { font-family: var(--mono); font-size: 0.8rem; white-space: nowrap; }
+    table.file-table td.by { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+    table.file-table td.status { white-space: nowrap; }
+    table.file-table .tag { font-size: 0.65rem; }
+
+    /* Decision flow (domains) */
+    .df-start {
+      border: 1.5px solid #93c5fd;
+      background: #eff6ff;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0 0.5rem;
+      font-size: 0.92rem;
+    }
+    .df-q {
+      border: 1.5px dashed #fdba74;
+      background: #fff7ed;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      margin: 0.35rem 0;
+      font-size: 0.92rem;
+    }
+    .df-q strong.label { color: #9a3412; margin-right: 0.35rem; }
+    .df-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      margin: 0.35rem 0 0.15rem;
+    }
+    @media (max-width: 700px) { .df-row { grid-template-columns: 1fr; } }
+    .df-no {
+      border: 1px solid #fecaca;
+      background: var(--red-soft);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      font-size: 0.85rem;
+    }
+    .df-no .k { color: var(--red); font-weight: 700; font-size: 0.75rem; }
+    .df-yes {
+      border: 1px solid #a7f3d0;
+      background: var(--green-soft);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      font-size: 0.85rem;
+    }
+    .df-yes .k { color: var(--green); font-weight: 700; font-size: 0.75rem; }
+    .df-arrow { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 0.2rem 0; }
+
+    .split-merge {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-top: 0.75rem;
+    }
+    @media (max-width: 700px) { .split-merge { grid-template-columns: 1fr; } }
+    .split-merge .panel {
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--line);
+    }
+    .split-merge .panel.split { background: #fff7ed; border-color: #fdba74; }
+    .split-merge .panel.merge { background: #f0fdf4; border-color: #86efac; }
+    .split-merge h4 { margin: 0 0 0.5rem; font-size: 0.92rem; }
+    .split-merge ul { margin: 0; padding-left: 1.15rem; }
+    .split-merge li { margin: 0.3rem 0; font-size: 0.88rem; }
+
+    .naming-box {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-top: 0.75rem;
+    }
+    .naming-box ul { margin: 0.35rem 0 0; padding-left: 1.15rem; }
+    .naming-box li { margin: 0.35rem 0; font-size: 0.9rem; }
+
+    .anatomy {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      margin: 0.85rem 0 1rem;
+    }
+    .anatomy .node {
+      border: 1.5px solid #86efac;
+      background: #f0fdf4;
+      border-radius: 10px;
+      padding: 0.7rem 0.9rem;
+      min-width: 120px;
+      text-align: center;
+    }
+    .anatomy .node strong { display: block; color: #14532d; }
+    .anatomy .node span { font-size: 0.78rem; color: #16a34a; }
+    .anatomy .arr { color: #16a34a; font-weight: 700; }
+
+    details.tpl {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin: 0.45rem 0;
+      background: #fafbfc;
+    }
+    details.tpl summary {
+      cursor: pointer;
+      padding: 0.65rem 0.9rem;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    details.tpl[open] summary { border-bottom: 1px solid var(--line); }
+    details.tpl .inner { padding: 0.5rem 0.75rem 0.85rem; }
+    details.tpl pre { margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <h1>Knowledge-Layer + AI Agent — Portable Architecture Blueprint</h1>
+      <p class="sub">A top-to-bottom design you can hand to a person or an AI agent to rebuild the same system in any existing project.</p>
+      <p class="meta">
+        Reference implementation: <strong style="color:#e2eaf4">arc_repo_v3</strong> (PayPal Risk “data_layer_kt”) —
+        117 curated domains, 23 scaffolds, ~667 playbooks, ~208 table dictionaries, 14 agent skills, 1 conformance gate.
+        Generated 2026-11-01 from the latest code.
+      </p>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <nav class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#s0">Read me first</a></li>
+        <li><a href="#s1">What we are building &amp; why</a></li>
+        <li><a href="#s2">Architecture (top → bottom)</a></li>
+        <li><a href="#s3">Sources of truth &amp; precedence</a></li>
+        <li><a href="#s4">Repository folder structure</a></li>
+        <li><a href="#s5">Every file: purpose, owner, required?</a></li>
+        <li><a href="#s6">How to decide domains</a></li>
+        <li><a href="#s7">Anatomy of one domain (with templates)</a></li>
+        <li><a href="#s8">Data model: the frontmatter contract</a></li>
+        <li><a href="#s9">Machine-readable "model" files</a></li>
+        <li><a href="#s10">Cross-domain layer</a></li>
+        <li><a href="#s11">Skills (producer agent workflows)</a></li>
+        <li><a href="#s12">Curation lifecycle</a></li>
+        <li><a href="#s13">Tooling scripts</a></li>
+        <li><a href="#s14">Quality gate &amp; CI</a></li>
+        <li><a href="#s15">Runtime: how the consumer agent answers</a></li>
+        <li><a href="#s16">Maintenance &amp; freshness</a></li>
+        <li><a href="#s17">Porting to YOUR project</a></li>
+        <li><a href="#s18">Bootstrap prompt for an AI agent</a></li>
+        <li><a href="#s19">AI-engineering additions</a></li>
+      </ol>
+      <p class="muted" style="margin:0.65rem 0 0;font-size:0.82rem;">More sections will be appended as additional screenshots are provided.</p>
+    </nav>
+
+    <!-- 0. Read me first -->
+    <section class="block" id="s0">
+      <h2>0. Read me first</h2>
+      <p>This file is self-contained (no internet needed). It explains <strong>what</strong> to build, <strong>why</strong> each piece exists, and <strong>how</strong> to build it — and marks every piece so you can decide what your project needs.</p>
+
+      <div class="tags">
+        <span class="tag tag-required">REQUIRED <span class="desc">— must exist for the system to work</span></span>
+        <span class="tag tag-recommended">RECOMMENDED <span class="desc">— strongly advised once you pass MVP</span></span>
+        <span class="tag tag-optional">OPTIONAL <span class="desc">— adopt only if your project needs it</span></span>
+        <span class="tag tag-generated">GENERATED <span class="desc">— produced by a script — never hand-edit</span></span>
+        <span class="tag tag-human">HUMAN-OWNED <span class="desc">— a person must write or approve it</span></span>
+      </div>
+
+      <div class="callout">
+        <strong class="label">One-line summary</strong>
+        <p>Turn your raw data (warehouse tables) + scattered knowledge (wiki, code, query history) into a <strong>curated, machine-checkable folder of markdown</strong> — one folder per business “domain” — that an AI agent reads (<code>router → domain → playbook → SQL</code>) to answer questions correctly, plus <strong>skills</strong> that let agents build and maintain that folder, plus a <strong>gate</strong> that keeps it honest.</p>
+      </div>
+
+      <div class="read-guide">
+        <strong>How to read this document</strong>
+        <ul>
+          <li>Read sections <strong>1–3</strong> to understand.</li>
+          <li>Read sections <strong>4–10</strong> to know what files to create.</li>
+          <li>Read sections <strong>11–16</strong> to know how it is built and kept alive.</li>
+          <li>Read sections <strong>17–18</strong> to port it to your project.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 1. What we are building & why -->
+    <section class="block" id="s1">
+      <h2>1. What we are building &amp; why</h2>
+
+      <h3>The problem</h3>
+      <div class="compare">
+        <div class="box box-bad">
+          <h4>Without a knowledge layer, an LLM agent asked “what’s our decline rate last week?” will:</h4>
+          <ul>
+            <li>guess the table and column names (hallucination),</li>
+            <li>forget mandatory filters (partition, test traffic, shadow mode),</li>
+            <li>join on the wrong key or wrong grain (double-counting),</li>
+            <li>misread types (STRING “0/1” vs BOOL, cents vs dollars, -999 sentinels),</li>
+            <li>use a stale or derived view instead of the source of truth.</li>
+          </ul>
+        </div>
+        <div class="box box-good">
+          <h4>With a knowledge layer, the agent:</h4>
+          <ul>
+            <li>routes the question to the right domain (<code>SKILL.md</code> router),</li>
+            <li>reads verified column meanings and “type traps” (dictionaries),</li>
+            <li>starts from a vetted, parameterized SQL recipe (playbooks),</li>
+            <li>applies the domain’s guardrails and join rules,</li>
+            <li>cites where each fact came from (<code>sources:</code>).</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>The three products</h3>
+      <div class="products">
+        <article class="product">
+          <div class="icon">📚</div>
+          <h4>Knowledge corpus</h4>
+          <p>Folder of markdown with YAML frontmatter, one directory per domain. Read by the consumer agent and humans.</p>
+          <span class="tag tag-required">REQUIRED</span>
+        </article>
+        <article class="product">
+          <div class="icon">🛠️</div>
+          <h4>Producer skills</h4>
+          <p>Agent workflows (<code>.claude/skills/*/SKILL.md</code>) that build, deepen and refresh the corpus from sources of truth.</p>
+          <span class="tag tag-recommended">RECOMMENDED</span>
+        </article>
+        <article class="product">
+          <div class="icon">✅</div>
+          <h4>Conformance tooling</h4>
+          <p>Contract library + linter + verifier + generator + CI gate. Keeps hundreds of docs consistent.</p>
+          <span class="tag tag-required">REQUIRED</span>
+          <span class="muted" style="display:block;font-size:0.78rem;margin-top:0.35rem;">at least lint + generate</span>
+        </article>
+      </div>
+
+      <h3>Design principles (keep these in any port)</h3>
+      <ol class="principles">
+        <li><strong>Knowledge-centric, not view-centric.</strong> Document raw (root) tables; keep derived logic as copy-paste SQL in a playbook, not as deployed views.</li>
+        <li><strong>Every claim is grounded.</strong> Schema from the warehouse, logic from real code, meaning from the wiki. Precedence decides conflicts.</li>
+        <li><strong>Machine-checkable.</strong> Every doc carries frontmatter; navigation is generated, never hand-maintained.</li>
+        <li><strong>Progressive disclosure.</strong> Router → domain → one playbook → only the dictionaries needed. Small context per question.</li>
+        <li><strong>Human-in-the-loop.</strong> Agents draft; humans approve. Human corrections are recorded so AI never silently regresses them.</li>
+        <li><strong>Record dead-ends.</strong> If something can’t be curated (no table, no access) write down why, so nobody re-investigates.</li>
+      </ol>
+    </section>
+
+    <!-- 2. Architecture -->
+    <section class="block" id="s2">
+      <h2>2. Architecture (top → bottom)</h2>
+      <p class="arch-note">Seven layers. Data flows down during <strong>building</strong>; questions flow through the consumer layer during <strong>use</strong>.</p>
+
+      <!-- Layer 1 -->
+      <div class="layer l1">
+        <p class="layer-title">Layer 1 — Sources of truth (inputs)</p>
+        <div class="layer-grid">
+          <div class="cell">
+            <strong>Data warehouse</strong>
+            <div class="hint">BigQuery / Snowflake / Postgres… (schema + facts)</div>
+          </div>
+          <div class="cell">
+            <strong>Validated code store</strong>
+            <div class="hint"><code>external_sources/</code> — prod SQL, repos (implementation logic)</div>
+          </div>
+          <div class="cell">
+            <strong>Wiki / tickets (MCP)</strong>
+            <div class="hint">Confluence, Jira, Notion… (business meaning)</div>
+          </div>
+          <div class="cell">
+            <strong>Query logs <span class="tag tag-optional" style="margin-left:0.25rem;">OPT</span></strong>
+            <div class="hint">what analysts really run (corroboration)</div>
+          </div>
+          <div class="cell">
+            <strong>Analyst sessions <span class="tag tag-optional" style="margin-left:0.25rem;">OPT</span></strong>
+            <div class="hint">past agent/analyst work (evidence)</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow">read by</div>
+
+      <!-- Layer 2 -->
+      <div class="layer l2">
+        <p class="layer-title">Layer 2 — Producer agents (skills)</p>
+        <div class="layer-grid">
+          <div class="cell">
+            <strong>/curate-domain</strong>
+            <div class="hint">build a domain from scratch</div>
+          </div>
+          <div class="cell">
+            <strong>/create-dictionary</strong>
+            <div class="hint">document one table</div>
+          </div>
+          <div class="cell">
+            <strong>/discover-playbooks</strong>
+            <div class="hint">find + author recipes</div>
+          </div>
+          <div class="cell">
+            <strong>/refresh-domain</strong>
+            <div class="hint">update in place</div>
+          </div>
+          <div class="cell">
+            <strong>+ helpers</strong>
+            <div class="hint">mine-joins, mine-trusted-queries, rebuild-on-root, curate-topic…</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow">write markdown + frontmatter</div>
+
+      <!-- Layer 3 -->
+      <div class="layer l3">
+        <p class="layer-title">Layer 3 — Knowledge corpus (<code>data_layer_kt/</code>)</p>
+        <div class="layer-grid">
+          <div class="cell">
+            <strong>Root router</strong>
+            <div class="hint">SKILL.md + README + SPEC</div>
+          </div>
+          <div class="cell">
+            <strong>Domains</strong>
+            <div class="hint"><code>&lt;domain&gt;/SKILL.md</code>, dictionaries/, playbooks/, reference/</div>
+          </div>
+          <div class="cell">
+            <strong>Cross-domain</strong>
+            <div class="hint">join_topology, global_concept_registry, cross_domain_playbooks/, reference/, acronyms/</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow">validated by</div>
+
+      <!-- Layer 4 -->
+      <div class="layer l4">
+        <p class="layer-title">Layer 4 — Conformance (contract + gate)</p>
+        <div class="layer-grid">
+          <div class="cell">
+            <strong>kt_lib.py</strong>
+            <div class="hint">THE contract (keys, types, enums)</div>
+          </div>
+          <div class="cell">
+            <strong>kt_lint.py</strong>
+            <div class="hint">frontmatter + links + table homes</div>
+          </div>
+          <div class="cell">
+            <strong>kt_verify.py</strong>
+            <div class="hint">docs vs live schema</div>
+          </div>
+          <div class="cell">
+            <strong>kt_check.sh</strong>
+            <div class="hint">one gate → pre-commit + CI</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow">generates</div>
+
+      <!-- Layer 5 -->
+      <div class="layer l5">
+        <p class="layer-title">Layer 5 — Generated navigation</p>
+        <div class="layer-grid">
+          <div class="cell">
+            <strong>catalog.json</strong>
+            <div class="hint">every doc</div>
+          </div>
+          <div class="cell">
+            <strong>&lt;domain&gt;/index.md</strong>
+            <div class="hint">per-domain nav</div>
+          </div>
+          <div class="cell">
+            <strong>table_registry.json/.md</strong>
+            <div class="hint">table → home dict, grain, joins</div>
+          </div>
+          <div class="cell">
+            <strong>reference_graph.generated.md</strong>
+            <div class="hint">doc links graph</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow">read by</div>
+
+      <!-- Layer 6 -->
+      <div class="layer l6">
+        <p class="layer-title">Layer 6 — Consumer agent (runtime)</p>
+        <div class="runtime-flow">
+          <div class="step"><strong>Question</strong></div>
+          <span class="arrow">→</span>
+          <div class="step"><strong>Root SKILL.md</strong><span>route</span></div>
+          <span class="arrow">→</span>
+          <div class="step"><strong>Domain SKILL.md</strong><span>guardrails</span></div>
+          <span class="arrow">→</span>
+          <div class="step"><strong>Playbook</strong><span>template</span></div>
+          <span class="arrow">→</span>
+          <div class="step"><strong>Dictionary</strong><span>types / traps</span></div>
+        </div>
+        <div class="runtime-meta">
+          <span class="pill">SQL → warehouse</span>
+          <span class="pill">→ Answer + citations</span>
+        </div>
+      </div>
+      <div class="flow">feedback</div>
+
+      <!-- Layer 7 -->
+      <div class="layer l7">
+        <p class="layer-title">Layer 7 — Maintenance loop</p>
+        <div class="layer-grid">
+          <div class="cell">
+            <strong>Drift detection</strong>
+            <div class="hint">kt_sources.py (wiki edited after doc?) + kt_verify (schema changed?)</div>
+          </div>
+          <div class="cell">
+            <strong>Overrides ledger</strong>
+            <div class="hint">human corrections locked per domain</div>
+          </div>
+          <div class="cell">
+            <strong>Memory / dead-end log</strong>
+            <div class="hint">why a domain was skipped + recheck recipe</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Sources of truth & precedence -->
+    <section class="block" id="s3">
+      <h2>3. Sources of truth &amp; precedence</h2>
+      <p>Three sources, three jobs. When they disagree, the <strong>higher one wins</strong> and the loser is corrected <em>and cites the winner</em>.</p>
+
+      <div class="precedence">
+        <div class="prec-item">
+          <strong>1. Live warehouse schema</strong>
+          <div class="role">(<code>INFORMATION_SCHEMA</code>) — authority for <code>columns</code>, <code>types</code>, <code>existence</code></div>
+        </div>
+        <div class="beats">▼ beats</div>
+
+        <div class="prec-item">
+          <strong>2. Validated code</strong>
+          <div class="role">(<code>external_sources/</code>) — authority for <em>how metrics / joins / filters are really computed</em></div>
+        </div>
+        <div class="beats">▼ beats</div>
+
+        <div class="prec-item">
+          <strong>3. Wiki / tickets via MCP</strong>
+          <div class="role">— authority for <em>business meaning, why a rule exists</em></div>
+        </div>
+        <div class="beats">▼ beats</div>
+
+        <div class="prec-item low">
+          <strong>4. Query-log / session evidence</strong>
+          <div class="role">— corroboration only, never authority</div>
+        </div>
+        <div class="beats">▼ beats</div>
+
+        <div class="prec-item low">
+          <strong>5. Existing corpus (often AI-written)</strong>
+          <div class="role">— lowest trust; cross-check only</div>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="label">Real example of why this matters</div>
+        <p style="margin:0;">Curated prose said <code>login ↔ payment</code> joins on <code>cal_corr_id</code>. A validated production pipeline in <code>external_sources</code> joined on <code>global_sn_id</code>. Code beat prose → the corpus was corrected and now cites <code>external:sql-001</code>.</p>
+      </div>
+
+      <h3>The validated-code store (<code>external_sources/</code>) <span class="tag tag-recommended">RECOMMENDED</span></h3>
+      <p>A sibling folder (outside the corpus on purpose) holding <strong>real material</strong>: production SQL, vendored repos, platform code, DB connectors. It is <strong>read-only</strong> — corrections flow out of it, never into it.</p>
+
+      <pre><span class="c"># external_sources/ — sits NEXT TO the corpus, not inside it</span>
+external_sources/
+├── README.md               <span class="c"># the contract (precedence, read-only, cite it)</span>
+├── MANIFEST.md             <span class="c"># one row per source: id | type | path | origin | validated | authoritative-for | notes</span>
+├── index.py                <span class="c"># stdlib indexer: build | search "&lt;terms&gt;" [--content] | verify</span>
+├── INDEX.md / index.json   <span class="c"># GENERATED per-source catalog (lint validates external:&lt;id&gt; against it)</span>
+├── FILES.md / files.json   <span class="c"># GENERATED per-file catalog</span>
+├── sql/                    <span class="c"># standalone validated queries (sql-001, sql-002 …)</span>
+├── repos/                  <span class="c"># cloned repos (repo-&lt;name&gt;) each with SOURCE.md</span>
+├── platform/               <span class="c"># large code dumps / agent doctrine packages</span>
+├── db/                     <span class="c"># live DB connectors + provenance (optional)</span>
+├── query_log_mining/       <span class="c"># OPTIONAL: scripts + outputs for /mine-trusted-queries</span>
+└── join_mining/            <span class="c"># OPTIONAL: scripts + outputs for /mine-joins</span></pre>
+
+      <p class="cite-note">Docs cite sources in frontmatter: <code>sources: [external:sql-001, confluence:393352178, jira:RAPREQ-376, "https://git…/repo"]</code></p>
+    </section>
+
+    <!-- 4. Repository folder structure -->
+    <section class="block" id="s4">
+      <h2>4. Repository folder structure (full example)</h2>
+      <div class="colour-key">
+        <span><i class="swatch sw-req"></i>red = required</span>
+        <span><i class="swatch sw-rec"></i>amber = recommended</span>
+        <span><i class="swatch sw-opt"></i>green = optional</span>
+        <span><i class="swatch sw-gen"></i>violet = generated</span>
+      </div>
+      <p class="muted" style="margin-top:0;">Rename <code>data_layer_kt</code> to anything (e.g. <code>knowledge/</code>).</p>
+
+      <pre>&lt;your-repo&gt;/
+├── <span class="t-rec">.claude/skills/</span>                      <span class="c"># producer agent workflows (one folder per skill)</span>
+│   ├── <span class="t-rec">curate-domain/SKILL.md</span>          <span class="c"># build a domain from scratch</span>
+│   ├── <span class="t-rec">create-dictionary/SKILL.md</span>     <span class="c"># document one table exhaustively</span>
+│   ├── <span class="t-rec">discover-playbooks/SKILL.md</span>    <span class="c"># find, rank, author recipes</span>
+│   ├── <span class="t-rec">refresh-domain/SKILL.md</span>        <span class="c"># update in place, never regress</span>
+│   └── <span class="t-opt">contractize-domain/</span> <span class="t-opt">curate-topic/</span> <span class="t-opt">rewrite-skill/</span> <span class="t-opt">rebuild-on-root/</span>
+│       <span class="t-opt">remove-view-dependency/</span> <span class="t-opt">map-view-lineage/</span> <span class="t-opt">mine-joins/</span>
+│       <span class="t-opt">mine-trusted-queries/</span> <span class="t-opt">mine-sessions-to-kb/</span>
+├── <span class="t-rec">.github/workflows/data_layer_kt.yml</span> <span class="c"># CI: run the gate on every PR touching the corpus</span>
+├── <span class="t-rec">external_sources/</span>                   <span class="c"># validated code store (see §3)</span>
+├── <span class="t-req">tools/</span>
+│   ├── <span class="t-req">bq_helper.py</span>                    <span class="c"># warehouse connector used by profile/verify (swap for yours)</span>
+│   ├── <span class="t-opt">llm_model_router.py</span>             <span class="c"># call other LLMs as sub-agents/challengers</span>
+│   └── <span class="t-req">config_radd/</span>                    <span class="c"># gitignored credentials/certs — NEVER commit</span>
+├── <span class="t-req">data_layer_kt/</span>                     <span class="c"># ★ THE KNOWLEDGE CORPUS</span>
+│   ├── <span class="t-req">SKILL.md</span>                       <span class="c"># root router: domain table + multi-domain routing + query safety rules</span>
+│   ├── <span class="t-req">README.md</span>                      <span class="c"># 10-line "for agents / for humans" quick start</span>
+│   ├── <span class="t-rec">SPEC.md</span>                        <span class="c"># human-readable format spec (kt_lib.py wins on conflict)</span>
+│   ├── <span class="t-rec">join_topology.md</span>               <span class="c"># cross-domain join keys, grain, SQL patterns, real match rates</span>
+│   ├── <span class="t-req">global_concept_registry.md</span>     <span class="c"># concept → column name per domain + metric definitions + type traps</span>
+│   ├── <span class="t-opt">reference_graph.md</span>             <span class="c"># hand-written doc topology</span>
+│   ├── <span class="t-gen">catalog.json</span>                   <span class="c"># every concept doc</span>
+│   ├── <span class="t-gen">table_registry.json / .md</span>      <span class="c"># table → home dictionary, grain, partition, joins</span>
+│   ├── <span class="t-gen">reference_graph.generated.md</span>  <span class="c"># cross-doc link graph</span>
+│   ├── <span class="t-gen">registry.json</span>                  <span class="c"># metrics / joins / filters / features rollup (kt_registry.py)</span>
+│   ├── <span class="t-rec">.pre-commit-config.yaml</span>        <span class="c"># optional pre-commit framework hook</span>
+│   ├── <span class="t-rec">templates/domain/</span>              <span class="c"># copy this to start a domain (excluded from lint)</span>
+│   │   ├── SKILL.md, README.md
+│   │   ├── dictionaries/TEMPLATE.md
+│   │   ├── playbooks/TEMPLATE.md, playbooks/DERIVED_FLAGS_TEMPLATE.md
+│   │   └── reference/TEMPLATE.md, reference/OVERRIDES_TEMPLATE.md
+│   ├── <span class="t-req">scripts/</span>                       <span class="c"># conformance + authoring tools (see §13)</span>
+│   │   ├── <span class="t-req">kt_lib.py</span>  <span class="t-rec">kt_lint.py</span>  <span class="t-req">kt_generate.py</span>  <span class="t-req">kt_check.sh</span>
+│   │   ├── <span class="t-rec">kt_verify.py</span>  <span class="t-rec">kt_profile.py</span>  <span class="t-req">kt_frontmatter.py</span>  <span class="t-req">kt_resolve.py</span>
+│   │   ├── <span class="t-opt">kt_sources.py</span>  <span class="t-gen">kt_registry.py</span>  <span class="t-rec">profile_table.py</span>  <span class="t-rec">signal_profile.py</span>
+│   │   ├── <span class="t-rec">hooks/pre-commit</span>  <span class="t-rec">install-hooks.sh</span>
+│   │   └── <span class="t-req">KT_TOOLING.md</span>  <span class="t-rec">KT_INGESTION.md</span>   <span class="c"># operator guides</span>
+│   ├── <span class="t-rec">cross_domain_playbooks/</span>       <span class="c"># multi-domain runbooks (incident scan, account journey, RCA…)</span>
+│   ├── <span class="t-rec">reference/</span>                    <span class="c"># platform-wide explainers (architecture, models, conventions)</span>
+│   ├── <span class="t-opt">acronyms/</span>                     <span class="c"># offline glossary snapshot (glossary-a.md … z.md)</span>
+│   ├── <span class="t-opt">diagrams/</span>                     <span class="c"># topology diagrams (.md / .mmd)</span>
+│   ├── <span class="t-req">login/</span>                        <span class="c"># ★ a CURATED domain (no _p suffix)</span>
+│   │   ├── <span class="t-req">SKILL.md</span>                     <span class="c"># domain entry point (only truly required file)</span>
+│   │   ├── README.md, index.md
+│   │   ├── dictionaries/&lt;table&gt;_dictionary.md  <span class="c"># one per table the domain uses</span>
+│   │   ├── playbooks/&lt;domain&gt;_derived_flags.md  <span class="c"># view-logic shim over raw table</span>
+│   │   ├── playbooks/&lt;question&gt;.md              <span class="c"># parameterized SQL recipes</span>
+│   │   └── reference/background.md, metrics_glossary.md,
+│   │       table_reference.md, lessons.md, _overrides.md
+│   ├── <span class="t-req">uds/</span>, <span class="t-req">consolidate_funding/</span>, …  <span class="c"># more curated domains</span>
+│   └── <span class="t-opt">deposit_p/</span>                    <span class="c"># _p = SCAFFOLD awaiting curation (empty dirs + .gitkeep)</span>
+└── …</pre>
+    </section>
+
+    <!-- 5. Every file: purpose, owner, required? -->
+    <section class="block" id="s5">
+      <h2>5. Every file: purpose, owner, required?</h2>
+
+      <h3>5.1 Corpus root</h3>
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Purpose</th>
+              <th>Written by</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="file">SKILL.md (root)</td>
+              <td>Top-level router. Frontmatter (name, description, triggers, when_to_use), a <strong>domain table</strong> (domain → skill path → one-line scope), a <strong>multi-domain routing table</strong> (question pattern → domains → entry playbook), and universal <strong>query safety rules</strong>.</td>
+              <td class="by">HUMAN (agent drafts)</td>
+              <td class="status"><span class="tag tag-required">REQUIRED</span></td>
+            </tr>
+            <tr>
+              <td class="file">README.md</td>
+              <td>“For agents: read SKILL → route → playbook. For humans: pick domain → copy SQL → run.”</td>
+              <td class="by">HUMAN</td>
+              <td class="status"><span class="tag tag-required">REQUIRED</span></td>
+            </tr>
+            <tr>
+              <td class="file">SPEC.md</td>
+              <td>Human-readable format contract: layout, frontmatter <strong>keys</strong>, timestamp/owner policy, conformance, generated files, authoring workflow.</td>
+              <td class="by">HUMAN</td>
+              <td class="status"><span class="tag tag-required">REQUIRED</span></td>
+            </tr>
+            <tr>
+              <td class="file">join_topology.md</td>
+              <td>How domains connect: join-key registry, grain warnings, partition rules, named SQL patterns (A, B, C…), measured match rates.</td>
+              <td class="by">HUMAN + /mine-joins</td>
+              <td class="status"><span class="tag tag-recommended">RECOMMENDED</span><div class="muted" style="font-size:0.75rem;margin-top:0.25rem;">once ≥2 domains</div></td>
+            </tr>
+            <tr>
+              <td class="file">global_concept_registry.md</td>
+              <td>Same concept, different column per domain (<code>account_id</code> = <code>u1_account_number</code> / <code>sndr_id</code> / <code>cust_id</code> …), canonical metric definitions, type traps.</td>
+              <td class="by">HUMAN + /curate-topic</td>
+              <td class="status"><span class="tag tag-recommended">RECOMMENDED</span></td>
+            </tr>
+            <tr>
+              <td class="file">reference_graph.md</td>
+              <td>Hand-authored doc-level topology for lateral discovery.</td>
+              <td class="by">HUMAN</td>
+              <td class="status"><span class="tag tag-optional">OPTIONAL</span></td>
+            </tr>
+            <tr>
+              <td class="file">catalog.json,<br />table_registry.json/.md,<br />reference_graph.generated.md,<br />&lt;domain&gt;/index.md,<br />registry.json</td>
+              <td>Navigation artifacts derived from frontmatter.</td>
+              <td class="by">kt_generate.py / kt_registry.py</td>
+              <td class="status"><span class="tag tag-generated">GENERATED</span></td>
+            </tr>
+            <tr>
+              <td class="file">templates/domain/*</td>
+              <td>Starter files with placeholders (<code>&lt;domain&gt;</code>, <code>bq://&lt;project&gt;…</code>, <code>YYYY-MM-DD</code>).</td>
+              <td class="by">HUMAN (once)</td>
+              <td class="status"><span class="tag tag-required">REQUIRED</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>5.2 Inside a domain</h3>
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Answers the question…</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="file">SKILL.md</td>
+              <td>“Where do I start, which table, which playbook, what must I never do?” — Primary table, raw tables in scope (grain/key/partition), playbook index, dictionary index, numbered guardrails, join rules. Its valid <code>type: Skill</code> frontmatter is the <strong>opt-in signal</strong> that the domain is curated.</td>
+              <td class="status"><span class="tag tag-required">REQUIRED</span></td>
+            </tr>
+            <tr>
+              <td class="file">README.md</td>
+              <td>Human overview + build-status checklist.</td>
+              <td class="status"><span class="tag tag-recommended">RECOMMENDED</span></td>
+            </tr>
+            <tr>
+              <td class="file">dictionaries/&lt;table&gt;_dictionary.md</td>
+              <td>“What does column X mean, what type, what values, what trap?” One per table. Every column: type, null%, samples, meaning. Every low-cardinality categorical: <strong>exhaustive</strong> value list with meanings. Type Traps section. Optional <code>joins:</code>.</td>
+              <td class="status"><span class="tag tag-required">REQUIRED</span><div class="muted" style="font-size:0.75rem;margin-top:0.25rem;">for every table a playbook reads</div></td>
+            </tr>
+            <tr>
+              <td class="file">playbooks/&lt;domain&gt;_derived_flags.md</td>
+              <td>“How do I rebuild derived flags without a view?” CTE shim + per-flag <code>CASE</code> snippets over the raw table.</td>
+              <td class="status"><span class="tag tag-recommended">RECOMMENDED</span><div class="muted" style="font-size:0.75rem;margin-top:0.25rem;">if any derived columns</div></td>
+            </tr>
+            <tr>
+              <td class="file">playbooks/&lt;question&gt;.md</td>
+              <td>“Give me the vetted query for question Y.” When-to-use + example questions, tables + roles, templates T1/T2… (parameterized <code>@start_date</code>), guardrails.</td>
+              <td class="status"><span class="tag tag-required">REQUIRED</span><div class="muted" style="font-size:0.75rem;margin-top:0.25rem;">≥1</div></td>
+            </tr>
+            <tr>
+              <td class="file">reference/*_background.md</td>
+              <td>“Explain the domain before I query” — what it decides, lifecycle, architecture.</td>
+              <td class="status"><span class="tag tag-recommended">RECOMMENDED</span></td>
+            </tr>
+            <tr>
+              <td class="file">reference/*_metrics_glossary.md</td>
+              <td>Canonical metric formulas + standard filters.</td>
+              <td class="status"><span class="tag tag-recommended">RECOMMENDED</span></td>
+            </tr>
+            <tr>
+              <td class="file">reference/*_table_reference.md</td>
+              <td>Which of several similar tables to use when (batch vs NRT etc.).</td>
+              <td class="status"><span class="tag tag-optional">OPTIONAL</span></td>
+            </tr>
+            <tr>
+              <td class="file">reference/*_issue_log.md,<br />*_lessons.md</td>
+              <td>Known data bugs, pitfalls learned the hard way.</td>
+              <td class="status"><span class="tag tag-optional">OPTIONAL</span></td>
+            </tr>
+            <tr>
+              <td class="file">reference/_overrides.md</td>
+              <td>Ledger of human corrections (audience: producer) — locked entries block AI regression.</td>
+              <td class="status"><span class="tag tag-recommended">RECOMMENDED</span><div class="muted" style="font-size:0.75rem;margin-top:0.25rem;">once refreshing</div></td>
+            </tr>
+            <tr>
+              <td class="file">views/*.sql</td>
+              <td>Deployed view SQL with frontmatter in a leading <code>/* --- … --- */</code> comment.</td>
+              <td class="status"><span class="tag tag-optional">OPTIONAL</span><div class="muted" style="font-size:0.75rem;margin-top:0.25rem;">reference impl moved away from views</div></td>
+            </tr>
+            <tr>
+              <td class="file">index.md</td>
+              <td>Per-domain nav.</td>
+              <td class="status"><span class="tag tag-generated">GENERATED</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. How to decide domains -->
+    <section class="block" id="s6">
+      <h2>6. How to decide domains</h2>
+
+      <div class="callout">
+        <strong class="label">Definition</strong>
+        <p>A <strong>domain</strong> is a self-contained <strong>decision point, business process or analytical subject</strong> that has its own <strong>primary table(s)</strong> and its own set of questions. It is <strong>not</strong> “one table” — a domain owns one primary table plus every secondary table its playbooks need (each with its own dictionary).</p>
+      </div>
+
+      <h3>6.1 Decision flow for each candidate</h3>
+
+      <div class="df-start"><strong>Start:</strong> a candidate (checkpoint / service / process / dataset / metric family)</div>
+      <div class="df-arrow">▼</div>
+
+      <div class="df-q"><strong class="label">Q1</strong> Is there at least one queryable table in your warehouse that records it?</div>
+      <div class="df-row">
+        <div class="df-no"><div class="k">NO →</div> do NOT curate. Leave a <code>&lt;name&gt;_p</code> scaffold (or nothing) and <strong>record why</strong> (no table / access denied / retired / empty) + a recheck recipe.</div>
+        <div class="df-yes"><div class="k">YES ↓</div> proceed to Q2</div>
+      </div>
+      <div class="df-arrow">▼</div>
+
+      <div class="df-q"><strong class="label">Q2</strong> Is it live? (latest partition recent, non-empty)</div>
+      <div class="df-row">
+        <div class="df-no"><div class="k">NO →</div> mark retired/historical, record, skip.</div>
+        <div class="df-yes"><div class="k">YES ↓</div> proceed to Q3</div>
+      </div>
+      <div class="df-arrow">▼</div>
+
+      <div class="df-q"><strong class="label">Q3</strong> Does it have its <strong>own decision semantics / questions</strong>, distinct from an existing domain?</div>
+      <div class="df-row">
+        <div class="df-no"><div class="k">NO →</div> it’s a <strong>topic</strong>: add a playbook/lens to the existing domain (<code>/curate-topic</code>), or a row in <code>global_concept_registry.md</code>, or <code>acronyms/</code>.</div>
+        <div class="df-yes"><div class="k">YES ↓</div> proceed to Q4</div>
+      </div>
+      <div class="df-arrow">▼</div>
+
+      <div class="df-q"><strong class="label">Q4</strong> Does it span several domains with no table of its own?</div>
+      <div class="df-row">
+        <div class="df-yes"><div class="k">YES →</div> put it in <code>cross_domain_playbooks/</code> (orchestration runbook), not a domain.</div>
+        <div class="df-no" style="background:var(--green-soft);border-color:#a7f3d0;"><div class="k" style="color:var(--green);">NO →</div> <strong>create a DOMAIN</strong> <code>/curate-domain &lt;name&gt;</code></div>
+      </div>
+
+      <h3>6.2 How many domains will I have?</h3>
+      <ol class="principles">
+        <li><strong>Inventory decision points.</strong> List every service / checkpoint / pipeline stage / business process (from architecture docs, service registry, event-log catalog). <em>Reference impl: listed every risk checkpoint (login, signup, funding, withdrawal, dispute…).</em></li>
+        <li><strong>Inventory tables.</strong> <code>INFORMATION_SCHEMA.TABLES</code> per dataset; group by naming prefix / producer.</li>
+        <li><strong>Map decision point ↔ primary table.</strong> Unmapped decision points = scaffolds/dead-ends; unmapped big tables = candidate dataset domains (e.g. “unified dataset”, “account profile probe”).</li>
+        <li><strong>Add analytical-subject domains</strong> that aren’t a single service: entity probes (account / merchant profile), rule engine metadata, BI aggregates platform, outcome/label datasets (loss, disputes).</li>
+        <li><strong>Count:</strong> domains ≈ (live decision points with a table) + (dataset/subject domains). Expect 5–15 for a small product, 50–150 for a large platform. Start with the <strong>3–5 most-asked.</strong></li>
+      </ol>
+
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>Domain kind (reference examples)</th>
+              <th>Primary table shape</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Decision checkpoint</td>
+              <td>one row per evaluation (event log)</td>
+              <td class="file">login, sign_up, eval_3ds_auth, withdrawal_attempt</td>
+            </tr>
+            <tr>
+              <td>Unified / outcome dataset</td>
+              <td>one row per transaction with labels</td>
+              <td class="file">uds (payment + loss), dispute</td>
+            </tr>
+            <tr>
+              <td>Entity probe</td>
+              <td>snapshot per account / merchant</td>
+              <td class="file">account_probe, merchant_probe</td>
+            </tr>
+            <tr>
+              <td>Rule / config metadata</td>
+              <td>one row per rule / variable</td>
+              <td class="file">pluto_rules</td>
+            </tr>
+            <tr>
+              <td>BI / aggregate platform</td>
+              <td>pre-aggregated daily tables</td>
+              <td class="file">enki</td>
+            </tr>
+            <tr>
+              <td>Combined / lens domain</td>
+              <td>no owned table; a filter over others</td>
+              <td class="file">linked_funding, unbranded_funding</td>
+            </tr>
+            <tr>
+              <td>Variant stream</td>
+              <td>same checkpoint, different log</td>
+              <td class="file">withdrawal_attempt_with_applog</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>6.3 Split vs merge rules</h3>
+      <div class="split-merge">
+        <div class="panel split">
+          <h4>SPLIT into separate domains when…</h4>
+          <ul>
+            <li><strong>different grain</strong> (per-case vs per-transition, e.g. dispute initiation vs adjudication),</li>
+            <li><strong>different owning service / decision,</strong></li>
+            <li><strong>different tenants that must never be blended</strong> (e.g. PayPal vs Venmo),</li>
+            <li><strong>the playbook sets barely overlap.</strong></li>
+          </ul>
+        </div>
+        <div class="panel merge">
+          <h4>MERGE / keep in one domain when…</h4>
+          <ul>
+            <li>tables are <strong>siblings of the same decision</strong> (batch vs near-real-time copy),</li>
+            <li>a table is <strong>only a lookup/dimension</strong> for that domain,</li>
+            <li>a “domain” would have <strong>&lt;2 meaningful playbooks</strong> — make it a lens/playbook instead.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="naming-box">
+        <strong>Naming conventions</strong>
+        <ul>
+          <li><strong>Directory</strong> = <code>snake_case</code> of the business name; frontmatter <code>domain:</code> must equal the directory name.</li>
+          <li><strong>_p suffix</strong> = un-curated scaffold. On curation, rename to drop <code>_p</code>.</li>
+          <li><strong>Non-domain dirs</strong> are declared in code: <code>NON_DOMAIN_DIRS = {scripts, templates, diagrams, .git, .claude}</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Anatomy of one domain -->
+    <section class="block" id="s7">
+      <h2>7. Anatomy of one domain (with templates)</h2>
+
+      <div class="anatomy">
+        <div class="node"><strong>SKILL.md</strong><span>router &amp; guardrails</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>playbooks/</strong><span>recipes</span></div>
+        <span class="arr">↔</span>
+        <div class="node"><strong>dictionaries/</strong><span>column truth</span></div>
+        <span class="arr">↔</span>
+        <div class="node"><strong>reference/</strong><span>concepts</span></div>
+      </div>
+
+      <details class="tpl" open>
+        <summary>Domain SKILL.md template</summary>
+        <div class="inner">
+<pre>---
+name: &lt;domain&gt;
+type: Skill
+title: &lt;Title&gt;
+description: &lt;one-sentence description&gt;
+domain: &lt;domain&gt;
+status: draft            <span class="c"># active | draft | deprecated</span>
+owner: &lt;owner-dl@company.com&gt;
+when_to_use: &lt;which questions / checkpoints route here&gt;
+tags: [&lt;tag1&gt;, &lt;tag2&gt;]
+sources: [confluence:&lt;id&gt;, external:&lt;id&gt;]
+timestamp: YYYY-MM-DD
+---
+
+# &lt;Title&gt; – Data Layer
+&lt;overview: what it covers, grain, what analysis it supports&gt;
+
+## Primary Table
+| Name | BQ Path | Grain | Use For |
+
+## Raw Tables In Scope
+| Table | BQ Path | Grain | Key | Partition |
+
+## Playbooks
+| Playbook | File | Use When |
+
+## Dictionaries
+| Dictionary | File | Covers |
+
+## Guardrails
+<span class="c"># numbered, non-negotiable</span>
+1. **Partition filter mandatory** — always filter `&lt;partition_col&gt;`.
+2. **Exclude shadow/test traffic** — `&lt;flag&gt; = FALSE`.
+
+## Join Rules
+| Pattern | Join Key | Notes (cardinality, coverage, known-bad joins) |</pre>
+        </div>
+      </details>
+
+      <details class="tpl">
+        <summary>Dictionary template</summary>
+        <div class="inner"><p class="muted" style="margin:0;">(Collapsed in source doc — send the expanded screenshot and this will be filled in.)</p></div>
+      </details>
+      <details class="tpl">
+        <summary>Playbook template</summary>
+        <div class="inner"><p class="muted" style="margin:0;">(Collapsed in source doc — send the expanded screenshot and this will be filled in.)</p></div>
+      </details>
+      <details class="tpl">
+        <summary>Derived-flags (view-logic shim) template</summary>
+        <div class="inner"><p class="muted" style="margin:0;">(Collapsed in source doc — send the expanded screenshot and this will be filled in.)</p></div>
+      </details>
+      <details class="tpl">
+        <summary>Overrides ledger entry (human corrections)</summary>
+        <div class="inner"><p class="muted" style="margin:0;">(Collapsed in source doc — send the expanded screenshot and this will be filled in.)</p></div>
+      </details>
+    </section>
+
+    <!-- 8. Data model: the frontmatter contract -->
+    <section class="block" id="s8">
+      <h2>8. Data model: the frontmatter contract</h2>
+      <p>Every authored doc starts with YAML frontmatter. The single source of truth for the contract is a small Python library (<code>scripts/kt_lib.py</code>); <code>SPEC.md</code> is its human rendering. If they disagree, the code wins.</p>
+
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Applies to</th>
+              <th>Rule</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="file">type</td><td>all</td><td>One of <code>Skill</code>, <code>Readme</code>, <code>Playbook</code>, <code>Dictionary</code>, <code>Reference</code>, <code>View</code>; must match path (<code>playbooks/</code> → Playbook …)</td></tr>
+            <tr><td class="file">title, description</td><td>all</td><td>non-empty; description = one sentence (feeds catalogs)</td></tr>
+            <tr><td class="file">domain</td><td>all</td><td>must equal directory name</td></tr>
+            <tr><td class="file">status</td><td>all</td><td><code>active | draft | deprecated</code></td></tr>
+            <tr><td class="file">owner</td><td>all</td><td>team DL/email; set once in domain <code>SKILL.md</code>, backfilled to the rest</td></tr>
+            <tr><td class="file">timestamp</td><td>all</td><td>ISO date = the source’s last-updated date reflected by the content (not “now”)</td></tr>
+            <tr><td class="file">tables</td><td>Playbook</td><td>list of <code>bq://project.dataset.table</code></td></tr>
+            <tr><td class="file">resource, grain</td><td>Dictionary, View</td><td>scalar <code>bq://</code> id + grain sentence</td></tr>
+            <tr><td class="file">source_tables</td><td>View</td><td>list of <code>bq://</code> ids</td></tr>
+            <tr><td class="file">partition</td><td>Dictionary</td><td>recommended</td></tr>
+            <tr><td class="file">joins</td><td>Dictionary, View</td><td>optional edges <code>{to, left_col, right_col, cardinality}</code> → generated bidirectional join graph</td></tr>
+            <tr><td class="file">sources</td><td>any</td><td>optional citations: <code>confluence:</code>, <code>jira:</code>, <code>external:</code> (validated against index), URL</td></tr>
+            <tr><td class="file">audience</td><td>any</td><td>consumer (default) or producer — producer docs are linted but excluded from generated nav</td></tr>
+            <tr><td class="file">tags, when_to_use, name, triggers</td><td>any / Skill</td><td>optional routing hints</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <strong class="label">Port tip</strong>
+        <p>Replace the <code>bq://</code> prefix with your warehouse scheme (<code>sf://db.schema.table</code>, <code>pg://</code> …). Keep it a constant in <code>kt_lib.py</code> (<code>BQ_PREFIX</code>).</p>
+      </div>
+
+      <details class="tpl">
+        <summary>Minimal kt_lib.py contract skeleton (start here)</summary>
+        <div class="inner"><p class="muted" style="margin:0;">(Collapsed in source doc — send the expanded screenshot and this will be filled in.)</p></div>
+      </details>
+    </section>
+
+    <!-- 9. Machine-readable model files -->
+    <section class="block" id="s9">
+      <h2>9. Machine-readable "model" files (how the system models knowledge)</h2>
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Model</th>
+              <th>Built from</th>
+              <th>Used by</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="file">kt_lib.py</td><td>The schema of the knowledge (keys, types, enums)</td><td>hand-written</td><td>lint, generate, frontmatter, verify</td></tr>
+            <tr><td class="file">catalog.json</td><td>List of every consumer doc + frontmatter</td><td>kt_generate</td><td>agents, search</td></tr>
+            <tr><td class="file">table_registry.json</td><td>table id + {domain, home dictionary, grain, partition, joins}</td><td>kt_generate (from dictionary resource + joins)</td><td><code>kt_resolve.py</code> — low-context load plans</td></tr>
+            <tr><td class="file">registry.json</td><td>Corpus-wide <strong>metrics / joins / filters / features</strong> rollup</td><td>kt_registry.py</td><td>agents, consistency checks</td></tr>
+            <tr><td class="file">reference_graph.generated.md</td><td>doc → doc link graph</td><td>kt_generate</td><td>lateral discovery</td></tr>
+            <tr><td class="file">external_sources/index.json</td><td>validated-source catalog (ids, tables referenced/created)</td><td>index.py build</td><td>lint validates <code>external:&lt;id&gt;</code>; Phase 0 discovery</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <strong class="label">Why kt_resolve matters at scale</strong>
+        <p>Give it a SQL query → it returns only the home dictionaries + grains + join keys for the tables that query touches (a dozen lines). The agent never loads 200 dictionaries — context scales with the question, not the corpus.</p>
+      </div>
+
+      <pre>python3 scripts/kt_resolve.py --sql query.sql
+python3 scripts/kt_resolve.py --tables bq://proj.ds.a,proj.ds.b --format json</pre>
+
+      <p class="cite-note">If “model” in your project means ML models: document them as reference docs (<code>reference/risk_ml_models.md</code> pattern) and their scores as dictionary columns with sentinel values (e.g. <code>-999</code> = not scored) and a <code>*_score_performance</code> playbook (KS / lift / drift by decile).</p>
+    </section>
+
+    <!-- 10. Cross-domain layer -->
+    <section class="block" id="s10">
+      <h2>10. Cross-domain layer</h2>
+      <div class="products" style="grid-template-columns: repeat(2, 1fr);">
+        <article class="product">
+          <h4><code>join_topology.md</code> <span class="tag tag-recommended">REC</span></h4>
+          <p>Domain map · join-key registry · “no direct key” warnings · grain notes · partition-filter rules (incl. LEFT JOIN trap) · named SQL patterns A-H · real measured match rates · when to use each pattern.</p>
+        </article>
+        <article class="product">
+          <h4><code>global_concept_registry.md</code> <span class="tag tag-recommended">REC</span></h4>
+          <p>Concept × domain matrix (<code>account_id</code>, <code>correlation_id</code>, <code>session_id</code>, time column …) · canonical metric definitions (<code>decline_rate</code>, <code>loss_rate</code> …) · type-safety traps.</p>
+        </article>
+        <article class="product">
+          <h4><code>cross_domain_playbooks/</code> <span class="tag tag-recommended">REC</span></h4>
+          <p>Has its own <code>SKILL.md</code> router. Runbooks that chain domains: incident scanning, account journey timeline, graph analysis, loss-spike RCA, decline strategy. No tables of its own.</p>
+        </article>
+        <article class="product">
+          <h4><code>reference/</code> <span class="tag tag-optional">OPT</span></h4>
+          <p>Platform explainers: infrastructure architecture (column prefix → upstream service), query conventions, ML models, data-quality, lifecycle map.</p>
+        </article>
+        <article class="product">
+          <h4><code>acronyms/</code> <span class="tag tag-optional">OPT</span></h4>
+          <p>Offline glossary snapshot split by letter, with its own <code>SKILL.md</code>; consulted only when a term is ambiguous. Synced by <code>sync_acronyms.py</code>.</p>
+        </article>
+        <article class="product">
+          <h4><code>diagrams/</code> <span class="tag tag-optional">OPT</span></h4>
+          <p>Topology diagrams (<code>.md</code>) for humans.</p>
+        </article>
+      </div>
+
+      <h3>Universal query safety rules (put these in the root SKILL.md)</h3>
+      <ol class="principles">
+        <li>State the grain before and after each join; aggregate the N-side before joining.</li>
+        <li>Partition filter on every large table and every CTE (filters don't push into CTEs).</li>
+        <li>COUNT DISTINCT for rates after joins.</li>
+        <li>Pre-filter the right side of a LEFT JOIN in a CTE (WHERE on it turns it into INNER).</li>
+        <li>Check the dictionary's Type Traps before CAST/SUM/AVG.</li>
+        <li>Confirm the join key exists on both sides + its cardinality (<code>join_topology</code>).</li>
+        <li>Decide NULL semantics for every <code>!=</code> / <code>NOT IN</code>.</li>
+        <li>SAFE_CAST log/signal fields.</li>
+        <li>Explicit TIMESTAMP↔DATE conversion. SAFE_DIVIDE. UNNEST inflates grain. per-section LIMIT in UNION ALL.</li>
+        <li>Analyze result CSVs locally with DuckDB SQL, pandas only for plotting.</li>
+      </ol>
+    </section>
+
+    <!-- 11. Skills -->
+    <section class="block" id="s11">
+      <h2>11. Skills (producer agent workflows)</h2>
+      <p>A skill is a markdown file (<code>.claude/skills/&lt;name&gt;/SKILL.md</code>) with frontmatter <code>name</code> + a long description (that's what triggers it) and a body of non-negotiable rules + numbered phases + quick-reference commands. Skills compose: big skills delegate to small ones.</p>
+
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Purpose</th>
+              <th>Input → Output</th>
+              <th>Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="file">/curate-domain</td><td>Build a domain from scratch (fills a <code>_p</code> scaffold). 8 phases (§12).</td><td>checkpoint name → full bundle, gate green</td><td class="status"><span class="tag tag-required">CORE</span></td></tr>
+            <tr><td class="file">/create-dictionary</td><td>Document ONE table: every column, exhaustive categorical values with meanings.</td><td>table id → <code>&lt;table&gt;_dictionary.md</code></td><td class="status"><span class="tag tag-required">CORE</span></td></tr>
+            <tr><td class="file">/discover-playbooks</td><td>Find missing playbooks, rank by groundedness G1 validated &gt; G2 documented &gt; G3 inferred × value × novelty; present list; author approved ones.</td><td>domain → new playbooks</td><td class="status"><span class="tag tag-required">CORE</span></td></tr>
+            <tr><td class="file">/refresh-domain</td><td>Update an existing domain in place across drift channels (schema, wiki, code, sessions, queries, feedback); candidates-first; honours overrides ledger.</td><td>domain → approved delta</td><td class="status"><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">/curate-topic</td><td>Land a single metric/term/SQL; decides where it belongs (domain playbook / cross-domain / registry / glossary / reference / new domain).</td><td>topic → placed doc</td><td class="status"><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">/contractize-domain</td><td>Add the frontmatter contract to an existing content-rich (legacy) folder.</td><td>legacy docs → curated</td><td class="status"><span class="tag tag-optional">OPT</span> <span class="muted">(if you have legacy docs)</span></td></tr>
+            <tr><td class="file">/rewrite-skill</td><td>Regenerate a domain's <code>SKILL.md</code> so it indexes every file (fix unreferenced / dangling links).</td><td>domain → SKILL.md</td><td class="status"><span class="tag tag-optional">OPT</span></td></tr>
+            <tr><td class="file">/rebuild-on-root</td><td>Rewrite any query that reads a view/aggregate/scratch on root tables.</td><td>SQL → raw-table SQL</td><td class="status"><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">/remove-view-dependency</td><td>Eliminate a deployed view from a domain, inlines its logic.</td><td>domain+view → raw-only domain</td><td class="status"><span class="tag tag-optional">OPT</span></td></tr>
+            <tr><td class="file">/map-view-lineage</td><td>Resolve a view recursively to its root tables + profile them.</td><td>view → lineage + root inventory</td><td class="status"><span class="tag tag-optional">OPT</span></td></tr>
+            <tr><td class="file">/mine-joins</td><td>From query logs, find a table's joins and measure cardinality + coverage.</td><td>table → proposed joins;</td><td class="status"><span class="tag tag-optional">OPT</span> <span class="muted">(needs query logs)</span></td></tr>
+            <tr><td class="file">/mine-trusted-queries</td><td>Find real production queries answering a question; trust score from user diversity / scheduling / persistence; fragment consensus.</td><td>question → ranked trusted SQL</td><td class="status"><span class="tag tag-optional">OPT</span> <span class="muted">(needs query logs)</span></td></tr>
+            <tr><td class="file">/mine-sessions-to-kb</td><td>Turn distilled analyst sessions into KB candidates (recipe / table / concept / lesson).</td><td>session digests → routed findings</td><td class="status"><span class="tag tag-optional">OPT</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Skill composition</h3>
+      <div class="anatomy" style="margin-top:0.65rem;">
+        <div class="node"><strong>/curate-domain</strong></div>
+        <div class="node"><strong>/contractize-domain</strong></div>
+        <div class="node"><strong>/curate-topic</strong></div>
+        <div class="node"><strong>/refresh-domain</strong></div>
+      </div>
+      <div class="df-arrow">▼ all delegate to</div>
+      <div class="anatomy">
+        <div class="node"><strong>/create-dictionary</strong><span>(home every table)</span></div>
+        <div class="node"><strong>/discover-playbooks</strong><span>(mandatory after)</span></div>
+        <div class="node"><strong>/rebuild-on-root</strong><span>(raw-tables-only)</span></div>
+      </div>
+      <div class="df-arrow">▼ which use</div>
+      <div class="anatomy">
+        <div class="node"><strong>/mine-trusted-queries</strong><span>(corroborate candidates)</span></div>
+        <div class="node"><strong>/mine-joins</strong><span>(populate joins)</span></div>
+        <div class="node"><strong>/map-view-lineage</strong><span>(find roots)</span></div>
+      </div>
+
+      <details class="tpl">
+        <summary>Skill file skeleton</summary>
+        <div class="inner"><p class="muted" style="margin:0;">(Collapsed in source doc — send the expanded screenshot and this will be filled in.)</p></div>
+      </details>
+    </section>
+
+    <!-- 12. Curation lifecycle -->
+    <section class="block" id="s12">
+      <h2>12. Curation lifecycle — the 8 phases of <code>/curate-domain</code></h2>
+
+      <div class="df-start"><strong>Phase 0 — Discover (PARALLEL)</strong><br />Agent A: wiki/MCP → what it decides, which tables, why.<br />Agent B: validated code → real joins/filters/metrics. Record source ids.</div>
+      <div class="df-arrow">▼</div>
+      <div class="df-start" style="border-color:#cbd5e1;background:#f8fafc;"><strong>Phase 1 — Confirm tables</strong><br /><code>INFORMATION_SCHEMA</code>: exist? columns, types, partition, row scale. Table named by wiki == table code reads? if no table → stop, record dead-end.</div>
+      <div class="df-arrow">▼</div>
+      <div class="df-start" style="border-color:#cbd5e1;background:#f8fafc;"><strong>Phase 2 — Dictionaries</strong><br /><code>/create-dictionary</code> for primary + every secondary table (<code>kt_profile</code> skeleton → enrich → <code>kt_verify --dict</code>).</div>
+      <div class="df-arrow">▼</div>
+      <div class="df-start" style="border-color:#cbd5e1;background:#f8fafc;"><strong>Phase 3 — Draft bundle</strong><br />SKILL, README, reference, derived-flags + starter playbook from templates, grounded in Phase 0 + dictionaries.</div>
+      <div class="df-arrow">▼</div>
+      <div class="df-start" style="border-color:#cbd5e1;background:#f8fafc;"><strong>Phase 4 — Find gaps</strong><br />Classify: logic gaps (join/filter/formula) vs meaning gaps (why/what).</div>
+      <div class="df-arrow">▼</div>
+      <div class="df-start" style="border-color:#93c5fd;background:#eff6ff;"><strong>Phase 5 — Fill gaps</strong><br />Validated code for logic, wiki for meaning; cite everything. Code beats prose.</div>
+      <div class="df-arrow">▼</div>
+      <div class="df-start" style="border-color:#fecaca;background:var(--red-soft);"><strong>Phase 6 — Wire + GATE</strong><br />Every referenced table has a dictionary home; add <code>sources:</code>; human review; <code>kt_generate</code>; <code>KT_STRICT=1 kt_check.sh --domain</code> → zero errors AND zero warnings.</div>
+      <div class="df-arrow">▼</div>
+      <div class="df-start" style="border-color:#93c5fd;background:#eff6ff;"><strong>Phase 6.5 — Deepen (MANDATORY)</strong><br /><code>/discover-playbooks</code>, then re-run table-home coverage + gate.</div>
+      <div class="df-arrow">▼</div>
+      <div class="df-start" style="border-color:#cbd5e1;background:#f8fafc;"><strong>Phase 7 — Maintain</strong><br /><code>kt_sources</code> drift + <code>/refresh-domain</code>.</div>
+
+      <div class="callout">
+        <strong class="label">Two non-negotiable gates</strong>
+        <p>the schema verify (docs can't claim a column the table lacks) and the human review (agents draft, humans approve).</p>
+      </div>
+    </section>
+
+    <!-- 13. Tooling scripts -->
+    <section class="block" id="s13">
+      <h2>13. Tooling scripts</h2>
+
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>Script</th>
+              <th>Does</th>
+              <th>Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="file">kt_lib.py</td><td>Contract + corpus walker (<code>iter_docs</code>), frontmatter parser (<code>md --- fence</code> and <code>sql /* --- --- */</code>), <code>validate_doc</code>, curated-domain detection, external id loader.</td><td><span class="tag tag-required">REQUIRED</span></td></tr>
+            <tr><td class="file">kt_lint.py</td><td>Conformance: required keys, type+path, enums, <code>bq://</code> ids, domain = dir, broken links, mentioned-missing paths, table-home coverage, duplicate resource (error), odd joins. <code>--strict --domain</code>.</td><td><span class="tag tag-required">REQUIRED</span></td></tr>
+            <tr><td class="file">kt_generate.py</td><td>Writes <code>index.md</code> / <code>catalog.json</code> / reference graph / <code>table_registry</code> — check for staleness.</td><td><span class="tag tag-required">REQUIRED</span></td></tr>
+            <tr><td class="file">kt_check.sh</td><td>The single gate: lint → verify → dict → generate → check. <code>KT_STRICT=1</code> makes warnings block.</td><td><span class="tag tag-required">REQUIRED</span></td></tr>
+            <tr><td class="file">kt_verify.py</td><td>Docs vs live schema (<code>--dict</code>). Local-hard, CI-skip (exit 0 if warehouse unreachable, <code>KT_BQ=1</code> to require).</td><td><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">kt_profile.py</td><td>Profile a table (sampled) → dictionary skeleton with null%, distincts, samples, auto Type Traps.</td><td><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">kt_frontmatter.py</td><td>Backfill frontmatter (dry-run default, <code>--write</code>); owner from domain <code>SKILL.md</code>; leaves TODOs.</td><td><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">kt_resolve.py</td><td>SQL/tables → minimal load plan from <code>table_registry</code>.</td><td><span class="tag tag-recommended">REC</span> <span class="muted">(at &gt;10 domains)</span></td></tr>
+            <tr><td class="file">kt_sources.py</td><td>extract (worklist of cited sources) → agent fetches last-updated via MCP → apply (stamp timestamp / flag drift).</td><td><span class="tag tag-optional">OPT</span></td></tr>
+            <tr><td class="file">kt_registry.py</td><td>Builds <code>registry.json</code> (metrics, joins, filters, features).</td><td><span class="tag tag-optional">OPT</span></td></tr>
+            <tr><td class="file">profile_table.py, signal_profile.py, profiling_*.py, check_table_profiling.py</td><td>Lower-level profilers used by <code>kt_profile</code>.</td><td><span class="tag tag-optional">OPT</span></td></tr>
+            <tr><td class="file">sync_acronyms.py (+ test)</td><td>Refresh acronyms snapshot from an internal API.</td><td><span class="tag tag-optional">OPT</span></td></tr>
+            <tr><td class="file">tools/bq_helper.py</td><td>Warehouse client (<code>get_bq()</code>, <code>run_query()</code>). Swap for your warehouse. Credentials in gitignored config.</td><td><span class="tag tag-required">REQUIRED</span> <span class="muted">(any connector)</span></td></tr>
+            <tr><td class="file">tools/llm_model_router.py</td><td>Call other LLMs (challenger/auditor sub-agents).</td><td><span class="tag tag-optional">OPT</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="cite-note">Designed but not built in the reference (good next steps for you): a per-domain <code>sources.yaml</code> manifest declaring inputs before authoring, and <code>kt_verify --sql</code> dry-running every playbook SQL block.</p>
+    </section>
+
+    <!-- 14. Quality gate & CI -->
+    <section class="block" id="s14">
+      <h2>14. Quality gate &amp; CI</h2>
+      <div class="anatomy">
+        <div class="node"><strong>edit docs</strong></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>kt_generate.py</strong></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>pre-commit hook</strong><span>scoped to changed domains</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>CI on PR</strong><span>full corpus</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>merge</strong></div>
+      </div>
+
+      <pre># run locally
+bash scripts/kt_check.sh                     # whole corpus
+bash scripts/kt_check.sh --domain uds        # one domain
+KT_STRICT=1 bash scripts/kt_check.sh --domain uds  # warnings block (required for new domains)
+bash scripts/install-hooks.sh                # symlink pre-commit hook</pre>
+
+      <pre># .github/workflows/data_layer_kt.yml
+name: data_layer_kt conformance
+on:
+  pull_request: { paths: ["data_layer_kt/**"] }
+  push: { paths: ["data_layer_kt/**"] }
+jobs:
+  conformance:
+    runs-on: ubuntu-latest   # use your org's allowed runner
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.x" }
+      - run: pip install pyyaml
+      - run: bash data_layer_kt/scripts/kt_check.sh
+      # env: { KT_STRICT: "1" }</pre>
+
+      <p class="cite-note">Errors always block. Warnings that matter most: “no Dictionary/View home” (a playbook reads an undocumented table) and “references missing path”.</p>
+    </section>
+
+    <!-- 15. Runtime -->
+    <section class="block" id="s15">
+      <h2>15. Runtime: how the consumer agent answers</h2>
+      <div class="compare">
+        <div class="box box-good" style="background:#f8fafc;border-color:#cbd5e1;">
+          <h4>Single-domain question</h4>
+          <ol class="principles" style="margin-top:0.25rem;">
+            <li>Read root <code>SKILL.md</code> → match domain (use acronyms/ if a term is unclear).</li>
+            <li>Read domain <code>SKILL.md</code>: primary table, guardrails, join rules.</li>
+            <li>Pick playbook → copy template → fill parameters.</li>
+            <li>Open only the needed dictionary (types, traps, value meanings).</li>
+            <li>Run SQL; analyze locally with DuckDB; answer with citations.</li>
+          </ol>
+        </div>
+        <div class="box box-good" style="background:#f8fafc;border-color:#cbd5e1;">
+          <h4>Multi-domain question</h4>
+          <ol class="principles" style="margin-top:0.25rem;">
+            <li>Root SKILL “Multi-Domain Routing” table → entry playbook.</li>
+            <li><code>join_topology.md</code> → key, grain, pattern; <code>global_concept_registry.md</code> → column names per domain.</li>
+            <li>Each domain’s guardrails; <code>kt_resolve.py</code> for the load plan.</li>
+            <li>CTE pre-filter pattern; partition filter on every table.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>Question pattern</th>
+              <th>Domains</th>
+              <th>Entry</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="file">“Decline spiked — what signals drove it?”</td>
+              <td>UDS + CF</td>
+              <td>uds/playbooks/uds_decline_analysis.md → consolidate_funding/playbooks/cf_decline_drilldown.md T2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 16. Maintenance & freshness -->
+    <section class="block" id="s16">
+      <h2>16. Maintenance &amp; freshness</h2>
+      <div class="products" style="grid-template-columns: repeat(3, 1fr);">
+        <article class="product">
+          <h4>Schema drift</h4>
+          <p><code>kt_verify --dict</code> in every gate run catches renamed/removed columns.</p>
+        </article>
+        <article class="product">
+          <h4>Source drift</h4>
+          <p><code>kt_sources.py</code>: if a cited wiki page changed after the doc’s timestamp → flag for review. Only moves timestamp after human reconciliation.</p>
+        </article>
+        <article class="product">
+          <h4>Human corrections</h4>
+          <p><code>reference/_overrides.md</code>: locked entries are hard constraints for <code>/refresh-domain</code>.</p>
+        </article>
+        <article class="product">
+          <h4>New usage</h4>
+          <p><code>/mine-trusted-queries</code> + <code>/mine-sessions-to-kb</code> surface recipes analysts use that the KB lacks.</p>
+        </article>
+        <article class="product">
+          <h4>Dead-ends</h4>
+          <p>Record un-curatable candidates (no table / access denied / retired) with a recheck recipe — in a memory store or a <code>reference/</code> doc.</p>
+        </article>
+        <article class="product">
+          <h4>Secrets</h4>
+          <p>Credentials only in gitignored config / env; rotate anything pasted into chat or code.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 17. Porting to YOUR project -->
+    <section class="block" id="s17">
+      <h2>17. Porting to YOUR project</h2>
+
+      <h3>17.1 Term mapping (reference → your project)</h3>
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>Reference term</th>
+              <th>Generic meaning</th>
+              <th>Your equivalent (fill in)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="file">Risk checkpoint</td><td>a decision point / service / process producing records</td><td>e.g. “order service”, “claim adjudication”, “recommendation call”</td></tr>
+            <tr><td class="file">TimeTunnel table</td><td>the queryable event log of that decision</td><td>e.g. Kafka→Snowflake table, audit log</td></tr>
+            <tr><td class="file">BigQuery + <code>bq://</code></td><td>analytical warehouse + id scheme</td><td>Snowflake <code>sf://</code>, Postgres <code>pg://</code>, Databricks…</td></tr>
+            <tr><td class="file">Confluence/Jira via Atlassian MCP</td><td>business-meaning source</td><td>Notion, Google Docs, GitHub wiki, Linear (any MCP)</td></tr>
+            <tr><td class="file">external_sources/</td><td>validated production code</td><td>dbt models, Airflow DAGs, service repos, golden SQL</td></tr>
+            <tr><td class="file">bq_objects_usage query logs</td><td>who ran what SQL</td><td>Snowflake QUERY_HISTORY, BigQuery INFORMATION_SCHEMA.JOBS, pg_stat_statements</td></tr>
+            <tr><td class="file">Pluto rules / RUCS models</td><td>business rules + ML scores</td><td>your rule engine, feature store, model registry</td></tr>
+            <tr><td class="file">Partition column (<code>pmt_start_date</code>, <code>TS</code>)</td><td>mandatory cost/time filter</td><td>your cluster/partition key</td></tr>
+            <tr><td class="file">Claude Code skills</td><td>agent workflows</td><td>any agent framework that loads markdown instructions</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>17.2 Roadmap — MVP → full</h3>
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Build</th>
+              <th>Done when</th>
+              <th>Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="file">1. Skeleton</td><td>Create <code>knowledge/</code> with root <code>SKILL.md</code>, <code>README.md</code>, <code>SPEC.md</code>, <code>templates/domain/</code>.</td><td>templates have placeholders for every required key</td><td><span class="tag tag-required">MVP</span></td></tr>
+            <tr><td class="file">2. Contract</td><td><code>kt_lib.py</code> + <code>kt_lint.py</code> + <code>kt_generate.py</code> + <code>kt_check.sh</code>.</td><td>lint passes on templates-excluded empty corpus</td><td><span class="tag tag-required">MVP</span></td></tr>
+            <tr><td class="file">3. Connector</td><td>warehouse helper (<code>get_client()</code>, <code>run_query()</code>), creds gitignored.</td><td>can read <code>INFORMATION_SCHEMA</code></td><td><span class="tag tag-required">MVP</span></td></tr>
+            <tr><td class="file">4. Domain inventory</td><td>Run §6.2; list candidates + primary tables; pick top 3–5.</td><td>a table of domain → table → owner</td><td><span class="tag tag-required">MVP</span></td></tr>
+            <tr><td class="file">5. First domain by hand</td><td>SKILL + 1 dictionary + 2–3 playbooks + background reference.</td><td>gate green; agent answers 5 test questions correctly</td><td><span class="tag tag-required">MVP</span></td></tr>
+            <tr><td class="file">6. Skills</td><td><code>/create-dictionary</code>, <code>/curate-domain</code>, <code>/discover-playbooks</code> (adapt text from reference).</td><td>2nd domain built by agent, human-reviewed</td><td><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">7. Validated-code store</td><td><code>external_sources/</code> + MANIFEST + index.py; cite <code>external:</code>.</td><td>lint validates ids</td><td><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">8. Cross-domain</td><td><code>join_topology</code>, <code>global_concept_registry</code>, <code>cross_domain_playbooks/</code>.</td><td>multi-domain routing table in root SKILL</td><td><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">9. CI + hook</td><td>workflow + pre-commit; then <code>KT_STRICT=1</code>.</td><td>PRs blocked on errors</td><td><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">10. Verify + profile</td><td><code>kt_verify</code>, <code>kt_profile</code>.</td><td>docs match live schema</td><td><span class="tag tag-recommended">REC</span></td></tr>
+            <tr><td class="file">11. Scale</td><td><code>table_registry</code> + <code>kt_resolve</code>; <code>/refresh-domain</code> + overrides; <code>/curate-topic</code>.</td><td>&gt;10 domains stay consistent</td><td><span class="tag tag-optional">OPT</span></td></tr>
+            <tr><td class="file">12a. Eval harness ★</td><td>Golden question set + runner + scorecard (§19.1); run on every corpus PR.</td><td>baseline score recorded; regressions block merge</td><td><span class="tag tag-recommended">REC</span> <span class="muted">(start at step 5)</span></td></tr>
+            <tr><td class="file">12b. Runtime safety ★</td><td>Read-only role, byte cap, dry-run, PII filter, traces (§19.2–19.4).</td><td>no query can exceed cost cap or leak PII</td><td><span class="tag tag-recommended">before any user access</span></td></tr>
+            <tr><td class="file">12c. Evidence mining</td><td><code>/mine-trusted-queries</code>, <code>/mine-joins</code>, <code>/mine-sessions-to-kb</code>, <code>kt_sources</code> drift.</td><td>playbooks ranked by real usage</td><td><span class="tag tag-optional">OPT</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>17.3 Decision worksheet (answer these for your project)</h3>
+      <div class="file-table-wrap">
+        <table class="file-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Decision</th>
+              <th>Options / guidance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="file">1</td><td>Corpus folder name &amp; location</td><td><code>knowledge/</code>, <code>data_layer/</code>… inside the same repo as code, or a dedicated repo</td></tr>
+            <tr><td class="file">2</td><td>Warehouse + id scheme</td><td>set <code>BQ_PREFIX</code> equivalent</td></tr>
+            <tr><td class="file">3</td><td>What is a “domain” here?</td><td>service, decision point, product area, dataset — apply §6</td></tr>
+            <tr><td class="file">4</td><td>Initial domain list (3–5)</td><td>most-asked questions first</td></tr>
+            <tr><td class="file">5</td><td>Owner per domain</td><td>team DL/email in each <code>SKILL.md</code></td></tr>
+            <tr><td class="file">6</td><td>Meaning source + MCP</td><td>wiki tool; record its cloud/space id in skills</td></tr>
+            <tr><td class="file">7</td><td>Validated code source</td><td>dbt/DAG repo, golden SQL; who validates?</td></tr>
+            <tr><td class="file">8</td><td>Views or raw-tables-only?</td><td>reference code raw-only + derived_flags playbooks (portable, no deploy dependency)</td></tr>
+            <tr><td class="file">9</td><td>Mandatory guardrails</td><td>partition, test/shadow traffic, tenant separation, currency units</td></tr>
+            <tr><td class="file">10</td><td>Gate strictness</td><td>errors-only at start → <code>KT_STRICT=1</code> after backfill</td></tr>
+            <tr><td class="file">11</td><td>Optional modules</td><td>query-log mining? session mining? acronyms? overrides?</td></tr>
+            <tr><td class="file">12</td><td>PII policy</td><td>never enumerate ids/emails/amounts in dictionaries; samples only</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 18. Bootstrap prompt -->
+    <section class="block" id="s18">
+      <h2>18. Bootstrap prompt for an AI agent</h2>
+      <p>Give this HTML file to an agent in your other repo together with the prompt below.</p>
+      <pre>You are setting up an agent-facing KNOWLEDGE LAYER in this repository, following the
+attached blueprint (KT_PORTABLE_BLUEPRINT.html). Do NOT modify git history, push, or
+delete existing files; create new files only, and show me a plan before writing.
+
+Project facts (fill in):
+- Warehouse: &lt;Snowflake/BigQuery/...&gt;, id scheme: &lt;sf://&gt;
+- Meaning source (MCP): &lt;Confluence space / Notion / ...&gt;
+- Validated code: &lt;dbt repo path / golden SQL folder&gt;
+- Owner DL: &lt;team@company.com&gt;
+- Candidate domains: &lt;list&gt; (or derive them using blueprint §6)
+
+Steps:
+1. Propose the folder structure (§4) adapted to this repo; mark REQUIRED vs OPTIONAL.
+2. Create SPEC.md, root SKILL.md, README.md, templates/domain/* (§7, §8).
+3. Implement scripts/kt_lib.py (contract), kt_lint.py, kt_generate.py, kt_check.sh (§13).
+4. Implement a warehouse helper with credentials read from env / gitignored config.
+5. Run the domain inventory (§6.2) and present a ranked domain list for my approval.
+6. For the first approved domain, run the 8-phase curation (§12): discover (wiki + code in parallel) → confirm tables → dictionaries → draft → gaps → fill → gate → deepen.
+7. Add skills under .claude/skills/ for create-dictionary, curate-domain, discover-playbooks (adapt from §11).
+8. Add CI (§14).
+9. Create evals/golden_questions.yaml with 20 questions for the first domain and a runner that scores routing, SQL validity and answer correctness (§19.1).
+10. Configure runtime safety: read-only role, max bytes billed, dry-run first, PII policy (§19.3).
+11. Report what is built vs pending.
+12. Use blueprint §20 (Build Kit) as the exact spec: system prompt, worked example, script contracts, root templates, skill texts, Definition of Done.
+
+Rules: schema &gt; validated code &gt; wiki &gt; existing docs. Raw tables only. Cite sources.
+Every table a playbook reads must have a dictionary. Gate must be green.</pre>
+    </section>
+
+    <!-- 19. AI-engineering additions -->
+    <section class="block" id="s19">
+      <h2>19. AI-engineering additions ★ (beyond the reference implementation)</h2>
+      <div class="callout">
+        <strong class="label">Note</strong>
+        <p>Everything in this section is <strong>NOT</strong> present in <code>arc_repo_v3</code>. These are recommendations from an AI-engineering perspective: they measure and control the consumer agent, which the reference repo leaves implicit. Adopt them when porting. They matter most for evaluation and safety.</p>
+      </div>
+
+      <h3>19.1 Evaluation harness <span class="tag tag-recommended">STRONGLY RECOMMENDED</span></h3>
+      <p><strong>Why:</strong> the gate proves docs are well-formed, not that the agent answers correctly. Without evals you cannot tell if a corpus edit, a model upgrade or a prompt change made answers better or worse.</p>
+      <pre>evals/
+├── golden_questions.yaml   # question → expected domain, playbook, tables, answer/tolerance
+├── run_evals.py            # runs agent per question, captures trace + SQL + answer
+├── graders/
+│   ├── routing.py          # expected domain/playbook chosen?
+│   ├── sql_checks.py       # dry-run passes, partition filter present? only root tables? COUNT DISTINCT after join?
+│   ├── answer_match.py     # numeric within tolerance vs reference SQL result
+│   └── llm_judge.py        # rubric: grounded, cites sources, states grain, flags caveats
+└── results/&lt;date&gt;_&lt;model&gt;.json  # scorecard history</pre>
+      <pre># evals/golden_questions.yaml
+- id: uds-001
+  question: "What was the US iACH decline rate last week?"
+  expect_domain: uds
+  expect_playbook: uds/playbooks/uds_decline_analysis.md
+  expect_tables: [bq://pyl-pd.wr_pp_risk_ops_views.unified_dataset_v4]
+  must_contain_sql: ["pmt_start_date BETWEEN", "is_valid_pmt_amt_t_f = 1"]
+  must_not_contain_sql: ["uds_payment_view"]   # retired view
+  reference_sql: evals/ref/uds-001.sql         # human-verified answer query
+  tolerance: 0.005
+  tags: [single-domain, rate]
+- id: x-004
+  question: "CityWall blocked sessions that still logged in?"
+  expect_domain: [city_wall, login]
+  tags: [multi-domain, join]</pre>
+      <table class="file-table">
+        <thead>
+          <tr><th>Metric</th><th>Definition</th><th>Target to start</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">Routing accuracy</td><td>correct domain (+ playbook) chosen</td><td>&ge; 90%</td></tr>
+          <tr><td class="file">SQL validity</td><td>dry-run passes</td><td>&ge; 95%</td></tr>
+          <tr><td class="file">Guardrail compliance</td><td>partition filter, root tables only, no blended tenants</td><td>100% (hard)</td></tr>
+          <tr><td class="file">Answer correctness</td><td>matches reference within tolerance</td><td>&ge; 80% → raise over time</td></tr>
+          <tr><td class="file">Groundedness</td><td>judge: claims traceable to cited docs</td><td>&ge; 90%</td></tr>
+          <tr><td class="file">Cost / latency</td><td>bytes scanned, tokens, wall time per question</td><td>track; alert on regressions</td></tr>
+        </tbody>
+      </table>
+      <p><strong>How to build the set:</strong> 15–30 questions per domain. Draw them from playbook "Examples", real analyst questions (query logs / sessions), and known traps such as wrong join keys or the cents-vs-dollars trap. Include <strong>negative questions</strong>, where the right answer is "this data isn't available / not curated". Run the set in CI on every corpus PR, before any model upgrade, and nightly. Freeze the reference answers to a fixed date window so scores stay comparable.</p>
+
+      <h3>19.2 Runtime agent loop <span class="tag tag-recommended">REC</span></h3>
+      <div class="anatomy" style="align-items:stretch;">
+        <div class="node"><strong>1. Clarify</strong><span>ambiguous terms → acronyms / ask</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>2. Route + plan</strong><span>domain, playbook, grain stated</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>3. Resolve</strong><span><code>kt_resolve</code> → load K dictionaries</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>4. Draft SQL</strong><span>from template</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>5. Static checks</strong><span>lint SQL vs guardrails</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>6. Dry-run</strong><span>validity + bytes estimate</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>7. Execute</strong><span>under byte cap</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>8. Sanity-check result</strong><span>row count, nulls, vs baseline</span></div>
+        <span class="arr">→</span>
+        <div class="node"><strong>9. Answer</strong><span>number + grain + caveats + citations + SQL</span></div>
+      </div>
+      <table class="file-table">
+        <thead>
+          <tr><th>Tool the consumer agent needs</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">read_doc(path) / search_corpus(q)</td><td>file navigation first; embeddings only as a fallback for fuzzy routing</td></tr>
+          <tr><td class="file">resolve_tables(sql)</td><td>wraps <code>kt_resolve.py</code></td></tr>
+          <tr><td class="file">dry_run(sql)</td><td>mandatory before execute; returns bytes</td></tr>
+          <tr><td class="file">run_sql(sql, max_bytes)</td><td>read-only service account; hard cap</td></tr>
+          <tr><td class="file">analyze(csv, sql)</td><td>DuckDB local analysis</td></tr>
+        </tbody>
+      </table>
+      <p class="cite-note"><strong>Static SQL checks (cheap, deterministic):</strong> parse the SQL with sqlglot. Then check that every partitioned table and every CTE has a partition predicate, that no retired view or scratch table is referenced (use the table_registry allow-list), that there's no <code>SELECT *</code> on wide tables, and that <code>COUNT(DISTINCT)</code> is used for rates after joins. Reject the query and let the agent fix it before the dry-run.</p>
+
+      <h3>19.3 Safety &amp; governance <span class="tag tag-required">REQUIRED before users</span></h3>
+      <table class="file-table">
+        <thead>
+          <tr><th>Risk</th><th>Control</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">Runaway cost</td><td><code>maximum_bytes_billed</code> per query, daily budget per user, dry-run first</td></tr>
+          <tr><td class="file">Writes / DDL</td><td>read-only role; block <code>INSERT/UPDATE/DELETE/CREATE/DROP</code> in static checks</td></tr>
+          <tr><td class="file">PII leakage</td><td>output policy: aggregate by default, mask ids/emails/phones, row-level output only on explicit request + allow-list; dictionaries never enumerate PII</td></tr>
+          <tr><td class="file">Prompt injection</td><td>treat wiki/code/query-log text as data, not instructions; curation skills quote sources, never execute embedded instructions; human review before merge</td></tr>
+          <tr><td class="file">Corpus poisoning</td><td>CODEOWNERS per domain; gate + review required; producer skills write to a branch, never to main</td></tr>
+          <tr><td class="file">Secrets</td><td>env / secret manager only; <code>.mcp.json</code> and config dirs gitignored; secret scanning in CI</td></tr>
+          <tr><td class="file">Access boundaries</td><td>agent inherits the user’s data permissions, not a super-account</td></tr>
+        </tbody>
+      </table>
+
+      <h3>19.4 Observability &amp; feedback loop <span class="tag tag-recommended">REC</span></h3>
+      <div class="products" style="grid-template-columns: repeat(3, 1fr);">
+        <article class="product"><h4>Trace every run</h4><p>question, route, docs read, SQL, bytes, tokens, latency, answer, model</p></article>
+        <article class="product"><h4>User feedback</h4><p>👍/👎 + “correct value is…”</p></article>
+        <article class="product"><h4>Failure taxonomy</h4><p>wrong route · missing playbook · wrong join · type trap · stale doc · data unavailable</p></article>
+      </div>
+      <div class="df-arrow">▼ weekly triage</div>
+      <div class="anatomy">
+        <div class="node"><strong>Gap → backlog</strong><span>no-playbook questions → /discover-playbooks / /curate-topic</span></div>
+        <div class="node"><strong>Correction → overrides ledger</strong><span>+ new golden question</span></div>
+        <div class="node"><strong>Every fixed bug → eval case</strong><span>so it never regresses</span></div>
+      </div>
+      <p>Dashboard: eval scores over time, top unanswered intents, most-read docs (keep these high quality), docs never read (candidates for pruning), cost per answer.</p>
+
+      <h3>19.5 LLM-readable authoring rules <span class="tag tag-recommended">REC</span></h3>
+      <ul class="principles">
+        <li><strong>Front-load:</strong> the first 10 lines of every doc say what it is, its grain, and when to use it or not.</li>
+        <li><strong>Size budget:</strong> keep SKILL.md small (aim for under ~300 lines). Split big dictionaries into a core file and a full-registry file (the reference does this for UDS). One playbook = one question family.</li>
+        <li><strong>Explicit negatives:</strong> “NOT the funding decision — see X”. These state what a doc does not cover, and they stop mis-routing.</li>
+        <li><strong>Stable headings:</strong> <code>## Guardrails</code>, <code>## Template T1</code> so agents and graders can address sections.</li>
+        <li><strong>Copy-runnable SQL:</strong> fully qualified tables, named parameters, partition filter already present.</li>
+        <li><strong>Numbers with dates:</strong> “710 cols (verified 2026-10-06)”. Unverified claims are marked <code>UNVERIFIED</code>.</li>
+        <li><strong>One fact, one home:</strong> link to the fact instead of copying it (join keys live in dictionary <code>joins:</code>; not repeated in prose).</li>
+      </ul>
+
+      <h3>19.6 Models, versioning, packaging, ownership <span class="tag tag-optional">OPT</span></h3>
+      <table class="file-table">
+        <thead>
+          <tr><th>Topic</th><th>Recommendation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">Model routing</td><td>Use a strong model for curation and authoring (rare, high-stakes). Use a cheaper or faster model for routing and simple lookups. Re-run evals before switching models.</td></tr>
+          <tr><td class="file">Challenger review</td><td>A second model audits drafted dictionaries and playbooks against the cited sources (<code>tools/llm_model_router.py</code> already enables this). Disagreements go to the human reviewer.</td></tr>
+          <tr><td class="file">Corpus versioning</td><td>Tag corpus releases (<code>kt-v2026.11.1</code>) and keep a CHANGELOG of added, changed and deprecated docs. Pin the eval scorecard to a release. Mark retired docs status <code>deprecated</code> with a pointer to the replacement before deleting them.</td></tr>
+          <tr><td class="file">Packaging</td><td>Expose the corpus as an MCP server (tools: <code>route</code>, <code>get_doc</code>, <code>resolve_tables</code>, <code>dry_run</code>) so any agent or IDE can use it, not just one repo.</td></tr>
+          <tr><td class="file">Hybrid retrieval</td><td>Keep structured navigation as the primary path. Add an embedding index over <code>description</code>, <code>when_to_use</code> and example questions only for fuzzy routing. Rebuild it from <code>catalog.json</code>.</td></tr>
+          <tr><td class="file">Ownership &amp; SLA</td><td>CODEOWNERS per domain folder, a freshness SLA (e.g. drift reviewed within 14 days), and a named reviewer for every new domain.</td></tr>
+          <tr><td class="file">Coverage metric</td><td>% of live decision points curated, % of warehouse query volume touching a documented table. Report both monthly.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 20. Build Kit -->
+    <section class="block" id="s20">
+      <h2>20. Build Kit ★ (everything needed to implement from scratch)</h2>
+      <div class="callout">
+        <strong class="label">What this section is</strong>
+        <p>the concrete artifacts that make a scratch build predictable: (20.1) the consumer agent’s system prompt, (20.2) one fully worked domain, (20.3) implementation specs for scripts, root files, generated files and core skills, and (20.4) the definition of done. Specs are language-agnostic: implement in Python, Node/TypeScript or anything else. Script behaviour is taken from <code>arc_repo_v3</code>. The system prompt, golden questions and DoD thresholds are recommendations (not in the reference).</p>
+      </div>
+
+      <h3>20.1 Consumer agent system prompt <span class="tag tag-required">REQUIRED</span></h3>
+      <p>Replace the <code>&lt;PLACEHOLDERS&gt;</code>. Keep it in the repo (e.g. <code>agent/system_prompt.md</code>), version it, and re-run evals on every change.</p>
+      <pre># ROLE
+You are a data-analysis agent for &lt;PROJECT&gt;. You answer questions by querying the
+&lt;WAREHOUSE&gt; using ONLY the curated knowledge corpus at &lt;corpus_root&gt;/ as your map.
+You never guess table names, column names, types, join keys or metric formulas.
+
+# HOW TO NAVIGATE (always follow this order)
+1. Read &lt;corpus_root&gt;/SKILL.md (root router). If a term is unfamiliar, check acronyms/.
+2. Pick the domain(s). Read &lt;domain&gt;/SKILL.md: primary table, guardrails, join rules.
+3. Pick the closest playbook. Start from its template; do not write SQL from scratch
+   when a template exists.
+4. Open ONLY the dictionaries for tables you will touch (run resolve_tables(sql) to
+   get the list, the grain and join keys). Read their "Type Traps" before any CAST/SUM/AVG.
+5. Multi-domain: read join_topology.md + global_concept_registry.md first.
+
+# BEFORE RUNNING ANY SQL — write this plan in 3–6 lines
+- Question restated as a metric: numerator / denominator / filters / time window.
+- Base table + its grain. Grain after every JOIN / UNNEST.
+- Guardrails applied (list the numbers from the domain SKILL.md).
+- Playbook + template used (path#T1).
+
+# SQL RULES (hard)
+- Partition filter on EVERY partitioned table and EVERY CTE.
+- Read root tables only; never a view/aggregate/scratch unless the corpus marks retired.
+- COUNT(DISTINCT key) for rates after joins; aggregate the N-side before joining.
+- Pre-filter the right side of a LEFT JOIN in a CTE.
+- Explicit NULL handling for !=, &lt;&gt;, NOT IN, SAFE_CAST log fields, SAFE_DIVIDE.
+- Read-only; never INSERT/UPDATE/DELETE/CREATE/DROP/MERGE.
+- Always dry_run(sql) first. If estimated bytes &gt; &lt;MAX_BYTES&gt;, narrow the window or
+  columns, or ask the user.
+
+# AFTER RUNNING
+- Sanity-check: row count &gt; 0, no unexpected NULL-heavy columns, values in plausible
+  range vs any baseline stated in the playbook/glossary, if something looks off, say so.
+- Analyze result files with DuckDB SQL, not pandas (pandas only for plots).</pre>
+      <h3>20.2 Worked example — one complete domain <span class="tag tag-recommended">STUDY THIS</span></h3>
+      <p>Trimmed from the reference <code>uds</code> domain. Table and column names are real reference values; replace them with yours. The point is to show the level of detail "good" requires.</p>
+      <pre>uds/
+├── SKILL.md
+├── README.md
+├── dictionaries/unified_dataset_v4_dictionary.md
+├── playbooks/uds_decline_analysis.md
+├── playbooks/uds_derived_flags.md
+├── reference/uds_background.md
+├── index.md                 # generated
+└── evals/golden_questions.yaml   # uds-* entries</pre>
+
+      <details class="tpl" open>
+        <summary>uds/SKILL.md</summary>
+        <div class="inner">
+          <pre>---
+name: uds
+type: Skill
+title: UDS (Unified Dataset) — Funding Checkpoint Data Layer
+description: Entry point for payment-level risk analysis at the funding checkpoint — declines, loss, control groups.
+domain: uds
+status: active
+owner: DL-PP-RISK-RAP-ADMIN@paypal.com
+when_to_use: Payment, loss, decline or control-group questions at the funding checkpoint.
+tags: [uds, funding, payment, loss, decline]
+sources: [confluence:393352178, external:sql-003]
+timestamp: 2026-10-06
+---
+
+# UDS – Data Layer
+Payment-attempt-level risk dataset. Start every analysis from the raw table `unified_dataset_v4`. There is no curated view; derived flags live in `playbooks/uds_derived_flags.md`.
+
+## Primary Table
+| Name | BQ Path | Grain | Use For |
+| `unified_dataset_v4` | `pypl-edw.pp_risk_ops_views.unified_dataset_v4` | payment attempt (`trans_id`) | declines, loss, TPV, ... |
+
+## Raw Tables In Scope
+| Table | BQ Path | Grain | Key | Partition |
+| `unified_dataset_v4` | `pypl-edw.pp_risk_ops_views.unified_dataset_v4` | payment attempt | `trans_id` | `pmt_start_date` |
+| `consolidatedfunding` | `pypl-buds.prd_timetunnel_v.consolidatedfunding` | funding eval | `ID_tier_link_id` | `TS` |
+
+## Playbooks
+| Playbook | File | Use When |
+| Decline Analysis | `playbooks/uds_decline_analysis.md` | decline rates, decline reason mix |
+| Derived Flags | `playbooks/uds_derived_flags.md` | you need a dedup / decline / loss flag |
+
+## Dictionaries
+| Dictionary | File | Covers |
+| UDS v4 | `dictionaries/unified_dataset_v4_dictionary.md` | all 710 columns, type traps, categorical values |
+
+## Guardrails
+1. **Partition filter mandatory** — `pmt_start_date BETWEEN @start_date AND @end_date`.
+2. **Valid amounts only** — `is_valid_pmt_amt_t_f = 1`.
+3. **t/f columns are INT64 0/1, not BOOL** — compare with `= 1`.
+4. **Loss columns mature over time** — recent weeks under-report loss; state maturity.
+5. **Never COUNT(*) after joining CF** — use `COUNT(DISTINCT trans_id)`.
+
+## Join Rules
+| Pattern | Join Key | Notes |
+| UDS ↔ ConsolidatedFunding | `rugs_uuid = ID_tier_link_id` | 1:1; filter `TS` on CF side too |
+| UDS ↔ Login | `global_sn_id` (NOT `cal_corr_id`) | corrected per `external:sql-001` |</pre>
+        </div>
+      </details>
+
+      <details class="tpl">
+        <summary>uds/playbooks/uds_decline_analysis.md</summary>
+        <div class="inner">
+          <pre>type: Playbook
+title: UDS Decline Analysis
+description: Risk-decline rate and decline-reason mix at the funding checkpoint.
+domain: uds
+status: active
+owner: DL-PP-RISK-RAP-ADMIN@paypal.com
+tables: [bq://pypl-edw.pp_risk_ops_views.unified_dataset_v4]
+tags: [decline, funding]
+sources: [external:sql-003]
+timestamp: 2026-09-16
+---
+
+# Playbook: UDS Decline Analysis
+
+## When to Use
+- "What was the risk decline rate last week?"
+- "Break down declines by reason family by month."
+- "Is the issuer-decline rate drifting for country X?"
+
+## Tables
+| Table | Role |
+| `pypl-edw.pp_risk_ops_views.unified_dataset_v4` | Primary - status, reason, amount |
+
+## Template T1: Decline rate by reason family (daily)
+```sql
+WITH base AS (
+  SELECT
+    pmt_start_date,
+    trans_id,
+    attempt_status,
+    CASE
+      WHEN attempt_status = 'A' THEN 'approved'
+      WHEN attempt_status IN ('T','F') THEN 'dropoff_failure'
+      WHEN attempt_status_reason IN ('MDL','RUL','PLD','AFD') THEN 'risk'
+      WHEN attempt_status_reason = 'PMP' THEN 'policy'
+      WHEN attempt_status_reason IN ('ISS','FSG','AVS') THEN 'issuer'
+      ELSE 'other'
+    END AS outcome_family
+  FROM `pypl-edw.pp_risk_ops_views.unified_dataset_v4`
+  WHERE pmt_start_date BETWEEN @start_date AND @end_date  -- guardrail 1
+    AND is_valid_pmt_amt_t_f = 1                         -- guardrail 2
+)
+SELECT
+  pmt_start_date,
+  COUNT(DISTINCT trans_id) AS attempts,
+  ...</pre>
+        </div>
+      </details>
+
+      <details class="tpl">
+        <summary>uds/dictionaries/unified_dataset_v4_dictionary.md (excerpt)</summary>
+        <div class="inner">
+          <pre># Unified Dataset v4 — Data Dictionary
+
+## Overview
+| Property | Value |
+| Full table name | `pypl-edw.pp_risk_ops_views.unified_dataset_v4` |
+| Grain | payment attempt (one row per `trans_id`) |
+| Partition column | `pmt_start_date` (mandatory filter) |
+| Total columns | 710 (verified 2026-10-06 via INFORMATION_SCHEMA) |
+
+## Type Traps
+| Column | Actual Type | Wrong Usage | Correct Usage |
+| `is_valid_pmt_amt_t_f` | INT64 (0/1) | `WHERE is_valid_pmt_amt_t_f` | `WHERE is_valid_pmt_amt_t_f = 1` |
+| `trans_id` | key - type differs across tables | `a.trans_id = b.payment_transid` | `CAST(a.trans_id AS STRING) = CAST(b.payment...)` |
+
+## Schema (excerpt)
+| # | Column | Type | null% | Description |
+| 0 | `pmt_start_date` | DATE | 0 | **Partition column - must filter in every query** |
+| 1 | `trans_id` | ... | ... | Payment attempt id (grain key) |
+| 2 | `attempt_status` | STRING | 0 | Outcome of the attempt (see values) |
+| 3 | `attempt_status_reason` | STRING | - | Reason code when not approved (see values) |
+| 4 | `usd_amt` | NUMERIC | - | Attempt amount in USD |
+
+## Categorical values - `attempt_status` (EXHAUSTIVE)
+| Value | Meaning | Analyst use |
+| `A` | Approved | numerator of approval rate |
+| `T` / `F` | User drop-off / failure | exclude from risk-decline numerator |
+| other | Declined / reason-coded | read `attempt_status_reason` |
+
+## Categorical values - `attempt_status_reason` (decline-relevant subset)
+| Value | Family | Meaning |
+| `MDL`, `RUL`, `PLD`, `AFD` | Risk | model / rule / policy-level / auth-flow decline codes (risk family) |
+| `PMP` | Policy | policy decline - keep separate from risk |
+| `ISS`, `FSG`, `AVS` | Issuer/network | card issuer / network / address-verification decline |</pre>
+        </div>
+      </details>
+
+      <h3>20.3 Implementation specs</h3>
+      <h4 style="margin:0.65rem 0 0.4rem;font-size:0.95rem;">A. <code>kt_lib</code> — contract library API</h4>
+      <pre># kt_lib — the only place the contract lives
+ROOT: Path                       # corpus root
+REQUIRED_KEYS, TYPES, STATUSES, AUDIENCES, TYPE_REQUIRED, BQ_PREFIX,
+DIR_TYPE, JOIN_EDGE_KEYS={"to","left_col","right_col","cardinality"},
+JOIN_CARDINALITIES, NON_DOMAIN_DIRS, GENERATED_NAMES, GENERATED_SUFFIX=".generated.md"
+
+iter_docs(root=ROOT) -&gt; Iterator[Path]   # *.md + views/*.sql, skips generated,
+                                         # templates/, NON_DOMAIN_DIRS, .gitkeep
+domain_of(path) -&gt; str                   # first path segment under ROOT
+expected_type(path) -&gt; str|None         # SKILL.md-Skill, README.md-Readme, DIR_TYPE
+split_frontmatter(text, is_sql) -&gt; (dict|None, body)
+  # md: leading '---\n...\n---\n'
+  # sql: leading '/* ---\n...\n--- */'
+read_frontmatter(path) -&gt; dict|None
+curated_domains(root) -&gt; set[str]       # dirs whose SKILL.md has valid type: Skill
+validate_doc(path, fm) -&gt; list[str]      # contract violations (see lint table)
+external_source_ids(root) -&gt; set[str]|None  # ids from ../external_sources/index.json
+is_producer(fm) -&gt; bool                 # audience == "producer"
+timestamp_today() -&gt; "YYYY-MM-DD"</pre>
+
+      <h4 style="margin:0.65rem 0 0.4rem;font-size:0.95rem;">B. <code>kt_lint</code> — checks and severities</h4>
+      <p><strong>CLI:</strong> <code>kt_lint [--domain D]... [--strict]</code>. Prints <code>ERROR path: msg</code> / <code>WARN path: msg</code> and a summary. Exit 1 on any ERROR (with <code>--strict</code>, also on any WARN). Lints producer docs too.</p>
+      <table class="file-table">
+        <thead>
+          <tr><th>Check</th><th>Severity</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">Missing / empty required key</td><td>ERROR</td><td>curated domains</td></tr>
+          <tr><td class="file">type not in vocabulary or ≠ type implied by path</td><td>ERROR</td><td></td></tr>
+          <tr><td class="file">status / audience outside enum</td><td>ERROR</td><td></td></tr>
+          <tr><td class="file">Type-specific key missing (tables / resource+grain / source_tables)</td><td>ERROR</td><td></td></tr>
+          <tr><td class="file">resource / list entries not starting with <code>bq://</code></td><td>ERROR</td><td></td></tr>
+          <tr><td class="file">domain ≠ directory name</td><td>ERROR</td><td></td></tr>
+          <tr><td class="file">Doc in a non-curated domain lacks frontmatter</td><td>WARN</td><td>one per doc: backfill pending</td></tr>
+          <tr><td class="file">Unfilled TODO: values in frontmatter</td><td>WARN</td><td>left by kt_profile/kt_frontmatter</td></tr>
+          <tr><td class="file">external:&lt;id&gt; not in external_sources/index.json</td><td>ERROR</td><td>store absent → one WARN (ERROR if <code>KT_EXTERNAL=1</code>)</td></tr>
+          <tr><td class="file">Relative markdown link to a missing file</td><td>ERROR</td><td>corpus-wide</td></tr>
+          <tr><td class="file">Path mentioned in prose that doesn't exist</td><td>WARN</td><td>code fences stripped first</td></tr>
+          <tr><td class="file">Playbook tables / View source_tables entry with no Dictionary/View resource home</td><td>WARN</td><td>"no Dictionary/View home"</td></tr>
+          <tr><td class="file">Two docs claim the same resource</td><td>ERROR</td><td>table→doc must be deterministic</td></tr>
+          <tr><td class="file">joins edge: unknown to table or cardinality outside enum</td><td>WARN</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin:0.65rem 0 0.4rem;font-size:0.95rem;">C. <code>kt_generate</code> — outputs</h4>
+      <p><strong>CLI:</strong> <code>kt_generate</code> (write) | <code>kt_generate --check</code> (exit 1 if any artifact differs from what would be written; prints which). Deterministic output (sorted keys and lists) so <code>--check</code> is stable.</p>
+      <pre># catalog.json — list, one entry per consumer doc (producer docs excluded)
+[{"path":"uds/playbooks/uds_decline_analysis.md","domain":"uds","type":"Playbook",
+  "title":"UDS Decline Analysis","description":"...","status":"active",
+  "tables":["bq://..."],"tags":[...],"timestamp":"2026-09-16",...}]
+
+# table_registry.json — map: table id -&gt; home
+# reference_graph.generated.md — doc -&gt; doc link graph</pre>
+
+      <h4 style="margin:0.65rem 0 0.4rem;font-size:0.95rem;">D. Other scripts — CLI contracts</h4>
+      <table class="file-table">
+        <thead>
+          <tr><th>Script</th><th>CLI</th><th>Behaviour / exit</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">kt_check</td><td><code>kt_check [--domain D]...</code>; env <code>KT_STRICT=1</code>, <code>KT_BQ=1</code></td><td>runs lint → verify → dict → generate → check; exit 1 if any step fails</td></tr>
+          <tr><td class="file">kt_verify</td><td><code>kt_verify --dict [--domain D] [--fix] [--strict]</code></td><td>parses each dictionary’s Schema table (column, type) and compares it with <code>INFORMATION_SCHEMA</code> of resource; missing column = ERROR, type mismatch = ERROR (<code>--fix</code> rewrites type cells). Warehouse unreachable → prints SKIPPED, exit 0 (unless <code>KT_BQ=1</code>)</td></tr>
+          <tr><td class="file">kt_profile</td><td><code>kt_profile bq://p.d.t --partition-col C --partition-type DATE|TIMESTAMP --days 7 --sample-pct 5 --domain D [--owner O] [--write]</code></td><td>batches columns; per column null%, approx distinct, sanitized samples; auto Type Traps; writes dictionary skeleton with TODOs (dry-run prints)</td></tr>
+          <tr><td class="file">kt_frontmatter</td><td><code>kt_frontmatter PATH... [--timestamp-source today|git|mcp] [--owner O] [--write] [--force]</code></td><td>adds a contract-shaped block to docs lacking one; infers type/domain/title; owner from domain SKILL.md; never double-adds</td></tr>
+          <tr><td class="file">kt_resolve</td><td><code>kt_resolve --sql FILE|-| --tables LIST [--format text|json]</code></td><td>see sample below; reads only <code>table_registry.json</code></td></tr>
+          <tr><td class="file">kt_sources</td><td><code>extract</code> / <code>apply</code> subcommands</td><td>see sample below</td></tr>
+          <tr><td class="file">kt_registry</td><td><code>kt_registry [--write]</code></td><td>compiles optional metrics/joins/filters/features frontmatter → <code>registry.json</code> (prototype, not gated)</td></tr>
+          <tr><td class="file">external_sources/index.py</td><td><code>build [--check]</code>; <code>search "terms" [--type] [--content] [--limit]</code>; <code>verify</code></td><td>catalogs sources and the tables each SQL creates or references; search ranks on metadata, <code>--content</code> greps bodies for file:line snippets</td></tr>
+        </tbody>
+      </table>
+
+      <details class="tpl" open>
+        <summary>kt_resolve input/output (real output from the reference)</summary>
+        <div class="inner">
+          <pre>$ python3 scripts/kt_resolve.py --tables bq://pypl-edw.pp_risk_ops_views.unified_dataset_v4,bq://pypl-bods.prd_timetunnel_v.consolidatedfunding
+RESOLVED (2):
+  consolidatedfunding  consolidate_funding  consolidate_funding/dictionaries/cf_timetunnel_dictionary.md  grain: funding evaluation
+  unified_dataset_v4  uds  uds/dictionaries/unified_dataset_v4_dictionary.md  grain: payment attempt (one row per trans_id)
+JOINS (1):
+  consolidatedfunding.ID_tier_link_id = unified_dataset_v4.rugs_uuid (1:1)
+UNRESOLVED (0):
+
+# --sql FILE: strip comments + regex FROM/JOIN tokens → drop CTE names + normalize
+# (strip backticks, accept project.dataset.table or bare name) + look up registry
+# (exact id, then unique short name) → print RESOLVED / JOINS among them / UNRESOLVED.
+# --format json returns the same as {"resolved":[...],"joins":[...],"unresolved":[...]}</pre>
+        </div>
+      </details>
+
+      <details class="tpl">
+        <summary>kt_sources worklist / results / drift</summary>
+        <div class="inner">
+          <pre># kt_sources.py extract --domain uds --only-with-sources [--scan-body] --out w1.json
+{"fetch":[{"id":"confluence:393352178","kind":"confluence"},
+          {"id":"jira:RAPREQ-376","kind":"jira"}],
+ "docs":[{"path":"uds/SKILL.md","timestamp":"2026-10-06","sources":["confluence:393352178"]}]}
+
+# agent (with MCP) writes results.json:
+{"confluence:393352178":{"last_updated":"2026-10-20"}}
+
+# kt_sources.py apply --results results.json --domain uds [--fail-on-drift] [--stamp --write]
+# drift = max(source.last_updated) &gt; doc.timestamp → report (exit 1 with --fail-on-drift)
+# --stamp --write = set timestamp to newest source date (ONLY after human reconciled content)</pre>
+        </div>
+      </details>
+
+      <details class="tpl">
+        <summary>Optional semantic frontmatter (metrics / filters) → registry.json</summary>
+        <div class="inner">
+          <pre># optional semantic blocks in Dictionary frontmatter → compiled by kt_registry.py into registry.json
+metrics:
+  - id: asl_failed_login_rate
+    formula: "AVG(RES_is_failed_login)"
+    unit: ratio
+    caveats: "dense (0% null); includes successful and failed logins"
+
+filters:
+  - id: exclude_shadow
+    sql: "SHADOW_isRUGSShadow = FALSE"
+
+features: [...]
+
+# registry.json = {"generated": date, "domains":[...], "metrics":{"id":{...,"domain","resource"}},
+#                 "joins":{...}, "filters":{...}, "features":{...}}</pre>
+        </div>
+      </details>
+
+      <h4 style="margin:0.65rem 0 0.4rem;font-size:0.95rem;">E. Root-level file templates</h4>
+      <details class="tpl" open>
+        <summary>Root SKILL.md</summary>
+        <div class="inner">
+          <pre>---
+name: &lt;corpus_name&gt;
+description: Router for domain data layers. Each domain has dictionaries, playbooks and guardrails for agent-driven analysis on ...
+triggers: [/data-layer, "analyze", "query", "drill down"]
+when_to_use: Any data analysis / investigation question covered by the corpus.
+---
+
+# &lt;Project&gt; - Data Layer
+
+## Domains
+| Domain | Skill | Description (scope, primary table, grain, #playbooks) |
+| **&lt;Domain A&gt;** | `&lt;domain_a&gt;/SKILL.md` | &lt;one dense line&gt; |
+
+## How to Use
+Single-domain: match domain → read its SKILL.md → playbook → dictionary → SQL.
+Multi-domain: join_topology.md → each domain's guardrails → CTE pre-filter pattern.
+
+## Multi-Domain Routing
+Question pattern | Domains | Entry</pre>
+        </div>
+      </details>
+      <details class="tpl">
+        <summary>join_topology.md</summary>
+        <div class="inner">
+          <pre># Join Topology - Data Layer
+## 1. Domain Map (one line per domain: grain, key, partition column)
+## 2. Join Key Registry
+| From | To | Key (exact SQL) | Cardinality | Coverage | Verified | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| uds.unified_dataset_v4 | cf.consolidatedfunding | `u.rugs_uuid = c.ID_tier_link_id` | 1:1 | ~97% | BQ 2026-09 | external:repo-... |
+### Warnings (pairs with NO direct key; known-wrong keys)
+## 3. Partition Filter Rules (both sides; LEFT JOIN trap with example)
+## 4. Cross-Domain SQL Patterns
+### Pattern A: &lt;A&gt; ↔ &lt;B&gt; (LEFT JOIN, all A rows)
+```sql
+WITH a AS (SELECT ... FROM b WHERE &lt;part&gt; BETWEEN @s AND @e AND &lt;filters&gt;)
+SELECT ... FROM a LEFT JOIN b ON ... WHERE a.&lt;part&gt; BETWEEN @s AND @e
+```
+## 5. Real Match Rates (measured, with date + sample)
+## 6. When to Use Each Pattern</pre>
+        </div>
+      </details>
+      <details class="tpl">
+        <summary>global_concept_registry.md</summary>
+        <div class="inner">
+          <pre># Global Concept Registry
+## 1. Column Name Registry (same concept, different column per domain; "-" = absent)
+| Concept | Domain A | Domain B | Domain C |
+| --- | --- | --- | --- |
+| account_id | `u1_account_number` | `sndr_id` | `cust_id` |
+| event time / partition | `event_dt` | `pmt_start_date` | `TS` (TIMESTAMP) |
+## 2. Business Concept Definitions
+| Concept | Definition | SQL (canonical) | Domain(s) | Source |
+| decline_rate | declined / attempts | `SAFE_DIVIDE(COUNT(DISTINCT IF(...)), COUNT(DISTINCT id))` | uds | external:sql-003 |
+## 3. Type Safety Traps (cross-domain)
+## 4. Sentinels & units (-999 = not scored, cents vs dollars, etc.)</pre>
+        </div>
+      </details>
+      <details class="tpl">
+        <summary>cross_domain_playbooks/SKILL.md</summary>
+        <div class="inner">
+          <pre># Cross-Domain Playbooks
+name: cross_domain_playbooks
+type: Skill
+title: Cross-Domain Investigation Playbooks
+description: Router for investigations spanning multiple domains. Not a domain - no tables of its own.
+domain: cross_domain_playbooks
+status: active
+owner: &lt;owner&gt;
+triggers: [cross-domain, incident, rca, account journey]
+timestamp: YYYY-MM-DD
+---
+
+# Cross-Domain Playbooks
+## Playbook Catalog
+| Playbook | Chains domains | Use when |
+## Use Case Routing (question → playbook → concepts needed from global_concept_registry)</pre>
+        </div>
+      </details>
+      <details class="tpl">
+        <summary>external_sources/MANIFEST.md row format</summary>
+        <div class="inner">
+          <pre>| id | type | path | origin | validated | authoritative for | owner / notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| sql-001 | sql | `sql/&lt;file&gt;.sql` | `&lt;who provided / repo / ticket&gt;` | YYYY-MM-DD | `&lt;exact logic it is trusted for: joins, filters ...&gt;` | `...` |
+| repo-name | repo | `repos/&lt;dir&gt;/` | `&lt;git URL, branch&gt;` | YYYY-MM-DD | `&lt;...&gt;` | see `SOURCE.md` |</pre>
+        </div>
+      </details>
+
+    </section>
+
+    <section>
+      <h3>F. Core skills - full text (language-agnostic)</h3>
+      <p class="muted">Save each one as <code>.claude/skills/&lt;name&gt;/SKILL.md</code> (or your agent framework's equivalent). These are condensed but complete versions of the reference skills. Add <code>/refresh-domain</code> and <code>/curate-topic</code> later, following the same pattern.</p>
+
+      <details class="tpl">
+        <summary>/create-dictionary</summary>
+        <div class="inner">
+          <pre>name: create-dictionary
+description: &gt;
+  Build one table's column Dictionary (/domain/dictionaries/&lt;table&gt;_dictionary.md):
+  every column with type, samples, meaning; EVERY value of every low-cardinality
+  categorical is a meaning. Use when asked to create/build a dictionary or document
+  a table's columns/values. Precedence: live schema &gt; validated code &gt; wiki &gt; corpus.
+
+# Create a table Dictionary
+
+## Non-negotiable rules
+1. Types and column list come from INFORMATION_SCHEMA. Never hand-type them.
+2. Low-cardinality categorical (roughly ≤ 50 distinct, or a code/enum/flag/status) →
+   list EVERY observed value + every code-defined value, each with a meaning.
+3. High-cardinality (ids, account numbers, emails, phones, hashes, timestamps, amounts,
+   scores, free text) → 2-3 samples only. Never enumerate PII.
+4. Meaning sources, in order: validated code (enum definitions, CASE logic) → wiki →
+   leave "meaning unknown" needs owner (never invent).
+5. One table = one dictionary = one `resource`. If the table is already homed elsewhere,
+   extend that dictionary instead of creating a second home.
+6. Bounded profiling: always filter the partition column and sample; cap bytes.
+
+## Phase 1 - Schema
+Run: `SELECT column_name, data_type, is_partitioning_column FROM &lt;ds&gt;.INFORMATION_SCHEMA.COLUMNS`
+WHERE table_name = `&lt;table&gt;` ORDER BY ordinal_position.
+Record grain (what one row is), key, partition column, row count for 7 days.
+
+## Phase 2 - Profile
+Run kt_profile (or equivalent) on a 7-day, ≤5% sample: null %, approx distinct, samples.
+Classify each column: key / categorical / numeric / timestamp / text / PII.
+
+## Phase 3 - Enumerate categoricals
+For each categorical: SELECT col, COUNT(*) ..., GROUP BY 1 ORDER BY 2 DESC LIMIT 200
+(partition-filtered). Union with values defined in code (search external_sources).
+
+## Phase 4 - Meanings
+Search validated code for each categorical column name and for CASE/IF logic using it;
+then wiki. Cite every source in `sources:`.
+
+## Phase 5 - Type Traps
+Flag: STRING-encoded numbers, INT 0/1 flags vs BOOL, key type mismatches across tables,</pre>
+        </div>
+      </details>
+
+      <details class="tpl" open>
+        <summary>/curate-domain</summary>
+        <div class="inner">
+          <pre>name: curate-domain
+description: &gt;
+  Build a domain's knowledge layer from scratch (fill a _p scaffold or stand up a new
+  domain): parallel discovery (wiki for meaning + validated code for logic) → confirm
+  tables in the warehouse → dictionaries for every table → draft bundle → find &amp; fill
+  gaps → warning-clean gate + MANDATORY /discover-playbooks.
+
+# Curate a domain
+
+## Non-negotiable rules
+1. Discover meaning (wiki/MCP) and logic (validated code) IN PARALLEL. Existing docs are
+   cross-check only.
+2. Precedence: live schema &gt; validated code &gt; wiki &gt; existing corpus. The loser is
+   corrected and cites the winner.
+3. Every table any playbook reads gets a dictionary via /create-dictionary.
+4. Playbooks read RQT tables only. Derived logic goes in &lt;domain&gt;_derived_flags.md.
+5. Human reviews before merge. Surface uncertainty; never guess join keys.
+6. Gate must be warning-clean for this domain: KT_STRICT=1 kt_check.sh --domain &lt;d&gt;.
+7. If no queryable live table exists: STOP. Record a dead-end note (what it is, why
+   blocked, how to recheck). Leave the _p scaffold.
+
+## Phase 0 - Discover (parallel)
+Agent A (wiki): search the checkpoint name; read the top pages and tickets. Capture what it
+decides, its outcomes, which tables it cannot read, issues. Record ids.
+Agent B (code): index.py search "&lt;name&gt;" - context. Capture real joins, filters, metric
+formulas, dedup logic, the tables the code actually reads. Record external ids.
+Merge into notes: purpose, outcomes, tables, logic, source ids.
+
+## Phase 1 - Confirm tables
+INFORMATION_SCHEMA for each table: exists? columns, partition, row scale, freshness
+(MAX(partition) recent?). Table named by the wiki must equal the table the code reads.
+
+## Phase 2 - Dictionaries
+/create-dictionary for the primary table and every secondary table.
+
+## Phase 3 - Draft
+From templates: SKILL.md (primary table, tables in scope, playbooks, dictionaries,
+numbered guardrails, join rules), README.md, reference/&lt;d&gt;_background.md,
+playbooks/&lt;d&gt;_derived_flags.md (if derived columns), 1-3 starter playbooks.
+
+## Phase 4 - Gaps
+List what the docs can't state with confidence. Classify each as a LOGIC gap (join,
+filter, formula) or a MEANING gap (why, what).
+
+## Phase 5 - Fill
+Fill logic gaps from code and meaning gaps from the wiki. Cite every source. If neither
+answers, mark UNVERIFIED and ask the human.</pre>
+## Phase 6 - Wire + gate
+Every playbook + tables: entry has a dictionary home. Add `sources:` to every doc.
+Run kt_generate, then KT_STRICT=1 kt_check.sh --domain &lt;d&gt;. Rename &lt;d&gt;_p → &lt;d&gt;,
+add the domain row to the root SKILL.md (and multi-domain routing rows if relevant).
+
+## Phase 6.5 - Deepen (mandatory)
+Run /discover-playbooks &lt;d&gt;, then re-run Phase 6.
+
+## Phase 7 - Seed evals
+Write 15-30 golden questions for the domain (incl. negatives and trap cases).
+
+## Done when
+See Definition of Done - "Domain".</pre>
+        </div>
+      </details>
+
+      <details class="tpl">
+        <summary>/discover-playbooks</summary>
+        <div class="inner">
+          <pre>name: discover-playbooks
+description: &gt;
+  Find, rank and author the playbooks a domain is missing. Sources: validated code +
+  wiki/dashboards (parallel) + schema-derived ideas (+ query-log corroboration if
+  available). Rank by groundedness × business value × novelty; present a list for
+  approval; author the approved ones against ROOT tables; gate.
+
+# Discover playbooks
+
+## Groundedness tiers
+G1 validated - a real query/recipe in validated code reads this domain's tables.
+G2 documented - a wiki/dashboard/WBR defines the metric; columns confirmed in schema.
+G3 inferred - only the dictionary suggests it; author only with approval, assumptions flagged.
+Query-log Tier-A trusted query - treat as G1-grade; Tier-B = boost one step.
+Never upgrade past a conflict with a higher source - flag it.
+
+## Phase 0 - Inventory
+List the existing playbooks and the questions they answer. Read the domain SKILL.md.
+
+## Phase 1 - Discover (parallel)
+Code: search the domain's table names, metric names, checkpoint name.
+Wiki: dashboards, metric definitions, recurring analyst questions, analysis tickets.
+Query logs (if available): /mine-trusted-queries for the top candidates.
+
+## Phase 2 - Schema-derived candidates
+From the dictionary: rate of each decision flag, segment splits, score performance by
+decile, trend/completeness checks, join-based attribution (verified joins only).
+
+## Phase 3 - Score, dedup
+rank = tier × value × novelty. Merge duplicates. Drop anything already covered.
+
+## Phase 4 - Present
+Show a table to the human: candidate | tier | evidence (ids) | value | novelty | tables.
+Wait for approval.
+
+## Phase 5 - Author
+Use templates/domain/playbooks/TEMPLATE.md. Every template must have a partition
+filter, root tables only, parameterized dates, COUNT DISTINCT rates, guardrails, and
+3-5 example questions. Rewrite any view/scratch read onto root tables.
+
+## Phase 6 - Wire + gate
+Add the playbooks to SKILL.md. Every new table gets a dictionary. Run kt_generate, then
+KT_STRICT=1 kt_check.sh --domain &lt;d&gt;. Add 1-2 golden questions per new playbook.</pre>
+        </div>
+      </details>
+    </section>
+
+    <section>
+      <h3>20.4 Definition of Done</h3>
+      <p>Per curation phase</p>
+      <table class="file-table">
+        <thead>
+          <tr><th>Phase</th><th>Done when</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">Phase 0 Discover</td><td>Notes list: purpose, outcomes, candidate tables, logic, ≥1 wiki id and/or ≥1 external id (or an explicit "none found").</td></tr>
+          <tr><td class="file">Phase 1 Confirm</td><td>Every table: exists, partition column known, MAX(partition) within freshness SLA, grain sentence written. Otherwise a dead-end note is recorded.</td></tr>
+          <tr><td class="file">Phase 2 Dictionaries</td><td>One dictionary per referenced table; all columns with live types; categoricals exhaustive; kt_verify --dict passes.</td></tr>
+          <tr><td class="file">Phase 3 Draft</td><td>SKILL.md has primary table, tables in scope, ≥3 numbered guardrails, join rules, playbook + dictionary indexes; README + background reference exist.</td></tr>
+          <tr><td class="file">Phase 4-5 Gaps</td><td>Every gap is resolved with a citation or explicitly marked UNVERIFIED with an owner question.</td></tr>
+          <tr><td class="file">Phase 6 Gate</td><td>KT_STRICT=1 kt_check.sh --domain d exits 0; generated files committed; _p dropped; root SKILL.md row added.</td></tr>
+          <tr><td class="file">Phase 6.5 Deepen</td><td>/discover-playbooks run; approved playbooks authored; gate re-run green.</td></tr>
+        </tbody>
+      </table>
+
+      <p>Per artifact / milestone</p>
+      <table class="file-table">
+        <thead>
+          <tr><th>Unit</th><th>Done when</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">Domain</td><td>All phases done · ≥3 playbooks (G1/G2 preferred) · every table homed · 15-30 golden questions · domain eval: routing ≥90%, SQL validity ≥95%, guardrail compliance 100%, answer correctness ≥80% · human reviewer sign-off · owner set.</td></tr>
+          <tr><td class="file">Corpus release</td><td>Full gate green · CHANGELOG entry · eval scorecard ≥ previous release on every domain (no regressions) · no locked override violated · drift report reviewed.</td></tr>
+          <tr><td class="file">Agent go-live</td><td>Safety controls active (read-only role, byte cap, dry-run, PII policy) · traces logged · feedback capture working · negative questions answered "not covered" · cost $/r answer within budget.</td></tr>
+          <tr><td class="file">A playbook</td><td>Frontmatter valid · ≥3 example questions · every template has a partition filter, root tables, parameters, COUNT DISTINCT rates · cites a source · ≥1 golden question.</td></tr>
+          <tr><td class="file">A dictionary</td><td>Live-schema types · grain + partition · Type Traps section · categoricals exhaustive · joins verified or omitted · sources cited.</td></tr>
+        </tbody>
+      </table>
+
+      <p class="muted">Scratch-build order with these pieces: templates + kt_lib/lint/generate/check (20.3 A-C) → warehouse helper → first domain by hand using 20.2 as the model → golden questions + system prompt (20.1) → measure → skills (20.3 F) → next domains → CI + safety (§14, §19.3).</p>
+    </section>
+
+    <section>
+      <h3>21. Anti-patterns &amp; lessons learned</h3>
+      <table class="file-table">
+        <thead>
+          <tr><th>Don't</th><th>Do instead</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Start from existing docs/prose</td><td>Start from wiki + validated code in parallel; docs are cross-check only</td></tr>
+          <tr><td>Hand-type column types</td><td>Pull from INFORMATION_SCHEMA; verify in the gate</td></tr>
+          <tr><td>Write playbooks against views/aggregates/scratch tables</td><td>Trace to root table, inline logic (derived_flags)</td></tr>
+          <tr><td>Hand-maintain index/catalog files</td><td>Generate them; gate checks staleness</td></tr>
+          <tr><td>Assume "one table = one domain"</td><td>Domain = decision/subject; it owns several tables</td></tr>
+          <tr><td>Blend tenants / shadow traffic / two-phase rows</td><td>Write it as a numbered guardrail in SKILL.md</td></tr>
+          <tr><td>COUNT(*) after a join</td><td>COUNT(DISTINCT key); state grain</td></tr>
+          <tr><td>Silently skip an un-curatable candidate</td><td>Record why + recheck recipe</td></tr>
+          <tr><td>Let AI refresh overwrite a human fix</td><td>Overrides ledger, locked entries</td></tr>
+          <tr><td>Stamp `timestamp = today` forever</td><td>Stamp the source's last-updated date reflected by content</td></tr>
+          <tr><td>Commit credentials / MCP config</td><td>.gitignore `.mcp.json`, config dirs; rotate leaked tokens</td></tr>
+          <tr><td>Ship a domain "error-clean but noisy"</td><td>Zero warnings for its own docs (KT_STRICT=1)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>22. Glossary</h3>
+      <table class="file-table">
+        <thead>
+          <tr><th>Term</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="file">Corpus</td><td>The knowledge folder (<code>data_layer_kt/</code>)</td></tr>
+          <tr><td class="file">Domain</td><td>Top-level folder for one decision point / subject; curated when SKILL.md has valid <code>type: Skill</code></td></tr>
+          <tr><td class="file">Scaffold (<code>_p</code>)</td><td>Placeholder domain awaiting curation</td></tr>
+          <tr><td class="file">Frontmatter</td><td>YAML header on every doc (the data contract)</td></tr>
+          <tr><td class="file">Playbook</td><td>Parameterized SQL recipe for a question family</td></tr>
+          <tr><td class="file">Dictionary</td><td>Column-level doc for one table (types, values, traps)</td></tr>
+          <tr><td class="file">Derived-flags shim</td><td>Playbook that rebuilds a retired view's logic over raw tables</td></tr>
+          <tr><td class="file">Root table</td><td>Base table (not a view/aggregate/scratch) — the only thing playbooks read</td></tr>
+          <tr><td class="file">Grain</td><td>What one row represents</td></tr>
+          <tr><td class="file">Type trap</td><td>Column whose real type/unit/sentinel breaks naive SQL</td></tr>
+          <tr><td class="file">Gate</td><td><code>kt_check.sh</code>: lint + verify + generate-check</td></tr>
+          <tr><td class="file">MCP</td><td>Model Context Protocol — how the agent reads wiki/tickets</td></tr>
+          <tr><td class="file">external_sources</td><td>Read-only store of validated production code</td></tr>
+          <tr><td class="file">Groundedness tier</td><td>G1 validated &gt; G2 documented &gt; G3 inferred (ranking for playbooks)</td></tr>
+          <tr><td class="file">Overrides ledger</td><td>Per-domain record of locked human corrections</td></tr>
+          <tr><td class="file">Producer vs consumer doc</td><td>Build-process docs (excluded from nav) vs knowledge docs</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">Generated 2026-11-01 from <code>arc_repo_v3</code> (data_layer_kt SPEC, SKILL, templates, scripts, claude/skills, external_sources, CI). Read-only analysis — no repository files were modified.</p>
+    </section>
+
+    <footer class="note">
+      Standalone blueprint file — independent of this repo’s app code.<br />
+      Send more screenshots and the next sections will be appended here.
+    </footer>
+  </div>
+
+</body>
+</html>

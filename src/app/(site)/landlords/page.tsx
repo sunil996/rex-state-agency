@@ -52,7 +52,7 @@ const services = [
 
 export default function LandlordsPage() {
   return (
-    <div className="bg-rex-cream pt-28 md:pt-32">
+    <div className="bg-rex-cream pt-32 md:pt-36">
       <div className="mx-auto max-w-7xl px-4 pb-20 md:px-6 md:pb-28">
         <SectionHeading
           number="01"
@@ -119,13 +119,13 @@ export default function LandlordsPage() {
                 </ul>
                 <Link
                   href="/valuation"
-                  className={`mt-8 inline-flex text-xs uppercase tracking-[0.18em] transition ${
+                  className={`rex-btn-outline mt-8 ${
                     pkg.featured
-                      ? "text-rex-gold hover:text-rex-gold-bright"
-                      : "text-rex-ink hover:text-rex-gold"
+                      ? "!border-rex-gold !text-rex-gold hover:!bg-rex-gold hover:!text-rex-ink"
+                      : ""
                   }`}
                 >
-                  Request valuation →
+                  Request valuation
                 </Link>
               </article>
             ))}
@@ -142,11 +142,11 @@ export default function LandlordsPage() {
               options.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/valuation" className="rex-btn-primary">
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+            <Link href="/valuation" className="rex-btn-primary w-full justify-center sm:w-auto">
               Rental valuation
             </Link>
-            <Link href="/contact" className="rex-btn-ghost">
+            <Link href="/contact" className="rex-btn-ghost w-full justify-center sm:w-auto">
               Contact us
             </Link>
           </div>

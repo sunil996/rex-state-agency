@@ -38,7 +38,7 @@ export function PropertiesClient() {
   }, [properties, filters]);
 
   return (
-    <div className="bg-rex-cream pt-28 md:pt-32">
+    <div className="bg-rex-cream pt-32 md:pt-36">
       <div className="mx-auto max-w-7xl px-4 pb-20 md:px-6 md:pb-28">
         <SectionHeading
           number="01"
@@ -47,7 +47,7 @@ export function PropertiesClient() {
         />
         <SearchBar variant="page" initial={filters} />
 
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
           {[
             { label: "All", value: "" },
             { label: "Available", value: "available" },
@@ -66,7 +66,7 @@ export function PropertiesClient() {
               <a
                 key={item.label}
                 href={`/properties?${next.toString()}`}
-                className={`px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] ${
+                className={`inline-flex shrink-0 min-h-10 items-center px-4 py-2.5 text-[11px] uppercase tracking-[0.16em] ${
                   active
                     ? "bg-rex-ink text-white"
                     : "border border-rex-line text-rex-stone hover:border-rex-gold hover:text-rex-ink"

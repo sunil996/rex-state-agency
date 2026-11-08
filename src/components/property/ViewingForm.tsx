@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Toast } from "@/components/ui/Toast";
-import { useStore } from "@/lib/store";
+import { FORMSPREE, submitFormspree } from "@/lib/formspree";
 
 interface ViewingFormProps {
   propertyId: string;
@@ -15,30 +15,45 @@ export function ViewingForm({
   propertyRef,
   propertyAddress,
 }: ViewingFormProps) {
-  const { addEnquiry } = useStore();
   const [toast, setToast] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    addEnquiry({
-      type: "viewing",
-      name: String(data.get("name") || ""),
-      email: String(data.get("email") || ""),
-      phone: String(data.get("phone") || ""),
-      message: String(data.get("message") || `Viewing request for ${propertyAddress}`),
-      propertyId,
-      propertyRef,
-      preferredDate: String(data.get("date") || ""),
-      preferredTime: String(data.get("time") || ""),
-    });
-    e.currentTarget.reset();
-    setToast("Viewing request sent. Our team will confirm shortly.");
+    setError(null);
+    setLoading(true);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const message = String(
+      data.get("message") || `Viewing request for ${propertyAddress}`,
+    );
+
+    try {
+      await submitFormspree(FORMSPREE.viewing, {
+        name: String(data.get("name") || ""),
+        email: String(data.get("email") || ""),
+        phone: String(data.get("phone") || ""),
+        preferredDate: String(data.get("date") || ""),
+        preferredTime: String(data.get("time") || ""),
+        propertyId,
+        propertyRef,
+        propertyAddress,
+        message,
+        _subject: `Rex Viewing — ${propertyRef} · ${propertyAddress}`,
+      });
+      form.reset();
+      setToast("Viewing request sent. Our team will confirm shortly.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send request.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <>
-      <form onSubmit={onSubmit} className="space-y-4 border border-rex-line bg-white p-6">
+      <form onSubmit={onSubmit} className="space-y-4 border border-rex-line bg-white p-5 sm:p-6">
         <h3 className="font-display text-lg uppercase tracking-[0.08em]">
           Book a viewing
         </h3>
@@ -49,7 +64,7 @@ export function ViewingForm({
           <input id="name" name="name" required className="rex-input" />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
+          <div className="min-w-0">
             <label className="rex-label" htmlFor="email">
               Email
             </label>
@@ -61,7 +76,7 @@ export function ViewingForm({
               className="rex-input"
             />
           </div>
-          <div>
+          <div className="min-w-0">
             <label className="rex-label" htmlFor="phone">
               Phone
             </label>
@@ -69,13 +84,13 @@ export function ViewingForm({
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
+          <div className="min-w-0">
             <label className="rex-label" htmlFor="date">
               Preferred date
             </label>
             <input id="date" name="date" type="date" required className="rex-input" />
           </div>
-          <div>
+          <div className="min-w-0">
             <label className="rex-label" htmlFor="time">
               Preferred time
             </label>
@@ -94,8 +109,17 @@ export function ViewingForm({
             placeholder="Any notes for the viewing..."
           />
         </div>
-        <button type="submit" className="rex-btn-dark w-full">
-          Request viewing
+        {error ? (
+          <p className="text-sm text-red-700" role="alert">
+            {error}
+          </p>
+        ) : null}
+        <button
+          type="submit"
+          className="rex-btn-dark w-full"
+          disabled={loading}
+        >
+          {loading ? "Sending…" : "Request viewing"}
         </button>
       </form>
       {toast ? <Toast message={toast} onClose={() => setToast(null)} /> : null}

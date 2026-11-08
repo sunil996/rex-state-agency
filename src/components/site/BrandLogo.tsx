@@ -23,13 +23,13 @@ const config: Record<
     src: "/brand/logo-flat-dark.png",
     width: 280,
     height: 152,
-    className: "h-20 w-auto md:h-28",
+    className: "h-14 w-auto md:h-28",
   },
   footer: {
     src: "/brand/logo-flat-dark.png",
     width: 160,
     height: 87,
-    className: "h-14 w-auto",
+    className: "h-12 w-auto lg:h-14",
   },
   mark: {
     src: "/brand/logo-mark.png",

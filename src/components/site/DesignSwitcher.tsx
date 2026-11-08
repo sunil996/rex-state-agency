@@ -9,12 +9,13 @@ import { DESIGNS, useTheme } from "@/lib/theme";
 export function DesignSwitcher() {
   const pathname = usePathname();
   const { design: active } = useTheme();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   if (pathname.startsWith("/admin")) return null;
 
+  // Hidden on phones — overlaps footer links; ribbon + /design-* routes still work
   return (
-    <div className="fixed bottom-4 right-4 z-[60] max-w-[calc(100vw-2rem)]">
+    <div className="fixed bottom-4 right-4 z-[60] hidden max-w-[calc(100%-2rem)] md:block">
       {open ? (
         <div className="border border-rex-line bg-rex-surface/95 p-4 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.35)] backdrop-blur-md">
           <div className="mb-3 flex items-start justify-between gap-4">
@@ -29,7 +30,7 @@ export function DesignSwitcher() {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="text-rex-stone hover:text-rex-ink"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-rex-stone hover:text-rex-ink"
               aria-label="Collapse design switcher"
             >
               <X className="h-4 w-4" />
