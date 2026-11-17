@@ -9,7 +9,10 @@ import {
   UserSearch,
 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { landlordPackages } from "@/lib/mock/site-content";
+import {
+  landlordPackages,
+  landlordTestimonials,
+} from "@/lib/mock/site-content";
 
 export const metadata: Metadata = {
   title: "Landlord Services",
@@ -128,6 +131,33 @@ export default function LandlordsPage() {
                   Request valuation
                 </Link>
               </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-20 md:mt-24">
+          <SectionHeading
+            number="03"
+            title="What landlords say"
+            subtitle="Hear from landlords who trust Rex with their lettings and day-to-day management."
+          />
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            {landlordTestimonials.map((item) => (
+              <blockquote
+                key={item.name}
+                className="group border-l-2 border-rex-gold bg-white py-6 pl-5 pr-4 transition duration-300 hover:border-l-[3px] hover:shadow-[0_18px_40px_-32px_rgba(15,15,15,0.35)] sm:pr-5"
+              >
+                <p className="text-[0.95rem] leading-relaxed text-rex-ink md:text-base">
+                  “{item.quote}”
+                </p>
+                <footer className="mt-5">
+                  <p className="text-sm font-medium text-rex-ink">{item.name}</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-rex-stone">
+                    {item.role}
+                  </p>
+                </footer>
+              </blockquote>
             ))}
           </div>
         </div>

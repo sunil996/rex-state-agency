@@ -48,8 +48,8 @@ export default function HomePage() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const heroY = useTransform(heroProgress, [0, 1], ["0%", reduceMotion ? "0%" : "14%"]);
-  const heroOpacity = useTransform(heroProgress, [0, 0.75], [1, 0]);
+  const heroY = useTransform(heroProgress, [0, 1], ["0%", reduceMotion ? "0%" : "8%"]);
+  const heroOpacity = useTransform(heroProgress, [0, 0.85], [1, 0.15]);
 
   const { scrollYProgress: whyProgress } = useScroll({
     target: whyRef,
@@ -76,25 +76,63 @@ export default function HomePage() {
 
         <motion.div
           style={{ opacity: heroOpacity }}
-          className="relative mx-auto flex min-h-[85svh] max-w-7xl flex-col justify-end px-4 pb-16 pt-28 md:min-h-[92svh] md:px-6 md:pb-24 md:pt-32 lg:min-h-[100svh] lg:pb-28"
+          className="pointer-events-none absolute inset-0 z-10"
         >
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl"
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: {},
+              show: {
+                transition: {
+                  staggerChildren: reduceMotion ? 0 : 0.14,
+                  delayChildren: reduceMotion ? 0 : 0.2,
+                },
+              },
+            }}
+            className="pointer-events-auto absolute bottom-6 left-4 max-w-[min(100%-2rem,28rem)] sm:bottom-8 sm:left-6 md:bottom-10 md:left-8 md:max-w-xl lg:bottom-12 lg:left-10 lg:max-w-2xl"
           >
-            <h1 className="font-display text-[2.1rem] font-semibold leading-[1.08] tracking-wide text-shadow-hero md:text-5xl lg:text-[3.4rem]">
+            <motion.h1
+              variants={{
+                hidden: { opacity: 0, y: reduceMotion ? 0 : 22 },
+                show: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+                },
+              }}
+              className="font-display text-[2.1rem] font-semibold leading-[1.08] tracking-wide text-shadow-hero md:text-5xl lg:text-[3.25rem]"
+            >
               Lettings, made
               <span className="block text-rex-gold-soft">straightforward.</span>
-            </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-white/90 text-shadow-hero md:text-lg">
+            </motion.h1>
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: reduceMotion ? 0 : 16 },
+                show: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+                },
+              }}
+              className="mt-4 max-w-md text-base leading-relaxed text-white/90 text-shadow-hero md:mt-5 md:text-lg"
+            >
               Independent lettings & property management across London and
               Southampton — for landlords and tenants who value a personal
               approach.
-            </p>
+            </motion.p>
 
-            <div className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: reduceMotion ? 0 : 12 },
+                show: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+                },
+              }}
+              className="mt-7 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap md:mt-8"
+            >
               <Link href="/properties" className="rex-btn-primary w-full justify-center sm:w-auto">
                 Search rentals
                 <ArrowRight className="h-4 w-4" />
@@ -102,22 +140,6 @@ export default function HomePage() {
               <Link href="/valuation" className="rex-btn-ghost w-full justify-center sm:w-auto">
                 Landlord valuation
               </Link>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-            className="mt-10 hidden md:block"
-          >
-            <motion.div
-              animate={reduceMotion ? undefined : { y: [0, 8, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-              className="flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/45"
-            >
-              Scroll to explore
-              <span className="inline-block h-10 w-px bg-gradient-to-b from-rex-gold to-transparent" />
             </motion.div>
           </motion.div>
         </motion.div>
@@ -174,9 +196,9 @@ export default function HomePage() {
       </section>
 
       {/* Path split */}
-      <section className="bg-rex-cream px-4 pb-20 md:px-6 md:pb-28">
+      <section className="bg-rex-cream px-4 pb-16 md:px-6 md:pb-28">
         <div className="mx-auto max-w-7xl">
-          <Reveal className="mb-8 md:mb-10">
+          <Reveal className="mb-6 md:mb-10">
             <p className="text-xs uppercase tracking-[0.2em] text-rex-gold">
               02 · Choose your path
             </p>
@@ -189,30 +211,38 @@ export default function HomePage() {
             <Reveal direction="left">
               <Link
                 href="/properties"
-                className="group relative block min-h-[280px] overflow-hidden bg-rex-ink text-white md:min-h-[380px]"
+                className="group relative flex min-h-[360px] overflow-hidden bg-rex-ink text-white outline-none transition-[transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream sm:min-h-[400px] md:min-h-[440px]"
               >
                 <Image
-                  src="/images/hero/hero-bedroom.png"
-                  alt=""
+                  src="/images/landloards/vitaly-gariev-QpRjfYmGtbk-unsplash.jpg"
+                  alt="Couple with house keys after moving into a new home"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover opacity-75 transition duration-700 group-hover:scale-105 group-hover:opacity-90"
+                  className="object-cover object-[center_28%] transition duration-700 ease-out group-hover:scale-[1.04]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                {/* Type scrim — strong only where copy sits */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.62)_38%,rgba(0,0,0,0.18)_62%,rgba(0,0,0,0.08)_100%)]"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-y-0 left-0 w-[55%] bg-gradient-to-r from-black/35 to-transparent"
+                />
                 <div className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 bg-rex-gold transition duration-500 group-hover:scale-y-100" />
-                <div className="relative flex h-full min-h-[280px] flex-col justify-end p-7 md:min-h-[380px] md:p-10">
-                  <p className="text-[10px] uppercase tracking-[0.24em] text-rex-gold">
+                <div className="relative mt-auto flex w-full flex-col justify-end p-6 sm:p-8 md:p-10">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-rex-gold-soft">
                     For tenants
                   </p>
-                  <h3 className="mt-3 font-display text-3xl uppercase tracking-[0.06em] md:text-4xl">
+                  <h3 className="mt-2.5 font-display text-[1.65rem] uppercase leading-[1.05] tracking-[0.06em] text-white sm:text-3xl md:text-4xl">
                     I want to rent
                   </h3>
-                  <p className="mt-3 max-w-sm text-sm text-white/70">
+                  <p className="mt-3 max-w-[32ch] text-sm leading-relaxed text-white/90">
                     Browse available homes, book viewings and move in with clear
                     support.
                   </p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-rex-gold transition group-hover:gap-3">
-                    Browse rentals <ArrowRight className="h-4 w-4" />
+                  <span className="mt-6 inline-flex w-fit items-center gap-2 border-b border-rex-gold pb-1.5 text-[11px] uppercase tracking-[0.2em] text-white transition-[gap,color,border-color] duration-300 group-hover:gap-3 group-hover:border-rex-gold-soft group-hover:text-rex-gold-soft">
+                    Browse rentals <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
               </Link>
@@ -221,30 +251,37 @@ export default function HomePage() {
             <Reveal direction="right" delay={0.08}>
               <Link
                 href="/landlords"
-                className="group relative block min-h-[280px] overflow-hidden bg-rex-charcoal text-white md:min-h-[380px]"
+                className="group relative flex min-h-[360px] overflow-hidden bg-rex-charcoal text-white outline-none transition-[transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream sm:min-h-[400px] md:min-h-[440px]"
               >
                 <Image
-                  src="/images/hero/hero-kitchen.png"
-                  alt=""
+                  src="/images/landloards/Gemini_Generated_Image_2am5km2am5km2am5.png"
+                  alt="Professional landlord services illustration"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-85"
+                  className="object-cover object-center transition duration-700 ease-out group-hover:scale-[1.04]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.55)_40%,rgba(0,0,0,0.2)_65%,rgba(0,0,0,0.1)_100%)]"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-y-0 left-0 w-[55%] bg-gradient-to-r from-black/30 to-transparent"
+                />
                 <div className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 bg-rex-gold transition duration-500 group-hover:scale-y-100" />
-                <div className="relative flex h-full min-h-[280px] flex-col justify-end p-7 md:min-h-[380px] md:p-10">
-                  <p className="text-[10px] uppercase tracking-[0.24em] text-rex-gold">
+                <div className="relative mt-auto flex w-full flex-col justify-end p-6 sm:p-8 md:p-10">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-rex-gold-soft">
                     For landlords
                   </p>
-                  <h3 className="mt-3 font-display text-3xl uppercase tracking-[0.06em] md:text-4xl">
+                  <h3 className="mt-2.5 font-display text-[1.65rem] uppercase leading-[1.05] tracking-[0.06em] text-white sm:text-3xl md:text-4xl">
                     I’m a landlord
                   </h3>
-                  <p className="mt-3 max-w-sm text-sm text-white/70">
+                  <p className="mt-3 max-w-[32ch] text-sm leading-relaxed text-white/90">
                     Marketing, tenants, rent collection and management — handled
                     professionally.
                   </p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-rex-gold transition group-hover:gap-3">
-                    Landlord services <KeyRound className="h-4 w-4" />
+                  <span className="mt-6 inline-flex w-fit items-center gap-2 border-b border-rex-gold pb-1.5 text-[11px] uppercase tracking-[0.2em] text-white transition-[gap,color,border-color] duration-300 group-hover:gap-3 group-hover:border-rex-gold-soft group-hover:text-rex-gold-soft">
+                    Landlord services <KeyRound className="h-3.5 w-3.5" />
                   </span>
                 </div>
               </Link>
@@ -339,7 +376,7 @@ export default function HomePage() {
             {coverageAreas.map((area) => (
               <RevealItem key={area.name}>
                 <Link
-                  href={`/properties?q=${encodeURIComponent(area.name)}`}
+                  href={`/properties?area=${encodeURIComponent(area.name)}`}
                   className="group flex items-baseline justify-between gap-3 border-b border-rex-line py-5 transition"
                 >
                   <span>

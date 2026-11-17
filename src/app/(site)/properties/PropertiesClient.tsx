@@ -13,7 +13,7 @@ export function PropertiesClient() {
 
   const filters = {
     query: params.get("q") ?? "",
-    city: params.get("city") ?? "",
+    area: params.get("area") ?? "",
     beds: params.get("beds") ?? "",
     maxRent: params.get("maxRent") ?? "",
     type: params.get("type") ?? "",
@@ -22,7 +22,7 @@ export function PropertiesClient() {
 
   const filtered = useMemo(() => {
     return properties.filter((p) => {
-      if (filters.city && p.city !== filters.city) return false;
+      if (filters.area && p.area !== filters.area) return false;
       if (filters.type && p.type !== filters.type) return false;
       if (filters.status && p.status !== filters.status) return false;
       if (filters.beds && p.beds < Number(filters.beds)) return false;
@@ -57,7 +57,7 @@ export function PropertiesClient() {
             const active = filters.status === item.value;
             const next = new URLSearchParams();
             if (filters.query) next.set("q", filters.query);
-            if (filters.city) next.set("city", filters.city);
+            if (filters.area) next.set("area", filters.area);
             if (filters.beds) next.set("beds", filters.beds);
             if (filters.maxRent) next.set("maxRent", filters.maxRent);
             if (filters.type) next.set("type", filters.type);

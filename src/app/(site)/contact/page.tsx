@@ -1,8 +1,9 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SocialLinks } from "@/components/site/SocialLinks";
 import { Toast } from "@/components/ui/Toast";
 import { FORMSPREE, submitFormspree } from "@/lib/formspree";
 import {
@@ -86,17 +87,7 @@ export default function ContactPage() {
                 </a>
               </p>
             </div>
-            <div className="flex gap-3">
-              <a href="#" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-rex-line p-3 hover:border-rex-gold" aria-label="Instagram">
-                <Instagram className="h-4 w-4" />
-              </a>
-              <a href="#" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-rex-line p-3 hover:border-rex-gold" aria-label="Facebook">
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a href="#" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-rex-line p-3 hover:border-rex-gold" aria-label="LinkedIn">
-                <Linkedin className="h-4 w-4" />
-              </a>
-            </div>
+            <SocialLinks variant="light" />
           </div>
 
           <form

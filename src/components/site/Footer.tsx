@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { BrandLogo } from "@/components/site/BrandLogo";
+import { SocialLinks } from "@/components/site/SocialLinks";
 import {
   SITE_EMAIL,
   SITE_EMAIL_HREF,
@@ -115,29 +116,7 @@ export function Footer() {
               </a>
             </li>
           </ul>
-          <div className="mt-5 flex gap-3">
-            <a
-              href="#"
-              aria-label="Instagram"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center border border-white/15 p-3 text-white/70 hover:border-rex-gold hover:text-rex-gold"
-            >
-              <Instagram className="h-4 w-4" />
-            </a>
-            <a
-              href="#"
-              aria-label="Facebook"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center border border-white/15 p-3 text-white/70 hover:border-rex-gold hover:text-rex-gold"
-            >
-              <Facebook className="h-4 w-4" />
-            </a>
-            <a
-              href="#"
-              aria-label="LinkedIn"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center border border-white/15 p-3 text-white/70 hover:border-rex-gold hover:text-rex-gold"
-            >
-              <Linkedin className="h-4 w-4" />
-            </a>
-          </div>
+          <SocialLinks className="mt-5" variant="dark" />
         </div>
       </div>
       <div className="border-t border-white/10 px-4 py-5 text-center text-xs leading-relaxed text-white/40 md:px-6">

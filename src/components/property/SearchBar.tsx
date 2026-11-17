@@ -1,13 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { Search } from "lucide-react";
+import { useStore } from "@/lib/store";
 
 interface SearchBarProps {
   variant?: "hero" | "page";
   initial?: {
     query?: string;
+    area?: string;
     city?: string;
     beds?: string;
     maxRent?: string;
@@ -15,19 +17,43 @@ interface SearchBarProps {
   };
 }
 
+const typeLabels: Record<string, string> = {
+  apartment: "Apartment",
+  flat: "Flat",
+  house: "House",
+  studio: "Studio",
+};
+
 export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
   const router = useRouter();
+  const { properties } = useStore();
   const [query, setQuery] = useState(initial?.query ?? "");
-  const [city, setCity] = useState(initial?.city ?? "");
+  const [area, setArea] = useState(initial?.area ?? "");
   const [beds, setBeds] = useState(initial?.beds ?? "");
   const [maxRent, setMaxRent] = useState(initial?.maxRent ?? "");
   const [type, setType] = useState(initial?.type ?? "");
+
+  const areas = useMemo(
+    () =>
+      [...new Set(properties.map((p) => p.area).filter(Boolean))].sort((a, b) =>
+        a.localeCompare(b),
+      ),
+    [properties],
+  );
+
+  const types = useMemo(
+    () =>
+      [...new Set(properties.map((p) => p.type))].sort((a, b) =>
+        a.localeCompare(b),
+      ),
+    [properties],
+  );
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     const params = new URLSearchParams();
     if (query) params.set("q", query);
-    if (city) params.set("city", city);
+    if (area) params.set("area", area);
     if (beds) params.set("beds", beds);
     if (maxRent) params.set("maxRent", maxRent);
     if (type) params.set("type", type);
@@ -72,12 +98,15 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
           <label className={label}>Area</label>
           <select
             className={control}
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
           >
             <option value="">All</option>
-            <option value="London">London</option>
-            <option value="Southampton">Southampton</option>
+            {areas.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -122,11 +151,11 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
             onChange={(e) => setType(e.target.value)}
           >
             <option value="">All</option>
-            <option value="apartment">Apartment</option>
-            <option value="flat">Flat</option>
-            <option value="house">House</option>
-            <option value="maisonette">Maisonette</option>
-            <option value="studio">Studio</option>
+            {types.map((value) => (
+              <option key={value} value={value}>
+                {typeLabels[value] ?? value}
+              </option>
+            ))}
           </select>
         </div>
       </div>

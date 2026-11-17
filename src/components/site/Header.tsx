@@ -27,10 +27,9 @@ export function Header() {
 
   return (
     <header
-      className={`absolute inset-x-0 z-50 ${
+      className={`absolute inset-x-0 top-0 z-50 ${
         darkHero ? "text-white" : "text-rex-ink"
       }`}
-      style={{ top: "var(--site-header-offset)" }}
     >
       <div
         className={`border-b ${

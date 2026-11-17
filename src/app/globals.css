@@ -24,8 +24,8 @@ html {
   --background: #fafaf8;
   --foreground: #0f0f0f;
   --radius-ui: 0px;
-  --site-ribbon-h: 2rem;
-  --site-header-offset: 2.5rem;
+  --site-ribbon-h: 0rem; /* ribbon commented out — Design 1 locked */
+  --site-header-offset: 0rem;
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
@@ -304,42 +304,28 @@ html[data-design="design-3"] .text-rex-gold {
   color: #1f7a6c !important;
 }
 
-/* Active design ribbon — always visible so switch is obvious */
+/* Design ribbon disabled — Design 1 locked */
 .design-ribbon {
-  position: sticky;
-  top: 0;
-  z-index: 65;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: var(--site-ribbon-h);
-  padding: 0.4rem 0.75rem;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  line-height: 1.35;
-  text-align: center;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--rex-black);
-  border-bottom: 2px solid var(--rex-gold);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: none !important;
 }
 
-@media (min-width: 768px) {
-  .design-ribbon {
-    gap: 0.75rem;
-    padding: 0.45rem 1rem;
-    letter-spacing: 0.2em;
+@keyframes rex-hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 
-.design-ribbon span.swatch {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: var(--rex-gold);
+.rex-hero-progress {
+  transform-origin: left center;
+  animation: rex-hero-progress var(--rex-hero-slide-ms, 7000ms) linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rex-hero-progress {
+    animation: none;
+    transform: scaleX(1);
+  }
 }

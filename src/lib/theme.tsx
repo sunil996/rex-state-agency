@@ -52,13 +52,14 @@ export const DESIGNS: {
   },
 ];
 
-function designFromPath(pathname: string): DesignId | null {
-  if (pathname === "/" || pathname === "") return "current";
-  if (pathname.startsWith("/design-1")) return "design-1";
-  if (pathname.startsWith("/design-2")) return "design-2";
-  if (pathname.startsWith("/design-3")) return "design-3";
-  return null;
-}
+// Preview path mapping kept for later if switcher is re-enabled
+// function designFromPath(pathname: string): DesignId | null {
+//   if (pathname === "/" || pathname === "") return "current";
+//   if (pathname.startsWith("/design-1")) return "design-1";
+//   if (pathname.startsWith("/design-2")) return "design-2";
+//   if (pathname.startsWith("/design-3")) return "design-3";
+//   return null;
+// }
 
 function applyDesign(id: DesignId) {
   document.documentElement.setAttribute("data-design", id);
@@ -71,30 +72,27 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+const LOCKED_DESIGN: DesignId = "design-1"; // British Editorial — preview switcher off
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const [design, setDesignState] = useState<DesignId>("current");
+  const [design, setDesignState] = useState<DesignId>(LOCKED_DESIGN);
 
   useEffect(() => {
-    const fromPath = designFromPath(pathname);
-    if (fromPath) {
-      setDesignState(fromPath);
-      applyDesign(fromPath);
-      localStorage.setItem(STORAGE_KEY, fromPath);
-      return;
-    }
-
-    const saved = localStorage.getItem(STORAGE_KEY) as DesignId | null;
-    const next =
-      saved && DESIGNS.some((d) => d.id === saved) ? saved : "current";
-    setDesignState(next);
-    applyDesign(next);
+    // Locked to Design 1 — ignore path / localStorage switches for now
+    void pathname;
+    // const fromPath = designFromPath(pathname);
+    // if (fromPath) { ... }
+    setDesignState(LOCKED_DESIGN);
+    applyDesign(LOCKED_DESIGN);
+    localStorage.setItem(STORAGE_KEY, LOCKED_DESIGN);
   }, [pathname]);
 
-  const setDesign = useCallback((id: DesignId) => {
-    setDesignState(id);
-    applyDesign(id);
-    localStorage.setItem(STORAGE_KEY, id);
+  const setDesign = useCallback((_id: DesignId) => {
+    // Preview switcher disabled — keep Design 1
+    setDesignState(LOCKED_DESIGN);
+    applyDesign(LOCKED_DESIGN);
+    localStorage.setItem(STORAGE_KEY, LOCKED_DESIGN);
   }, []);
 
   const value = useMemo(

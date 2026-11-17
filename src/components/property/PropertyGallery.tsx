@@ -122,7 +122,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                 go(-1);
               }}
               aria-label="Previous photo"
-              className="absolute left-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] transition hover:scale-110 md:left-3 md:h-14 md:w-14"
+              className="absolute left-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] transition hover:scale-110 md:left-3 md:h-14 md:w-14"
             >
               <ChevronLeft className="h-9 w-9 stroke-[1.25] md:h-11 md:w-11" />
             </button>
@@ -133,7 +133,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                 go(1);
               }}
               aria-label="Next photo"
-              className="absolute right-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] transition hover:scale-110 md:right-3 md:top-[25%] md:h-14 md:w-14"
+              className="absolute right-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] transition hover:scale-110 md:right-3 md:h-14 md:w-14"
             >
               <ChevronRight className="h-9 w-9 stroke-[1.25] md:h-11 md:w-11" />
             </button>
@@ -160,7 +160,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
           </button>
           <button
             type="button"
-            className="absolute left-1 inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-white drop-shadow sm:left-4 md:left-8"
+            className="absolute left-1 inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center p-2 text-white drop-shadow sm:left-4 md:left-8"
             onClick={() => shiftLightbox(-1)}
             aria-label="Previous"
           >
@@ -177,7 +177,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
           </div>
           <button
             type="button"
-            className="absolute right-1 inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-white drop-shadow sm:right-4 md:right-8"
+            className="absolute right-1 inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center p-2 text-white drop-shadow sm:right-4 md:right-8"
             onClick={() => shiftLightbox(1)}
             aria-label="Next"
           >

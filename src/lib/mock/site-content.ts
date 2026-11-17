@@ -1,12 +1,7 @@
 export const coverageAreas = [
-  { name: "Hayes & Southall", city: "London" },
-  { name: "Canary Wharf", city: "London" },
-  { name: "Clapham", city: "London" },
-  { name: "Islington", city: "London" },
+  { name: "Greater London", city: "London" },
   { name: "Southampton City Centre", city: "Southampton" },
-  { name: "Bitterne", city: "Southampton" },
-  { name: "Portswood", city: "Southampton" },
-  { name: "Shirley", city: "Southampton" },
+  { name: "Eastleigh", city: "Southampton" },
 ] as const;
 
 export const howItWorksSteps = [
@@ -75,6 +70,33 @@ export const testimonials = [
   },
 ] as const;
 
+export const landlordTestimonials = [
+  {
+    quote:
+      "Clear updates throughout the letting and a tenant found quickly. Exactly the personal service we wanted.",
+    name: "James R.",
+    role: "Landlord · London",
+  },
+  {
+    quote:
+      "Rent collection and maintenance are handled without drama. We always know where things stand.",
+    name: "Helen & Mark T.",
+    role: "Landlords · Southampton",
+  },
+  {
+    quote:
+      "They marketed our flat properly, vetted applicants carefully, and kept us informed — no chasing required.",
+    name: "David K.",
+    role: "Landlord · London",
+  },
+  {
+    quote:
+      "Switching to fully managed took the stress away. Repairs get sorted and reporting is always clear.",
+    name: "Sarah L.",
+    role: "Landlord · Southampton",
+  },
+] as const;
+
 export const landlordPackages: {
   name: string;
   tagline: string;
@@ -94,7 +116,6 @@ export const landlordPackages: {
   {
     name: "Rent collect",
     tagline: "Let + monthly rent care",
-    featured: true,
     points: [
       "Everything in Let only",
       "Rent collection & chasing",
@@ -105,6 +126,7 @@ export const landlordPackages: {
   {
     name: "Fully managed",
     tagline: "Complete day-to-day care",
+    featured: true,
     points: [
       "Everything in Rent collect",
       "Maintenance coordination",
