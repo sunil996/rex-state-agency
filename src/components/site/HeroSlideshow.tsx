@@ -65,11 +65,7 @@ const slides: HeroSlide[] = [
     alt: "Bright open-plan apartment living and dining space",
     sharpClass: "object-cover object-center",
   },
-  {
-    src: "/images/hero/candidate-21-rdne-dining-view.jpg",
-    alt: "Dining table set beside floor-to-ceiling skyline windows",
-    sharpClass: "object-cover object-[center_40%]",
-  },
+ 
 ];
 
 export function HeroSlideshow() {

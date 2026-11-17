@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { ChevronDown, Search, SlidersHorizontal } from "lucide-react";
 import { useStore } from "@/lib/store";
 
 interface SearchBarProps {
@@ -32,6 +32,12 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
   const [beds, setBeds] = useState(initial?.beds ?? "");
   const [maxRent, setMaxRent] = useState(initial?.maxRent ?? "");
   const [type, setType] = useState(initial?.type ?? "");
+  const hasAdvanced =
+    Boolean(initial?.area) ||
+    Boolean(initial?.beds) ||
+    Boolean(initial?.maxRent) ||
+    Boolean(initial?.type);
+  const [filtersOpen, setFiltersOpen] = useState(hasAdvanced);
 
   const areas = useMemo(
     () =>
@@ -49,6 +55,8 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
     [properties],
   );
 
+  const activeFilterCount = [area, beds, maxRent, type].filter(Boolean).length;
+
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     const params = new URLSearchParams();
@@ -61,12 +69,12 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
   }
 
   const isHero = variant === "hero";
+  const isPage = variant === "page";
 
   const shell = isHero
     ? "border border-white/15 bg-black/50 p-3 backdrop-blur-md sm:p-4 md:p-5"
     : "border border-rex-line bg-white p-3 sm:p-4 md:p-5";
 
-  // MakeMyTrip-style bordered cells on mobile; flat controls from lg up
   const cell = isHero
     ? "min-w-0 border border-white/15 bg-white/[0.04] p-3 lg:border-0 lg:bg-transparent lg:p-0"
     : "min-w-0 border border-rex-line bg-rex-cream/40 p-3 lg:border-0 lg:bg-transparent lg:p-0";
@@ -82,81 +90,108 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
   return (
     <form onSubmit={onSubmit} className={shell}>
       <div className="grid grid-cols-2 gap-2 lg:grid-cols-6 lg:items-end lg:gap-3">
-        {/* Full-width location — like MMT primary field */}
         <div className={`${cell} col-span-2 lg:col-span-2`}>
           <label className={label}>Location / Postcode</label>
           <input
             className={control}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="e.g. Clapham or SO14"
+            placeholder="e.g. Eastleigh or SO14"
           />
         </div>
 
-        {/* Paired row: Area | Beds */}
-        <div className={cell}>
-          <label className={label}>Area</label>
-          <select
-            className={control}
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-          >
-            <option value="">All</option>
-            {areas.map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {isPage ? (
+          <div className="col-span-2 lg:hidden">
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((v) => !v)}
+              className="inline-flex min-h-11 w-full cursor-pointer items-center justify-between border border-rex-line bg-rex-cream/40 px-3 text-xs uppercase tracking-[0.16em] text-rex-ink"
+              aria-expanded={filtersOpen}
+            >
+              <span className="inline-flex items-center gap-2">
+                <SlidersHorizontal className="h-4 w-4 text-rex-gold" />
+                Filters
+                {activeFilterCount > 0 ? (
+                  <span className="bg-rex-ink px-1.5 py-0.5 text-[10px] text-white">
+                    {activeFilterCount}
+                  </span>
+                ) : null}
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 transition ${filtersOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+          </div>
+        ) : null}
 
-        <div className={cell}>
-          <label className={label}>Beds</label>
-          <select
-            className={control}
-            value={beds}
-            onChange={(e) => setBeds(e.target.value)}
-          >
-            <option value="">Any</option>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <option key={n} value={n}>
-                {n}+
-              </option>
-            ))}
-          </select>
-        </div>
+        <div
+          className={`col-span-2 grid grid-cols-2 gap-2 lg:col-span-4 lg:contents ${
+            isPage && !filtersOpen ? "hidden lg:contents" : ""
+          }`}
+        >
+          <div className={cell}>
+            <label className={label}>Area</label>
+            <select
+              className={control}
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+            >
+              <option value="">All</option>
+              {areas.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        {/* Paired row: Max rent | Type */}
-        <div className={cell}>
-          <label className={label}>Max rent</label>
-          <select
-            className={control}
-            value={maxRent}
-            onChange={(e) => setMaxRent(e.target.value)}
-          >
-            <option value="">No max</option>
-            {[1000, 1500, 2000, 2500, 3000, 4000, 5000].map((n) => (
-              <option key={n} value={n}>
-                £{n.toLocaleString()}
-              </option>
-            ))}
-          </select>
-        </div>
+          <div className={cell}>
+            <label className={label}>Beds</label>
+            <select
+              className={control}
+              value={beds}
+              onChange={(e) => setBeds(e.target.value)}
+            >
+              <option value="">Any</option>
+              {[1, 2, 3, 4, 5].map((n) => (
+                <option key={n} value={n}>
+                  {n}+
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className={cell}>
-          <label className={label}>Type</label>
-          <select
-            className={control}
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          >
-            <option value="">All</option>
-            {types.map((value) => (
-              <option key={value} value={value}>
-                {typeLabels[value] ?? value}
-              </option>
-            ))}
-          </select>
+          <div className={cell}>
+            <label className={label}>Max rent</label>
+            <select
+              className={control}
+              value={maxRent}
+              onChange={(e) => setMaxRent(e.target.value)}
+            >
+              <option value="">No max</option>
+              {[1000, 1500, 2000, 2500, 3000, 4000, 5000].map((n) => (
+                <option key={n} value={n}>
+                  £{n.toLocaleString()}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className={cell}>
+            <label className={label}>Type</label>
+            <select
+              className={control}
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+            >
+              <option value="">All</option>
+              {types.map((value) => (
+                <option key={value} value={value}>
+                  {typeLabels[value] ?? value}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 

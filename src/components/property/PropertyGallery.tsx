@@ -140,13 +140,43 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             <button
               type="button"
               onClick={() => openAt(mainAbs)}
-              className="absolute bottom-3 right-3 z-10 bg-white/95 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rex-ink shadow-sm transition hover:bg-rex-gold md:bottom-4 md:right-4"
+              className="absolute bottom-3 right-3 z-10 cursor-pointer bg-white/95 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rex-ink shadow-sm transition hover:bg-rex-gold md:bottom-4 md:right-4"
             >
               View all {total} photos
             </button>
           </>
         ) : null}
       </div>
+
+      {total > 1 ? (
+        <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:px-0">
+          {images.map((src, i) => {
+            const active = i === index;
+            return (
+              <button
+                key={`${src}-${i}`}
+                type="button"
+                onClick={() => setIndex(i)}
+                aria-label={`Show photo ${i + 1}`}
+                aria-current={active ? "true" : undefined}
+                className={`relative h-16 w-20 shrink-0 cursor-pointer overflow-hidden border transition md:h-[72px] md:w-24 ${
+                  active
+                    ? "border-rex-gold"
+                    : "border-transparent opacity-75 hover:opacity-100"
+                }`}
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="96px"
+                  className="object-cover"
+                />
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
       {lightbox !== null ? (
         <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/92 px-12 py-16 pt-[max(4rem,env(safe-area-inset-top))] pb-[max(4rem,env(safe-area-inset-bottom))] sm:px-16">

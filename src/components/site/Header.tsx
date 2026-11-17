@@ -73,14 +73,23 @@ export function Header() {
             </Link>
           </div>
 
-          <button
-            type="button"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          <div className="flex items-center gap-1 lg:hidden">
+            <a
+              href={SITE_PHONE_HREF}
+              className="inline-flex min-h-11 min-w-11 items-center justify-center"
+              aria-label={`Call ${SITE_PHONE_DISPLAY}`}
+            >
+              <Phone className="h-5 w-5 text-rex-gold" />
+            </a>
+            <button
+              type="button"
+              className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center"
+              onClick={() => setOpen((v) => !v)}
+              aria-label="Toggle menu"
+            >
+              {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -104,6 +113,14 @@ export function Header() {
             >
               FAQs
             </Link>
+            <a
+              href={SITE_PHONE_HREF}
+              onClick={() => setOpen(false)}
+              className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.16em]"
+            >
+              <Phone className="h-4 w-4 text-rex-gold" />
+              {SITE_PHONE_DISPLAY}
+            </a>
             <Link
               href="/valuation"
               onClick={() => setOpen(false)}
