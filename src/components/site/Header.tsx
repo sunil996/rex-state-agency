@@ -34,7 +34,7 @@ export function Header() {
       <div
         className={`border-b ${
           darkHero
-            ? "border-white/10 bg-black/20 backdrop-blur-sm"
+            ? "border-white/12 bg-rex-ink/92 backdrop-blur-md md:bg-black/25 md:backdrop-blur-sm"
             : "border-rex-line bg-rex-cream/95 backdrop-blur"
         }`}
       >

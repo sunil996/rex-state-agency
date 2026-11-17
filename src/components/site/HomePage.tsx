@@ -65,18 +65,21 @@ export default function HomePage() {
     <>
       <ScrollProgress />
 
-      {/* Hero — shorter on phone/tablet so landscape photos crop less aggressively */}
+      {/* Hero — mobile: image band + copy below; desktop: full-bleed overlay */}
       <section
         ref={heroRef}
-        className="relative min-h-[85svh] overflow-hidden text-white md:min-h-[92svh] lg:min-h-[100svh]"
+        className="relative flex flex-col bg-rex-ink pt-14 text-white sm:pt-16 md:block md:min-h-[92svh] md:overflow-hidden md:pt-0 lg:min-h-[100svh]"
       >
-        <motion.div style={{ y: heroY }} className="absolute inset-0 will-change-transform">
+        <motion.div
+          style={{ y: heroY }}
+          className="relative aspect-[5/4] w-full shrink-0 overflow-hidden will-change-transform sm:aspect-[16/11] md:absolute md:inset-0 md:aspect-auto md:h-full md:min-h-[92svh] lg:min-h-[100svh]"
+        >
           <HeroSlideshow />
         </motion.div>
 
         <motion.div
           style={{ opacity: heroOpacity }}
-          className="pointer-events-none absolute inset-0 z-10"
+          className="relative z-10 bg-rex-ink px-4 pb-8 pt-7 md:pointer-events-none md:absolute md:inset-0 md:bg-transparent md:px-0 md:pb-0 md:pt-0"
         >
           <motion.div
             initial="hidden"
@@ -90,7 +93,7 @@ export default function HomePage() {
                 },
               },
             }}
-            className="pointer-events-auto absolute bottom-6 left-4 max-w-[min(100%-2rem,28rem)] sm:bottom-8 sm:left-6 md:bottom-10 md:left-8 md:max-w-xl lg:bottom-12 lg:left-10 lg:max-w-2xl"
+            className="pointer-events-auto mx-auto w-full max-w-7xl md:absolute md:bottom-10 md:left-8 md:mx-0 md:max-w-xl lg:bottom-12 lg:left-10 lg:max-w-2xl"
           >
             <motion.h1
               variants={{
@@ -101,7 +104,7 @@ export default function HomePage() {
                   transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
                 },
               }}
-              className="font-display text-[2.1rem] font-semibold leading-[1.08] tracking-wide text-shadow-hero md:text-5xl lg:text-[3.25rem]"
+              className="font-display text-[2.15rem] font-semibold leading-[1.06] tracking-wide md:text-5xl md:text-shadow-hero lg:text-[3.25rem]"
             >
               Lettings, made
               <span className="block text-rex-gold-soft">straightforward.</span>
@@ -115,7 +118,7 @@ export default function HomePage() {
                   transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
                 },
               }}
-              className="mt-4 max-w-md text-base leading-relaxed text-white/90 text-shadow-hero md:mt-5 md:text-lg"
+              className="mt-3 max-w-md text-[0.95rem] leading-relaxed text-white/80 sm:text-base md:mt-5 md:text-lg md:text-white/90 md:text-shadow-hero"
             >
               Independent lettings & property management across London and
               Southampton — for landlords and tenants who value a personal
@@ -131,7 +134,7 @@ export default function HomePage() {
                   transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
                 },
               }}
-              className="mt-7 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap md:mt-8"
+              className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap md:mt-8"
             >
               <Link href="/properties" className="rex-btn-primary w-full justify-center sm:w-auto">
                 Search rentals
