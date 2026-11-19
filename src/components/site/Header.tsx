@@ -65,7 +65,7 @@ export function Header() {
                 darkHero ? "text-white/80" : "text-rex-stone"
               }`}
             >
-              <Phone className="h-3.5 w-3.5 text-rex-gold" />
+              <Phone className="h-3.5 w-3.5 text-rex-gold-bright" strokeWidth={2.25} />
               {SITE_PHONE_DISPLAY}
             </a>
             <Link href="/valuation" className="rex-btn-primary !px-4 !py-2.5">
@@ -79,7 +79,7 @@ export function Header() {
               className="inline-flex min-h-11 min-w-11 items-center justify-center"
               aria-label={`Call ${SITE_PHONE_DISPLAY}`}
             >
-              <Phone className="h-5 w-5 text-rex-gold" />
+              <Phone className="h-5 w-5 text-rex-gold-bright" strokeWidth={2.25} />
             </a>
             <button
               type="button"
@@ -118,7 +118,7 @@ export function Header() {
               onClick={() => setOpen(false)}
               className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.16em]"
             >
-              <Phone className="h-4 w-4 text-rex-gold" />
+              <Phone className="h-4 w-4 text-rex-gold-bright" strokeWidth={2.25} />
               {SITE_PHONE_DISPLAY}
             </a>
             <Link

@@ -14,16 +14,22 @@ type HeroSlide = {
   sharpClass: string;
 };
 
+/* Story arc: home → place → life → stock → premium → rest → landlord → depth → living → city */
 const slides: HeroSlide[] = [
+  {
+    src: "/images/hero/candidate-20-artbovich-openplan.jpg",
+    alt: "Bright open-plan apartment living and dining space",
+    sharpClass: "object-cover object-center",
+  },
   {
     src: "/images/hero/candidate-04-nick-fewings.jpg",
     alt: "Tower of London night",
     sharpClass: "object-cover object-[center_42%]",
   },
   {
-    src: "/images/hero/candidate-07-andrea.jpg",
-    alt: "City skyline dusk",
-    sharpClass: "object-cover object-[center_48%]",
+    src: "/images/hero/candidate-11-lotus-kitchen.jpg",
+    alt: "Modern rental kitchen",
+    sharpClass: "object-cover object-[center_45%]",
   },
   {
     src: "/images/hero/candidate-09-josh-property.jpg",
@@ -36,19 +42,14 @@ const slides: HeroSlide[] = [
     sharpClass: "object-cover object-[center_40%]",
   },
   {
-    src: "/images/hero/candidate-17-quilia-property.jpg",
-    alt: "Property ready to let",
-    sharpClass: "object-cover object-center",
-  },
-  {
-    src: "/images/hero/candidate-11-lotus-kitchen.jpg",
-    alt: "Modern rental kitchen",
-    sharpClass: "object-cover object-[center_45%]",
-  },
-  {
     src: "/images/hero/candidate-12-lotus-bedroom.jpg",
     alt: "Styled rental bedroom",
     sharpClass: "object-cover object-[center_38%]",
+  },
+  {
+    src: "/images/hero/candidate-17-quilia-property.jpg",
+    alt: "Property ready to let",
+    sharpClass: "object-cover object-center",
   },
   {
     src: "/images/hero/candidate-13-bailey-interior-a.jpg",
@@ -61,11 +62,10 @@ const slides: HeroSlide[] = [
     sharpClass: "object-cover object-[center_45%]",
   },
   {
-    src: "/images/hero/candidate-20-artbovich-openplan.jpg",
-    alt: "Bright open-plan apartment living and dining space",
-    sharpClass: "object-cover object-center",
+    src: "/images/hero/candidate-07-andrea.jpg",
+    alt: "City skyline dusk",
+    sharpClass: "object-cover object-[center_48%]",
   },
- 
 ];
 
 export function HeroSlideshow() {

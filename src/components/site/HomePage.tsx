@@ -210,80 +210,67 @@ export default function HomePage() {
             </h2>
           </Reveal>
 
-          <div className="grid gap-3 md:grid-cols-2 md:gap-4">
-            <Reveal direction="left">
+          <div className="grid gap-3 md:grid-cols-2 md:gap-4 md:items-stretch">
+            <Reveal direction="left" className="h-full">
               <Link
                 href="/properties"
-                className="group relative flex min-h-[360px] overflow-hidden bg-rex-ink text-white outline-none transition-[transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream sm:min-h-[400px] md:min-h-[440px]"
+                className="group flex h-full flex-col overflow-hidden bg-rex-ink text-white outline-none transition-[transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream"
               >
-                <Image
-                  src="/images/landloards/vitaly-gariev-QpRjfYmGtbk-unsplash.jpg"
-                  alt="Couple with house keys after moving into a new home"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-[center_28%] transition duration-700 ease-out group-hover:scale-[1.04]"
-                />
-                {/* Type scrim — strong only where copy sits */}
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.62)_38%,rgba(0,0,0,0.18)_62%,rgba(0,0,0,0.08)_100%)]"
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-y-0 left-0 w-[55%] bg-gradient-to-r from-black/35 to-transparent"
-                />
-                <div className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 bg-rex-gold transition duration-500 group-hover:scale-y-100" />
-                <div className="relative mt-auto flex w-full flex-col justify-end p-6 sm:p-8 md:p-10">
+                <div className="relative aspect-[16/11] w-full overflow-hidden sm:aspect-[16/10]">
+                  <Image
+                    src="/images/landloards/vitaly-gariev-QpRjfYmGtbk-unsplash.jpg"
+                    alt="Couple with house keys after moving into a new home"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover object-[center_28%] transition duration-700 ease-out group-hover:scale-[1.04]"
+                  />
+                </div>
+                <div className="relative flex flex-1 flex-col justify-center border-t border-rex-gold/25 bg-rex-ink p-5 sm:p-6 md:p-7">
+                  <div className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 bg-rex-gold transition duration-500 group-hover:scale-y-100" />
                   <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-rex-gold-soft">
                     For tenants
                   </p>
-                  <h3 className="mt-2.5 font-display text-[1.65rem] uppercase leading-[1.05] tracking-[0.06em] text-white sm:text-3xl md:text-4xl">
+                  <h3 className="mt-2 font-display text-[1.5rem] uppercase leading-[1.05] tracking-[0.06em] text-white sm:text-[1.75rem] md:text-3xl">
                     I want to rent
                   </h3>
-                  <p className="mt-3 max-w-[32ch] text-sm leading-relaxed text-white/90">
+                  <p className="mt-2.5 max-w-[36ch] text-sm leading-relaxed text-white/85">
                     Browse available homes, book viewings and move in with clear
                     support.
                   </p>
-                  <span className="mt-6 inline-flex w-fit items-center gap-2 border-b border-rex-gold pb-1.5 text-[11px] uppercase tracking-[0.2em] text-white transition-[gap,color,border-color] duration-300 group-hover:gap-3 group-hover:border-rex-gold-soft group-hover:text-rex-gold-soft">
+                  <span className="mt-5 inline-flex w-fit items-center gap-2 border-b border-rex-gold pb-1.5 text-[11px] uppercase tracking-[0.2em] text-white transition-[gap,color,border-color] duration-300 group-hover:gap-3 group-hover:border-rex-gold-soft group-hover:text-rex-gold-soft">
                     Browse rentals <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
               </Link>
             </Reveal>
 
-            <Reveal direction="right" delay={0.08}>
+            <Reveal direction="right" delay={0.08} className="h-full">
               <Link
                 href="/landlords"
-                className="group relative flex min-h-[360px] overflow-hidden bg-rex-charcoal text-white outline-none transition-[transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream sm:min-h-[400px] md:min-h-[440px]"
+                className="group flex h-full flex-col overflow-hidden bg-rex-charcoal text-white outline-none transition-[transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream"
               >
-                <Image
-                  src="/images/landloards/Gemini_Generated_Image_2am5km2am5km2am5.png"
-                  alt="Professional landlord services illustration"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-center transition duration-700 ease-out group-hover:scale-[1.04]"
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.55)_40%,rgba(0,0,0,0.2)_65%,rgba(0,0,0,0.1)_100%)]"
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-y-0 left-0 w-[55%] bg-gradient-to-r from-black/30 to-transparent"
-                />
-                <div className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 bg-rex-gold transition duration-500 group-hover:scale-y-100" />
-                <div className="relative mt-auto flex w-full flex-col justify-end p-6 sm:p-8 md:p-10">
+                <div className="relative aspect-[16/11] w-full overflow-hidden sm:aspect-[16/10]">
+                  <Image
+                    src="/images/landloards/Gemini_Generated_Image_8ygdbh8ygdbh8ygd.png"
+                    alt="Keys handed over after signing a residential lease agreement"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover object-[center_38%] transition duration-700 ease-out group-hover:scale-[1.04]"
+                  />
+                </div>
+                <div className="relative flex flex-1 flex-col justify-center border-t border-rex-gold/25 bg-rex-charcoal p-5 sm:p-6 md:p-7">
+                  <div className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 bg-rex-gold transition duration-500 group-hover:scale-y-100" />
                   <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-rex-gold-soft">
                     For landlords
                   </p>
-                  <h3 className="mt-2.5 font-display text-[1.65rem] uppercase leading-[1.05] tracking-[0.06em] text-white sm:text-3xl md:text-4xl">
+                  <h3 className="mt-2 font-display text-[1.5rem] uppercase leading-[1.05] tracking-[0.06em] text-white sm:text-[1.75rem] md:text-3xl">
                     I’m a landlord
                   </h3>
-                  <p className="mt-3 max-w-[32ch] text-sm leading-relaxed text-white/90">
+                  <p className="mt-2.5 max-w-[36ch] text-sm leading-relaxed text-white/85">
                     Marketing, tenants, rent collection and management — handled
                     professionally.
                   </p>
-                  <span className="mt-6 inline-flex w-fit items-center gap-2 border-b border-rex-gold pb-1.5 text-[11px] uppercase tracking-[0.2em] text-white transition-[gap,color,border-color] duration-300 group-hover:gap-3 group-hover:border-rex-gold-soft group-hover:text-rex-gold-soft">
+                  <span className="mt-5 inline-flex w-fit items-center gap-2 border-b border-rex-gold pb-1.5 text-[11px] uppercase tracking-[0.2em] text-white transition-[gap,color,border-color] duration-300 group-hover:gap-3 group-hover:border-rex-gold-soft group-hover:text-rex-gold-soft">
                     Landlord services <KeyRound className="h-3.5 w-3.5" />
                   </span>
                 </div>
@@ -337,26 +324,24 @@ export default function HomePage() {
       </section>
 
       {/* Featured */}
-      <section className="relative overflow-hidden border-t border-rex-line bg-rex-cream px-4 py-20 md:px-6 md:py-28">
-        <div className="pointer-events-none absolute -right-20 top-20 font-display text-[8rem] leading-none text-rex-line/40 md:text-[12rem]">
-          04
-        </div>
+      <section className="relative overflow-hidden border-t border-rex-line bg-rex-cream px-4 py-14 md:px-6 md:py-20">
         <div className="relative mx-auto max-w-7xl">
           <Reveal>
             <SectionHeading
               number="04"
               title="Featured Properties"
               subtitle="Homes currently available to rent across London and Southampton."
+              className="mb-7 md:mb-9"
             />
           </Reveal>
-          <RevealGroup className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
             {featured.map((property) => (
               <RevealItem key={property.id}>
                 <PropertyCard property={property} />
               </RevealItem>
             ))}
           </RevealGroup>
-          <Reveal delay={0.15} className="mt-12">
+          <Reveal delay={0.15} className="mt-8">
             <Link href="/properties" className="rex-btn-outline">
               View all rentals
               <ArrowRight className="h-4 w-4" />
@@ -366,27 +351,28 @@ export default function HomePage() {
       </section>
 
       {/* Areas */}
-      <section className="border-t border-rex-line bg-white px-4 py-20 md:px-6 md:py-28">
+      <section className="border-t border-rex-line bg-white px-4 py-14 md:px-6 md:py-16">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <SectionHeading
               number="05"
               title="Areas we cover"
               subtitle="Independent lettings across key London and Southampton neighbourhoods."
+              className="mb-7 md:mb-9"
             />
           </Reveal>
-          <RevealGroup className="grid gap-x-10 gap-y-0 border-t border-rex-line sm:grid-cols-2 lg:grid-cols-4">
+          <RevealGroup className="grid gap-x-8 gap-y-0 border-t border-rex-line sm:grid-cols-3">
             {coverageAreas.map((area) => (
               <RevealItem key={area.name}>
                 <Link
                   href={`/properties?area=${encodeURIComponent(area.name)}`}
-                  className="group flex items-baseline justify-between gap-3 border-b border-rex-line py-5 transition"
+                  className="group flex items-baseline justify-between gap-3 border-b border-rex-line py-6 transition"
                 >
                   <span>
-                    <span className="block font-display text-base uppercase tracking-[0.06em] text-rex-ink transition group-hover:text-rex-gold">
+                    <span className="block font-display text-lg uppercase tracking-[0.06em] text-rex-ink transition group-hover:text-rex-gold md:text-xl">
                       {area.name}
                     </span>
-                    <span className="mt-1 block text-[11px] uppercase tracking-[0.18em] text-rex-stone">
+                    <span className="mt-1.5 block text-[11px] uppercase tracking-[0.18em] text-rex-stone">
                       {area.city}
                     </span>
                   </span>
@@ -399,14 +385,14 @@ export default function HomePage() {
       </section>
 
       {/* Services rhythm strip */}
-      <section className="bg-rex-cream px-4 py-16 md:px-6 md:py-20">
+      <section className="bg-rex-cream px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <p className="text-xs uppercase tracking-[0.2em] text-rex-gold">
               06 · What we handle
             </p>
           </Reveal>
-          <RevealGroup className="mt-8 grid gap-6 border-t border-rex-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
+          <RevealGroup className="mt-5 grid gap-6 border-t border-rex-line pt-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
               ["Marketing", "Portals, photos & listing presentation"],
               ["Tenants", "Sourcing, viewings & referencing"],
@@ -420,7 +406,7 @@ export default function HomePage() {
                 <p className="mt-2 text-sm leading-relaxed text-rex-stone">
                   {body}
                 </p>
-                <div className="mt-5 h-px w-10 bg-rex-gold" />
+                <div className="mt-4 h-px w-10 bg-rex-gold" />
               </RevealItem>
             ))}
           </RevealGroup>
@@ -428,16 +414,17 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="border-t border-rex-line bg-white px-4 py-20 md:px-6 md:py-28">
+      <section className="border-t border-rex-line bg-white px-4 py-14 md:px-6 md:py-20">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <SectionHeading
               number="07"
               title="What clients say"
               subtitle="Sample feedback for presentation — illustrating the service tone landlords and tenants can expect."
+              className="mb-7 md:mb-9"
             />
           </Reveal>
-          <RevealGroup className="grid gap-10 md:grid-cols-3 md:gap-12">
+          <RevealGroup className="grid gap-8 md:grid-cols-3 md:gap-10">
             {testimonials.map((item) => (
               <RevealItem key={item.name}>
                 <blockquote className="border-l-2 border-rex-gold pl-5">
@@ -460,7 +447,7 @@ export default function HomePage() {
       {/* Why Rex — light band so it doesn't read as a second footer */}
       <section
         ref={whyRef}
-        className="relative overflow-hidden border-t border-rex-line bg-rex-cream px-4 py-20 md:px-6 md:py-28"
+        className="relative overflow-hidden border-t border-rex-line bg-rex-cream px-4 py-14 md:px-6 md:py-20"
       >
         <motion.div
           style={{ y: whyImageY }}
@@ -471,9 +458,10 @@ export default function HomePage() {
             alt=""
             fill
             sizes="42vw"
-            className="object-cover opacity-35"
+            className="object-cover opacity-80"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-rex-cream/50 to-rex-cream" />
+          {/* Soft left blend only — keep the photo readable on the right */}
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent from-[35%] via-rex-cream/20 to-rex-cream" />
         </motion.div>
 
         <div className="relative mx-auto max-w-7xl">

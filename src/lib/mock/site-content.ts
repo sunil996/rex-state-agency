@@ -113,16 +113,7 @@ export const landlordPackages: {
       "Handover to you at move-in",
     ],
   },
-  {
-    name: "Rent collect",
-    tagline: "Let + monthly rent care",
-    points: [
-      "Everything in Let only",
-      "Rent collection & chasing",
-      "Clear landlord reporting",
-      "Tenancy administration support",
-    ],
-  },
+ 
   {
     name: "Fully managed",
     tagline: "Complete day-to-day care",
@@ -132,6 +123,17 @@ export const landlordPackages: {
       "Maintenance coordination",
       "Tenant liaison ongoing",
       "Periodic property checks",
+    ],
+    
+  },
+   {
+    name: "Rent collect",
+    tagline: "Let + monthly rent care",
+    points: [
+      "Everything in Let only",
+      "Rent collection & chasing",
+      "Clear landlord reporting",
+      "Tenancy administration support",
     ],
   },
 ];

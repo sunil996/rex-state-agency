@@ -14,7 +14,7 @@ export function SectionHeading({
   className = "",
 }: SectionHeadingProps) {
   return (
-    <div className={`mb-10 md:mb-14 ${className}`}>
+    <div className={className || "mb-10 md:mb-14"}>
       <div className="mb-3 flex items-baseline gap-3">
         {number ? (
           <span className="text-sm font-medium tracking-[0.2em] text-rex-gold">

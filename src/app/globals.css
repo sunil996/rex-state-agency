@@ -10,9 +10,9 @@ html {
   --rex-black: #121212;
   --rex-charcoal: #1a1a1a;
   --rex-ink: #0f0f0f;
-  --rex-gold: #c5a46e;
-  --rex-gold-bright: #d4af37;
-  --rex-gold-soft: #e8d5a8;
+  --rex-gold: #d4af37;
+  --rex-gold-bright: #e0c04a;
+  --rex-gold-soft: #f0dfb0;
   --rex-cream: #fafaf8;
   --rex-stone: #6b6b66;
   --rex-line: #e6e4de;
@@ -20,7 +20,7 @@ html {
   --rex-surface: #ffffff;
   --rex-hero-from: rgba(0, 0, 0, 0.62);
   --rex-hero-via: rgba(0, 0, 0, 0.32);
-  --rex-accent-2: #c5a46e;
+  --rex-accent-2: #d4af37;
   --background: #fafaf8;
   --foreground: #0f0f0f;
   --radius-ui: 0px;
@@ -35,9 +35,9 @@ html[data-design="current"] {
   --rex-black: #121212;
   --rex-charcoal: #1a1a1a;
   --rex-ink: #0f0f0f;
-  --rex-gold: #c5a46e;
-  --rex-gold-bright: #d4af37;
-  --rex-gold-soft: #e8d5a8;
+  --rex-gold: #d4af37;
+  --rex-gold-bright: #e0c04a;
+  --rex-gold-soft: #f0dfb0;
   --rex-cream: #fafaf8;
   --rex-stone: #6b6b66;
   --rex-line: #e6e4de;
@@ -45,20 +45,20 @@ html[data-design="current"] {
   --rex-surface: #ffffff;
   --rex-hero-from: rgba(0, 0, 0, 0.62);
   --rex-hero-via: rgba(0, 0, 0, 0.32);
-  --rex-accent-2: #c5a46e;
+  --rex-accent-2: #d4af37;
   --background: #fafaf8;
   --foreground: #0f0f0f;
   --radius-ui: 0px;
 }
 
-/* Design 1 — British Editorial: bright white, sharp black, antique brass */
+/* Design 1 — British Editorial: bright white, sharp black, polished gold */
 html[data-design="design-1"] {
   --rex-black: #0a0a0a;
   --rex-charcoal: #161616;
   --rex-ink: #0a0a0a;
-  --rex-gold: #9a7b4f;
-  --rex-gold-bright: #b8956a;
-  --rex-gold-soft: #d4c4a8;
+  --rex-gold: #d4af37;
+  --rex-gold-bright: #e0c04a;
+  --rex-gold-soft: #f0dfb0;
   --rex-cream: #ffffff;
   --rex-stone: #4a4a4a;
   --rex-line: #d6d6d0;
@@ -66,7 +66,7 @@ html[data-design="design-1"] {
   --rex-surface: #ffffff;
   --rex-hero-from: rgba(10, 10, 10, 0.9);
   --rex-hero-via: rgba(10, 10, 10, 0.62);
-  --rex-accent-2: #9a7b4f;
+  --rex-accent-2: #d4af37;
   --background: #ffffff;
   --foreground: #0a0a0a;
   --radius-ui: 0px;
