@@ -191,7 +191,7 @@ export default function HomePage() {
             </div>
           </Reveal>
           <Reveal delay={0.1} direction="scale">
-            <div className="border border-rex-line bg-white p-1 shadow-[0_20px_60px_-40px_rgba(15,15,15,0.45)]">
+            <div className="rounded-xl border border-rex-line bg-white p-1 shadow-[0_20px_60px_-40px_rgba(15,15,15,0.45)]">
               <SearchBar variant="page" />
             </div>
           </Reveal>
@@ -210,11 +210,11 @@ export default function HomePage() {
             </h2>
           </Reveal>
 
-          <div className="grid gap-3 md:grid-cols-2 md:gap-4 md:items-stretch">
+          <div className="grid gap-5 md:grid-cols-2 md:gap-6 md:items-stretch">
             <Reveal direction="left" className="h-full">
               <Link
                 href="/properties"
-                className="group flex h-full flex-col overflow-hidden bg-rex-ink text-white outline-none transition-[transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream"
+                className="group flex h-full flex-col overflow-hidden rounded-xl bg-rex-ink text-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] ring-1 ring-black/5 outline-none transition-[transform,box-shadow] duration-500 hover:-translate-y-0.5 hover:shadow-[0_16px_48px_rgba(0,0,0,0.18)] focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream"
               >
                 <div className="relative aspect-[16/11] w-full overflow-hidden sm:aspect-[16/10]">
                   <Image
@@ -247,15 +247,15 @@ export default function HomePage() {
             <Reveal direction="right" delay={0.08} className="h-full">
               <Link
                 href="/landlords"
-                className="group flex h-full flex-col overflow-hidden bg-rex-charcoal text-white outline-none transition-[transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream"
+                className="group flex h-full flex-col overflow-hidden rounded-xl bg-rex-charcoal text-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] ring-1 ring-black/5 outline-none transition-[transform,box-shadow] duration-500 hover:-translate-y-0.5 hover:shadow-[0_16px_48px_rgba(0,0,0,0.18)] focus-visible:ring-2 focus-visible:ring-rex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-rex-cream"
               >
                 <div className="relative aspect-[16/11] w-full overflow-hidden sm:aspect-[16/10]">
                   <Image
-                    src="/images/landloards/Gemini_Generated_Image_8ygdbh8ygdbh8ygd.png"
-                    alt="Keys handed over after signing a residential lease agreement"
+                    src="/images/landloards/Gemini_Generated_Image_bvd2pibvd2pibvd2.png"
+                    alt="Friendly lettings agent with house keys in a bright modern apartment"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover object-[center_38%] transition duration-700 ease-out group-hover:scale-[1.04]"
+                    className="object-cover object-[center_30%] transition duration-700 ease-out group-hover:scale-[1.04]"
                   />
                 </div>
                 <div className="relative flex flex-1 flex-col justify-center border-t border-rex-gold/25 bg-rex-charcoal p-5 sm:p-6 md:p-7">
@@ -427,7 +427,7 @@ export default function HomePage() {
           <RevealGroup className="grid gap-8 md:grid-cols-3 md:gap-10">
             {testimonials.map((item) => (
               <RevealItem key={item.name}>
-                <blockquote className="border-l-2 border-rex-gold pl-5">
+                <blockquote className="h-full rounded-xl border-l-2 border-rex-gold bg-rex-surface p-6 ring-1 ring-rex-line shadow-(--rex-shadow-sm) transition duration-300 hover:-translate-y-0.5 hover:shadow-(--rex-shadow-md)">
                   <p className="text-base leading-relaxed text-rex-ink md:text-[1.05rem]">
                     “{item.quote}”
                   </p>

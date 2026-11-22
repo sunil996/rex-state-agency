@@ -70,6 +70,28 @@ export const testimonials = [
   },
 ] as const;
 
+/** About page only — different voices from homepage testimonials */
+export const aboutTestimonials = [
+  {
+    quote:
+      "We always reach a named person, not a queue. That small-team feel made handing over our flat far less stressful.",
+    name: "Amelia W.",
+    role: "Portfolio landlord · Greater London",
+  },
+  {
+    quote:
+      "From first enquiry to keys, everything was explained clearly. No pressure, just practical advice on what suited us.",
+    name: "Omar & Leila H.",
+    role: "New tenants · Southampton City Centre",
+  },
+  {
+    quote:
+      "Maintenance gets chased properly and we get calm updates. It feels like they treat our property as carefully as we would.",
+    name: "Christopher N.",
+    role: "Fully managed landlord · Eastleigh",
+  },
+] as const;
+
 export const landlordTestimonials = [
   {
     quote:

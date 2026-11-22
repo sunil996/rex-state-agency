@@ -15,9 +15,9 @@ function TikTokIcon({ className }: { className?: string }) {
 }
 
 const linkClass = {
-  dark: "inline-flex min-h-11 min-w-11 items-center justify-center border border-white/15 p-3 text-white/70 hover:border-rex-gold hover:text-rex-gold",
+  dark: "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full p-3 text-white/70 ring-1 ring-white/15 transition duration-300 hover:-translate-y-0.5 hover:text-rex-gold hover:ring-rex-gold",
   light:
-    "inline-flex min-h-11 min-w-11 items-center justify-center border border-rex-line p-3 hover:border-rex-gold",
+    "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full p-3 ring-1 ring-rex-line transition duration-300 hover:-translate-y-0.5 hover:text-rex-gold hover:ring-rex-gold",
 } as const;
 
 export function SocialLinks({

@@ -23,7 +23,10 @@ html {
   --rex-accent-2: #d4af37;
   --background: #fafaf8;
   --foreground: #0f0f0f;
-  --radius-ui: 0px;
+  --radius-ui: 10px;
+  --rex-shadow-sm: 0 1px 2px rgba(15, 15, 15, 0.06), 0 2px 8px rgba(15, 15, 15, 0.05);
+  --rex-shadow-md: 0 4px 12px rgba(15, 15, 15, 0.08), 0 12px 32px rgba(15, 15, 15, 0.08);
+  --rex-shadow-lg: 0 8px 24px rgba(15, 15, 15, 0.12), 0 24px 56px rgba(15, 15, 15, 0.14);
   --site-ribbon-h: 0rem; /* ribbon commented out — Design 1 locked */
   --site-header-offset: 0rem;
   scroll-behavior: smooth;
@@ -48,7 +51,10 @@ html[data-design="current"] {
   --rex-accent-2: #d4af37;
   --background: #fafaf8;
   --foreground: #0f0f0f;
-  --radius-ui: 0px;
+  --radius-ui: 10px;
+  --rex-shadow-sm: 0 1px 2px rgba(15, 15, 15, 0.06), 0 2px 8px rgba(15, 15, 15, 0.05);
+  --rex-shadow-md: 0 4px 12px rgba(15, 15, 15, 0.08), 0 12px 32px rgba(15, 15, 15, 0.08);
+  --rex-shadow-lg: 0 8px 24px rgba(15, 15, 15, 0.12), 0 24px 56px rgba(15, 15, 15, 0.14);
 }
 
 /* Design 1 — British Editorial: bright white, sharp black, polished gold */
@@ -69,7 +75,10 @@ html[data-design="design-1"] {
   --rex-accent-2: #d4af37;
   --background: #ffffff;
   --foreground: #0a0a0a;
-  --radius-ui: 0px;
+  --radius-ui: 10px;
+  --rex-shadow-sm: 0 1px 2px rgba(10, 10, 10, 0.06), 0 2px 8px rgba(10, 10, 10, 0.05);
+  --rex-shadow-md: 0 4px 12px rgba(10, 10, 10, 0.08), 0 12px 32px rgba(10, 10, 10, 0.08);
+  --rex-shadow-lg: 0 8px 24px rgba(10, 10, 10, 0.12), 0 24px 56px rgba(10, 10, 10, 0.14);
 }
 
 /* Design 2 — Mayfair Noir: full dark luxury */
@@ -175,11 +184,13 @@ h4,
   font-size: 0.875rem;
   color: var(--rex-ink);
   outline: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .rex-input:focus {
   border-color: var(--rex-gold);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rex-gold) 25%, transparent);
 }
 
 .rex-label {
@@ -206,12 +217,14 @@ h4,
   letter-spacing: 0.18em;
   text-transform: uppercase;
   border-radius: var(--radius-ui);
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .rex-btn-primary {
   background: var(--rex-gold);
   color: #fff;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--rex-gold) 35%, transparent);
 }
 
 html[data-design="current"] .rex-btn-primary,
@@ -221,6 +234,8 @@ html[data-design="design-1"] .rex-btn-primary {
 
 .rex-btn-primary:hover {
   background: var(--rex-gold-bright);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--rex-gold) 45%, transparent);
 }
 
 .rex-btn-dark {
@@ -230,6 +245,8 @@ html[data-design="design-1"] .rex-btn-primary {
 
 .rex-btn-dark:hover {
   background: var(--rex-charcoal);
+  transform: translateY(-1px);
+  box-shadow: var(--rex-shadow-md);
 }
 
 .rex-btn-outline {
@@ -241,6 +258,8 @@ html[data-design="design-1"] .rex-btn-primary {
 .rex-btn-outline:hover {
   background: var(--rex-ink);
   color: var(--background);
+  transform: translateY(-1px);
+  box-shadow: var(--rex-shadow-md);
 }
 
 .rex-btn-ghost {
@@ -252,6 +271,14 @@ html[data-design="design-1"] .rex-btn-primary {
 .rex-btn-ghost:hover {
   border-color: var(--rex-gold-soft);
   color: var(--rex-gold-soft);
+  transform: translateY(-1px);
+}
+
+.rex-btn-primary:active,
+.rex-btn-dark:active,
+.rex-btn-outline:active,
+.rex-btn-ghost:active {
+  transform: translateY(0);
 }
 
 /* ——— Design-specific forced contrast so themes are obvious ——— */

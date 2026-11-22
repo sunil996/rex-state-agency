@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { aboutTestimonials } from "@/lib/mock/site-content";
 import {
   SITE_EMAIL,
   SITE_EMAIL_HREF,
@@ -26,13 +27,14 @@ export default function AboutPage() {
         />
 
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div className="relative aspect-[4/5] overflow-hidden">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
             <Image
-              src="/images/properties/bedroom-2.jpg"
-              alt="Professionally presented rental home"
+              src="/images/about/Gemini_Generated_Image_msl2j7msl2j7msl2.png"
+              alt="House keys and notebook on a desk overlooking a London street — lettings ready to hand over"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              className="object-cover object-[center_65%]"
+              priority
             />
           </div>
           <div className="space-y-5 text-rex-stone leading-relaxed">
@@ -129,6 +131,33 @@ export default function AboutPage() {
                 available homes and request a viewing online.
               </p>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-16 border-t border-rex-line pt-12 md:mt-20 md:pt-16">
+          <SectionHeading
+            number="03"
+            title="Trusted relationships"
+            subtitle="How clients describe working with a small lettings team — personal contact, clear updates, no call-centre runaround."
+            className="mb-7 md:mb-9"
+          />
+          <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {aboutTestimonials.map((item) => (
+              <blockquote
+                key={item.name}
+                className="h-full rounded-xl border-l-2 border-rex-gold bg-rex-surface p-6 ring-1 ring-rex-line shadow-(--rex-shadow-sm) transition duration-300 hover:-translate-y-0.5 hover:shadow-(--rex-shadow-md)"
+              >
+                <p className="text-base leading-relaxed text-rex-ink md:text-[1.05rem]">
+                  “{item.quote}”
+                </p>
+                <footer className="mt-5">
+                  <p className="text-sm font-medium text-rex-ink">{item.name}</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-rex-stone">
+                    {item.role}
+                  </p>
+                </footer>
+              </blockquote>
+            ))}
           </div>
         </div>
 

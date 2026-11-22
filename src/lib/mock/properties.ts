@@ -115,9 +115,9 @@ export const initialProperties: Property[] = [
   },
   {
     id: "12",
-    slug: "nichols-road-so14-2",
+    slug: "lilac-road-so14",
     ref: "REX2004",
-    address: "Nichols Road, SO14",
+    address: "Lilac Road",
     area: "Southampton City Centre",
     city: "Southampton",
     postcode: "SO14",
@@ -130,7 +130,7 @@ export const initialProperties: Property[] = [
     furnished: "unfurnished",
     epc: "C",
     description:
-      "A contemporary five-bedroom house on Nichols Road in Southampton SO14, featuring a sleek high-gloss kitchen with integrated appliances, polished flooring throughout the hallway, a modern rainfall-shower bathroom and a second bathroom. Well placed for the city centre, amenities and transport — available to rent through Rex Estate Agents.",
+      "A contemporary five-bedroom house on Lilac Road in Southampton SO14, featuring a sleek high-gloss kitchen with integrated appliances, polished flooring throughout the hallway, a modern rainfall-shower bathroom and a second bathroom. Well placed for the city centre, amenities and transport — available to rent through Rex Estate Agents.",
     features: [
       "Five bedrooms",
       "Two bathrooms",
@@ -202,9 +202,9 @@ export const initialProperties: Property[] = [
       "Concierge building",
     ],
     images: [
-      "/images/properties/bedroom-2.jpg",
-      "/images/properties/kitchen-2.jpg",
       "/images/properties/bathroom-2.jpg",
+      "/images/properties/kitchen-2.jpg",
+      "/images/properties/bedroom-2.jpg",
       "/images/properties/bedroom-3.jpg",
     ],
     featured: true,

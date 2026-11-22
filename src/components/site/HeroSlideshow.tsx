@@ -31,11 +31,11 @@ const slides: HeroSlide[] = [
     alt: "Modern rental kitchen",
     sharpClass: "object-cover object-[center_45%]",
   },
-  {
-    src: "/images/hero/candidate-09-josh-property.jpg",
-    alt: "Quality rental property interior",
-    sharpClass: "object-cover object-center",
-  },
+  // {
+  //   src: "/images/hero/candidate-09-josh-property.jpg",
+  //   alt: "Quality rental property interior",
+  //   sharpClass: "object-cover object-center",
+  // },
   {
     src: "/images/hero/candidate-16-francesca-interior.jpg",
     alt: "Elegant rental home interior",
