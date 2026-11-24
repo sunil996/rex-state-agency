@@ -136,7 +136,10 @@ export default function HomePage() {
               }}
               className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap md:mt-8"
             >
-              <Link href="/properties" className="rex-btn-primary w-full justify-center sm:w-auto">
+              <Link
+                href="/properties"
+                className="rex-btn-primary w-full justify-center shadow-[0_0_24px_color-mix(in_srgb,var(--rex-gold-bright)_45%,transparent)] sm:w-auto"
+              >
                 Search rentals
                 <ArrowRight className="h-4 w-4" />
               </Link>

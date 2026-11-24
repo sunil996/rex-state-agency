@@ -195,7 +195,7 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
         </div>
       </div>
 
-      <div className="mt-3 flex flex-col gap-3 sm:mt-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-3 flex flex-col gap-3 sm:mt-4 sm:flex-row sm:items-center sm:justify-between sm:pr-1">
         <p
           className={`hidden text-xs sm:block ${
             isHero ? "text-white/50" : "text-rex-stone"
@@ -205,7 +205,7 @@ export function SearchBar({ variant = "hero", initial }: SearchBarProps) {
         </p>
         <button
           type="submit"
-          className="rex-btn-primary w-full justify-center sm:w-auto"
+          className="rex-btn-primary w-full justify-center shadow-[0_0_24px_color-mix(in_srgb,var(--rex-gold-bright)_45%,transparent)] sm:w-auto"
         >
           <Search className="h-4 w-4" />
           Search rentals

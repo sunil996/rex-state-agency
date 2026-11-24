@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SocialLinks } from "@/components/site/SocialLinks";
 import { Toast } from "@/components/ui/Toast";
@@ -59,18 +59,16 @@ export default function ContactPage() {
               <h3 className="font-display text-lg uppercase tracking-[0.08em]">
                 London
               </h3>
-              <p className="mt-3 flex gap-2 text-sm text-rex-stone">
-                <MapPin className="mt-0.5 h-4 w-4 text-rex-gold" />
-                Address placeholder — confirm with client
+              <p className="mt-2 text-sm text-rex-stone">
+                Lettings &amp; property management
               </p>
             </div>
             <div className="border border-rex-line bg-white p-6">
               <h3 className="font-display text-lg uppercase tracking-[0.08em]">
                 Southampton
               </h3>
-              <p className="mt-3 flex gap-2 text-sm text-rex-stone">
-                <MapPin className="mt-0.5 h-4 w-4 text-rex-gold" />
-                Address placeholder — confirm with client
+              <p className="mt-2 text-sm text-rex-stone">
+                Lettings &amp; property management
               </p>
             </div>
             <div className="space-y-3 text-sm text-rex-stone">

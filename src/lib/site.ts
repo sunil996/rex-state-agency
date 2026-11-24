@@ -1,6 +1,6 @@
 /** Public contact details for Rex Estate Agents */
-export const SITE_PHONE_DISPLAY = "07553 481488";
-export const SITE_PHONE_HREF = "tel:+447553481488";
+export const SITE_PHONE_DISPLAY = "020 3432 2867";
+export const SITE_PHONE_HREF = "tel:+442034322867";
 export const SITE_EMAIL = "info@rexestates.uk";
 export const SITE_EMAIL_HREF = "mailto:info@rexestates.uk";
 

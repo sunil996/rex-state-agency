@@ -222,9 +222,52 @@ h4,
 }
 
 .rex-btn-primary {
-  background: var(--rex-gold);
-  color: #fff;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--rex-gold) 35%, transparent);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: #111111;
+  background: linear-gradient(
+    180deg,
+    #f0d24f 0%,
+    var(--rex-gold-bright) 38%,
+    var(--rex-gold) 100%
+  );
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.35) inset,
+    0 2px 8px color-mix(in srgb, var(--rex-gold) 45%, transparent),
+    0 0 18px color-mix(in srgb, var(--rex-gold-bright) 40%, transparent);
+}
+
+.rex-btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -40%;
+  width: 40%;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgb(255 255 255 / 0.5),
+    transparent
+  );
+  transform: skewX(-20deg) translateX(-20%);
+  animation: rex-btn-shine 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes rex-btn-shine {
+  0%,
+  50% {
+    transform: skewX(-20deg) translateX(-30%);
+    opacity: 0;
+  }
+  65% {
+    opacity: 1;
+  }
+  100% {
+    transform: skewX(-20deg) translateX(320%);
+    opacity: 0;
+  }
 }
 
 html[data-design="current"] .rex-btn-primary,
@@ -233,9 +276,23 @@ html[data-design="design-1"] .rex-btn-primary {
 }
 
 .rex-btn-primary:hover {
-  background: var(--rex-gold-bright);
+  background: linear-gradient(
+    180deg,
+    #ffe36a 0%,
+    #f0d24f 42%,
+    var(--rex-gold-bright) 100%
+  );
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--rex-gold) 45%, transparent);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.5) inset,
+    0 6px 18px color-mix(in srgb, var(--rex-gold) 55%, transparent),
+    0 0 28px color-mix(in srgb, var(--rex-gold-bright) 50%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rex-btn-primary::after {
+    animation: none;
+  }
 }
 
 .rex-btn-dark {

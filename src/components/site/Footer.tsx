@@ -88,7 +88,7 @@ export function Footer() {
           <ul className="space-y-3 text-sm text-white/70">
             <li className="flex gap-2">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-rex-gold" />
-              London & Southampton — address TBC
+              London & Southampton
             </li>
             <li className="flex gap-2">
               <Phone className="mt-0.5 h-4 w-4 shrink-0 text-rex-gold" />

@@ -24,20 +24,21 @@ export default function AboutPage() {
           number="01"
           title="About Rex Estate Agents"
           subtitle="Independent lettings and property management for landlords and tenants across London and Southampton."
+          className="mb-5 md:mb-6"
         />
 
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-6">
+          <div className="relative aspect-[3/4] w-full shrink-0 overflow-hidden rounded-xl sm:max-w-sm lg:w-[20rem] lg:max-w-[20rem]">
             <Image
               src="/images/about/Gemini_Generated_Image_msl2j7msl2j7msl2.png"
               alt="House keys and notebook on a desk overlooking a London street — lettings ready to hand over"
               fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
+              sizes="(max-width: 1024px) 100vw, 320px"
               className="object-cover object-[center_65%]"
               priority
             />
           </div>
-          <div className="space-y-5 text-rex-stone leading-relaxed">
+          <div className="min-w-0 flex-1 space-y-3.5 text-rex-stone leading-relaxed">
             <p>
               Rex Estate Agents is an independent lettings and property
               management company. We work with both landlords and tenants —
@@ -62,7 +63,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:mt-10 md:grid-cols-3">
           {[
             {
               title: "Values",
