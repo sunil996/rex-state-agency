@@ -337,9 +337,9 @@ export default function HomePage() {
               className="mb-7 md:mb-9"
             />
           </Reveal>
-          <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+          <RevealGroup className="grid items-stretch gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
             {featured.map((property) => (
-              <RevealItem key={property.id}>
+              <RevealItem key={property.id} className="h-full">
                 <PropertyCard property={property} />
               </RevealItem>
             ))}

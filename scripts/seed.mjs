@@ -52,6 +52,7 @@ const AdminUser =
   mongoose.models.AdminUser || mongoose.model("AdminUser", AdminSchema);
 
 const studioLondonGallery = [
+  "/images/properties/studio-london/00-cover-exterior.png",
   "/images/properties/studio-london/02-bedroom-wide.jpg",
   "/images/properties/studio-london/01-exterior.jpg",
   "/images/properties/studio-london/03-bedroom-bed.jpg",
@@ -81,7 +82,7 @@ const heinzBurtCloseGallery = [
 ];
 
 const nicholsRoadGallery = [
-  "/images/properties/nichols-road-so14/01-exterior.jpg",
+  "/images/properties/nichols-road-so14/01-exterior.png",
   "/images/properties/nichols-road-so14/02-bedroom-bay.jpg",
   "/images/properties/nichols-road-so14/03-bedroom.jpg",
   "/images/properties/nichols-road-so14/04-bedroom.jpg",
@@ -90,6 +91,7 @@ const nicholsRoadGallery = [
 ];
 
 const nicholsRoadTwoGallery = [
+  "/images/properties/nichols-road-so14-2/00-cover-kitchen.png",
   "/images/properties/nichols-road-so14-2/01-hallway.jpg",
   "/images/properties/nichols-road-so14-2/02-hallway-entrance.jpg",
   "/images/properties/nichols-road-so14-2/03-kitchen.jpg",
@@ -100,7 +102,50 @@ const nicholsRoadTwoGallery = [
   "/images/properties/nichols-road-so14-2/08-bedroom.jpg",
 ];
 
+const oceanVillageGallery = [
+  "/images/properties/ocean-village-so14/10.png",
+  "/images/properties/ocean-village-so14/01.png",
+  "/images/properties/ocean-village-so14/02.png",
+  "/images/properties/ocean-village-so14/03.png",
+  "/images/properties/ocean-village-so14/04.png",
+  "/images/properties/ocean-village-so14/05.png",
+  "/images/properties/ocean-village-so14/06.png",
+  "/images/properties/ocean-village-so14/07.png",
+  "/images/properties/ocean-village-so14/08.png",
+  "/images/properties/ocean-village-so14/09.png",
+  "/images/properties/ocean-village-so14/11.png",
+];
+
 const properties = [
+  {
+    slug: "nichols-road-so14",
+    ref: "REX2003",
+    address: "Nichols Road, SO14",
+    area: "Southampton City Centre",
+    city: "Southampton",
+    postcode: "SO14",
+    rent: 2750,
+    beds: 5,
+    baths: 2,
+    receptions: 1,
+    type: "house",
+    status: "available",
+    furnished: "furnished",
+    epc: "C",
+    description:
+      "A well-presented five-bedroom terraced house on Nichols Road in Southampton SO14 — ideal for professionals or sharers seeking a central location. Bright bedrooms with natural light, a modern shower bathroom and a separate WC, plus a classic bay-fronted exterior. Handy for the city centre, local amenities and transport links. Available to rent through Rex Estate Agents.",
+    features: [
+      "Five bedrooms",
+      "Two bathrooms",
+      "Furnished rooms",
+      "Bay-fronted terraced house",
+      "Central SO14 location",
+      "Close to city amenities",
+      "Lettings managed by Rex",
+    ],
+    images: nicholsRoadGallery,
+    featured: true,
+  },
   {
     slug: "heinz-burt-close-eastleigh",
     ref: "REX2002",
@@ -132,65 +177,6 @@ const properties = [
     featured: true,
   },
   {
-    slug: "nichols-road-so14",
-    ref: "REX2003",
-    address: "Nichols Road, SO14",
-    area: "Southampton City Centre",
-    city: "Southampton",
-    postcode: "SO14",
-    rent: 2750,
-    beds: 5,
-    baths: 2,
-    receptions: 1,
-    type: "house",
-    status: "available",
-    furnished: "furnished",
-    epc: "C",
-    description:
-      "A well-presented five-bedroom terraced house on Nichols Road in Southampton SO14 — ideal for professionals or sharers seeking a central location. Bright bedrooms with natural light, a modern shower bathroom and a separate WC, plus a classic bay-fronted exterior. Handy for the city centre, local amenities and transport links. Available to rent through Rex Estate Agents.",
-    features: [
-      "Five bedrooms",
-      "Two bathrooms",
-      "Furnished rooms",
-      "Bay-fronted terraced house",
-      "Central SO14 location",
-      "Close to city amenities",
-      "Lettings managed by Rex",
-    ],
-    images: nicholsRoadGallery,
-    featured: true,
-  },
-  {
-    slug: "nichols-road-so14-2",
-    ref: "REX2004",
-    address: "Nichols Road, SO14",
-    area: "Southampton City Centre",
-    city: "Southampton",
-    postcode: "SO14",
-    rent: 2850,
-    beds: 5,
-    baths: 2,
-    receptions: 1,
-    type: "house",
-    status: "available",
-    furnished: "unfurnished",
-    epc: "C",
-    description:
-      "A contemporary five-bedroom house on Nichols Road in Southampton SO14, featuring a sleek high-gloss kitchen with integrated appliances, polished flooring throughout the hallway, a modern rainfall-shower bathroom and a second bathroom. Well placed for the city centre, amenities and transport — available to rent through Rex Estate Agents.",
-    features: [
-      "Five bedrooms",
-      "Two bathrooms",
-      "Modern high-gloss kitchen",
-      "Integrated appliances",
-      "Rainfall shower bathroom",
-      "Central SO14 location",
-      "Close to city amenities",
-      "Lettings managed by Rex",
-    ],
-    images: nicholsRoadTwoGallery,
-    featured: true,
-  },
-  {
     slug: "modern-furnished-studio-london",
     ref: "REX2001",
     address: "Modern Furnished Studio, London",
@@ -219,6 +205,36 @@ const properties = [
     featured: true,
   },
   {
+    slug: "lilac-road-so14",
+    ref: "REX2004",
+    address: "Lilac Road",
+    area: "Southampton City Centre",
+    city: "Southampton",
+    postcode: "SO14",
+    rent: 2850,
+    beds: 5,
+    baths: 2,
+    receptions: 1,
+    type: "house",
+    status: "available",
+    furnished: "unfurnished",
+    epc: "C",
+    description:
+      "A contemporary five-bedroom house on Lilac Road in Southampton SO14, featuring a sleek high-gloss kitchen with integrated appliances, polished flooring throughout the hallway, a modern rainfall-shower bathroom and a second bathroom. Well placed for the city centre, amenities and transport — available to rent through Rex Estate Agents.",
+    features: [
+      "Five bedrooms",
+      "Two bathrooms",
+      "Modern high-gloss kitchen",
+      "Integrated appliances",
+      "Rainfall shower bathroom",
+      "Central SO14 location",
+      "Close to city amenities",
+      "Lettings managed by Rex",
+    ],
+    images: nicholsRoadTwoGallery,
+    featured: true,
+  },
+  {
     slug: "ocean-view-southampton-so14",
     ref: "REX1002",
     address: "Ocean Village, SO14",
@@ -236,12 +252,7 @@ const properties = [
     description:
       "Contemporary two-bedroom apartment overlooking Ocean Village.",
     features: ["Waterfront location", "Allocated parking", "Concierge"],
-    images: [
-      "/images/properties/bedroom-2.jpg",
-      "/images/properties/kitchen-2.jpg",
-      "/images/properties/bathroom-2.jpg",
-      "/images/properties/bedroom-3.jpg",
-    ],
+    images: oceanVillageGallery,
     featured: true,
   },
 ];
